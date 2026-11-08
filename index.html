@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PM Services – Réparation de téléphones en Côte d’Ivoire</title>
+<meta name="description" content="PM Services : réparation de téléphones, vente et accessoires. Prix des écrans, demande de réparation en ligne, suivi par code. WhatsApp 05 01 90 35 35.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a2a6b;--deep:#06183f;--blue:#1d4fbf;--mist:#eef3fb;--line:#d4e0f2;--ink:#0a1b3d;--muted:#4a6288;--paper:#fff;--wa:#128c4a}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font-family:"Source Sans 3",system-ui,sans-serif;background:var(--mist);color:var(--ink);line-height:1.5}
+h1,h2,h3,.fd{font-family:Outfit,system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+.w{max-width:1120px;margin:0 auto;padding:0 16px}
+.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border-radius:999px;border:2px solid var(--navy);background:var(--navy);color:#fff;font:700 1rem "Source Sans 3",sans-serif;cursor:pointer}
+.btn.o{background:transparent;color:var(--navy)}
+.btn.l{background:#fff;color:var(--navy);border-color:#fff}
+.btn.wa{background:var(--wa);border-color:var(--wa)}
+/* en-tête */
+header{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:20px;min-height:68px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo img{height:46px;width:auto}
+nav.m{margin-left:auto;display:flex;gap:4px}
+.dd{position:relative}
+.dd>button{background:none;border:0;font:700 .95rem "Source Sans 3",sans-serif;color:var(--navy);padding:22px 12px;cursor:pointer}
+.dd>div{display:none;position:absolute;top:100%;left:0;min-width:240px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;box-shadow:0 12px 28px rgb(10 42 107/14%)}
+.dd:hover>div,.dd:focus-within>div{display:block}
+.dd>div a{display:block;padding:10px 12px;border-radius:8px;font-weight:600}
+.dd>div a:hover{background:var(--mist)}
+.burger{display:none;margin-left:auto;background:none;border:2px solid var(--navy);border-radius:10px;width:46px;height:46px;color:var(--navy);cursor:pointer}
+/* carrousel */
+.car{position:relative;overflow:hidden;color:#fff;background:var(--navy)}
+.sl{display:none;min-height:340px;padding:56px 0 96px;align-items:center}
+.sl.on{display:flex}
+.sl:nth-child(1){background:linear-gradient(120deg,var(--deep),var(--blue))}
+.sl:nth-child(2){background:linear-gradient(120deg,var(--navy),#2f6ad8)}
+.sl:nth-child(3){background:linear-gradient(120deg,#0b3f9c,var(--deep))}
+.sl h1,.sl h2{font-size:clamp(1.9rem,5vw,3.2rem);line-height:1.1;font-weight:800;max-width:15em}
+.sl p{margin:14px 0 22px;font-size:1.15rem;max-width:34em;color:var(--mist)}
+.dots{position:absolute;left:0;right:0;bottom:84px;display:flex;justify-content:center;gap:8px}
+.dots button{width:12px;height:12px;border-radius:50%;border:2px solid #fff;background:transparent;cursor:pointer;padding:0}
+.dots button[aria-current=true]{background:#fff}
+.find{position:relative;margin:-44px auto 0;z-index:2;background:#fff;border-radius:16px;box-shadow:0 12px 28px rgb(10 42 107/16%);padding:14px;display:flex;gap:10px;max-width:760px}
+.find input{flex:1;min-width:0;min-height:48px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font:1.05rem "Source Sans 3",sans-serif}
+/* sections */
+section{padding:56px 0}
+.sec h2{font-size:clamp(1.6rem,3.5vw,2.1rem);font-weight:800;color:var(--navy);text-align:center}
+.sec>.w>p.sub{color:var(--muted);text-align:center;margin:6px auto 28px;max-width:40em}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.strip div{text-align:center;font-weight:700;color:var(--navy)}
+.strip .i{width:44px;height:44px;margin:0 auto 8px;display:block;color:var(--blue)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{display:block;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 18px;text-align:center}
+.card:hover{border-color:var(--blue);box-shadow:0 8px 20px rgb(10 42 107/10%)}
+.card .i{width:38px;height:38px;color:var(--blue);margin:0 auto 10px;display:block}
+.card h3{font-size:1.05rem;color:var(--navy)}
+.card p{font-size:.92rem;color:var(--muted);margin-top:4px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;max-width:820px;margin:0 auto}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f .full{grid-column:1/-1}
+label{display:block;font-weight:700;color:var(--navy);font-size:.92rem}
+select,input,textarea{width:100%;margin-top:4px;min-height:46px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font:1rem "Source Sans 3",sans-serif;background:#fff;color:var(--ink)}
+textarea{min-height:90px}
+.res{margin-top:16px;border-radius:12px;background:var(--mist);padding:14px 16px}
+.res li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line);list-style:none}
+.res li:last-of-type{border:0}
+.res b.p{font-family:Outfit,sans-serif;color:var(--navy)}
+.err{color:#b00020;font-weight:600;margin-top:10px}
+.seg{display:flex;gap:8px}
+.seg label{flex:1}
+.seg input{position:absolute;opacity:0;width:0;min-height:0}
+.seg span{display:flex;align-items:center;justify-content:center;min-height:46px;border:2px solid var(--line);border-radius:10px;cursor:pointer}
+.seg input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+.seg input:focus-visible+span{outline:3px solid var(--blue);outline-offset:2px}
+.band{background:var(--navy);color:#fff}
+.band h2{color:#fff}
+.band .sub{color:var(--mist)!important}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;max-width:820px;margin:0 auto 10px}
+summary{font-weight:700;color:var(--navy);cursor:pointer}
+details p{margin-top:8px;color:var(--muted)}
+.ct{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:820px;margin:0 auto}
+.ct .card{text-align:left;display:flex;gap:12px;align-items:flex-start}
+.ct .card .i{margin:0;width:28px;height:28px}
+/* pied */
+footer{background:var(--deep);color:#fff;padding:36px 0 24px}
+.fg{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px}
+footer img{height:54px;background:#fff;border-radius:8px;padding:4px}
+footer h3{font-size:1rem;margin-bottom:8px}
+footer a{display:block;color:var(--mist);padding:3px 0}
+footer small{display:block;margin-top:24px;color:#9fb3d9}
+.fab{position:fixed;right:16px;bottom:16px;z-index:40;display:flex;flex-direction:column;gap:10px}
+.fab a{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border-radius:999px;color:#fff;font-weight:700;box-shadow:0 8px 20px rgb(0 0 0/22%)}
+@media(max-width:860px){
+ .burger{display:block}
+ nav.m{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;padding:8px 16px 16px}
+ nav.m.open{display:flex}
+ .dd>button{padding:12px 0;width:100%;text-align:left}
+ .dd>div{display:block;position:static;border:0;box-shadow:none;padding:0 0 6px 10px}
+ .strip,.grid{grid-template-columns:repeat(2,1fr)}
+ .ct,.fg,.f{grid-template-columns:1fr}
+ .find{margin-inline:16px;flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="phone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+<symbol id="cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="find" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></symbol>
+<symbol id="sync" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8M21 3v5h-5M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16M8 16H3v5"/></symbol>
+<symbol id="tag" viewBox="0 0 24 24"><path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r=".5"/></symbol>
+<symbol id="shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.500 20.500 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.500-1.200 6.200-2.700a1.200 1.200 0 0 1 1.500 0C14.500 3.800 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.100 9a3 3 0 0 1 5.800 1c0 2-3 3-3 3M12 17h.01"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="chat" viewBox="0 0 24 24"><path d="M7.900 20A9 9 0 1 0 4 16.100L2 22z"/></symbol>
+<symbol id="doc" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M8 13h8M8 17h8"/></symbol>
+<symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+</svg>
+
+<header>
+ <div class="w bar">
+  <a class="logo" href="#accueil" aria-label="PM Services, accueil"><img src="/logo.jpg" alt="PM Services – Réparation, vente, accessoires"></a>
+  <button class="burger" id="bg" aria-label="Ouvrir le menu" aria-expanded="false"><svg class="i" style="margin:auto"><use href="#find"/></svg></button>
+  <nav class="m" id="nav" aria-label="Navigation principale">
+   <div class="dd"><button type="button">Service en ligne</button><div>
+    <a href="#prix">Prix des pièces</a><a href="#garantie">Vérification de la garantie</a><a href="#suivi">Suivre l’état de la réparation</a></div></div>
+   <div class="dd"><button type="button">Service</button><div>
+    <a href="#reserver">Réserver une réparation de téléphone</a><a href="#prix">Réparation d’écran</a><a href="#contact">Atelier et domicile</a></div></div>
+   <div class="dd"><button type="button">Soutien</button><div>
+    <a href="#politique">Politique de service</a><a href="#contact">Contactez-nous</a><a href="#faq">FAQ</a></div></div>
+  </nav>
+ </div>
+</header>
+
+<main id="accueil">
+ <div class="car" role="region" aria-roledescription="carrousel" aria-label="Présentation">
+  <div class="sl on"><div class="w"><h1>Réparation de téléphones partout en Côte d’Ivoire</h1><p>Écran, batterie, connecteur de charge, caméra. Atelier ou domicile.</p><a class="btn l" href="#reserver">Réserver une réparation</a></div></div>
+  <div class="sl"><div class="w"><h2>Le prix de votre écran, tout de suite</h2><p>Choisissez votre modèle Apple ou Samsung : le tarif s’affiche, sans attendre une réponse.</p><a class="btn l" href="#prix">Voir les prix</a></div></div>
+  <div class="sl"><div class="w"><h2>On récupère votre téléphone chez vous</h2><p>Aller-retour à domicile pour 1 000 F. Suivez votre dossier avec votre code.</p><a class="btn l" href="#suivi">Suivre ma réparation</a></div></div>
+  <div class="dots" id="dots"></div>
+ </div>
+ <div class="w"><form class="find" id="hs" role="search"><label class="sr" for="hq" style="position:absolute;left:-9999px">Votre modèle</label><input id="hq" placeholder="Votre modèle, par exemple iPhone 13" autocomplete="off"><button class="btn" type="submit"><svg class="i"><use href="#find"/></svg>Voir le prix</button></form></div>
+
+ <section class="sec" style="padding-top:40px"><div class="w">
+  <h2>Service après-vente professionnel</h2>
+  <div class="strip">
+   <div><svg class="i"><use href="#cal"/></svg>Réservation en ligne</div>
+   <div><svg class="i"><use href="#phone"/></svg>Diagnostic du téléphone</div>
+   <div><svg class="i"><use href="#tool"/></svg>Réparation professionnelle</div>
+   <div><svg class="i"><use href="#sync"/></svg>Mise à jour logicielle</div>
+  </div>
+ </div></section>
+
+ <section class="sec" style="background:#fff"><div class="w">
+  <h2>Nos services</h2><p class="sub" style="margin-bottom:28px">Tout se fait en ligne ou sur WhatsApp.</p>
+  <div class="grid">
+   <a class="card" href="#reserver"><svg class="i"><use href="#phone"/></svg><h3>Réparer un téléphone</h3><p>Écran, batterie, charge, dégât liquide</p></a>
+   <a class="card" href="#prix"><svg class="i"><use href="#tag"/></svg><h3>Prix des pièces</h3><p>Tarifs écrans Apple et Samsung</p></a>
+   <a class="card" href="#garantie"><svg class="i"><use href="#shield"/></svg><h3>Vérification de la garantie</h3><p>Demandez-la avec votre code</p></a>
+   <a class="card" href="#suivi"><svg class="i"><use href="#find"/></svg><h3>Suivre l’état de la réparation</h3><p>Avec le code PM-000000</p></a>
+   <a class="card" href="#faq"><svg class="i"><use href="#help"/></svg><h3>FAQ</h3><p>Questions fréquentes</p></a>
+   <a class="card" href="#contact"><svg class="i"><use href="#pin"/></svg><h3>Atelier et domicile</h3><p>Partout en Côte d’Ivoire</p></a>
+   <a class="card" href="#contact"><svg class="i"><use href="#chat"/></svg><h3>Contactez-nous</h3><p>WhatsApp 05 01 90 35 35</p></a>
+   <a class="card" href="#politique"><svg class="i"><use href="#doc"/></svg><h3>Politique de service</h3><p>Comment nous travaillons</p></a>
+  </div>
+ </div></section>
+
+ <section class="sec" id="prix"><div class="w">
+  <h2>Prix des pièces</h2><p class="sub">Choisissez la pièce, la marque et le modèle. Si le prix n’est pas affiché, demandez-le sur WhatsApp.</p>
+  <div class="panel"><div class="f">
+   <label>Pièce<select id="pp"></select></label>
+   <label>Marque<select id="pb"></select></label>
+   <label class="full">Modèle<select id="pm"></select></label>
+   <label class="full" id="po" hidden>Précisez le modèle<input id="pot" placeholder="Ex. Camon 30, Redmi Note 13"></label>
+  </div><div id="pr" aria-live="polite"></div></div>
+ </div></section>
+
+ <section class="sec band" id="reserver"><div class="w">
+  <h2>Réserver une réparation</h2><p class="sub">Remplissez le formulaire : votre demande part sur WhatsApp, nous confirmons le prix et l’horaire.</p>
+  <form class="panel" id="rf" style="color:var(--ink)" novalidate><div class="f">
+   <label>Nom<input id="rn" autocomplete="name"></label>
+   <label>Téléphone<input id="rt" inputmode="tel" autocomplete="tel"></label>
+   <label>Marque<select id="rb"></select></label>
+   <label>Modèle<input id="rm" placeholder="Ex. iPhone 13"></label>
+   <label>Pièce<select id="rp"></select></label>
+   <div><label style="margin-bottom:4px">Lieu</label><div class="seg"><label><input type="radio" name="lieu" value="Atelier" checked><span>Atelier</span></label><label><input type="radio" name="lieu" value="Domicile"><span>Domicile</span></label></div></div>
+   <label class="full">Panne<textarea id="ri" placeholder="Ex. écran cassé, ne charge plus"></textarea></label>
+  </div><div id="rq" aria-live="polite"></div><p class="err" id="re" role="alert"></p>
+  <button class="btn wa" type="submit" style="margin-top:16px;width:100%"><svg class="i"><use href="#chat"/></svg>Envoyer ma demande sur WhatsApp</button></form>
+ </div></section>
+
+ <section class="sec" id="suivi"><div class="w">
+  <h2>Suivre l’état de la réparation</h2><p class="sub">Entrez le code remis à l’atelier ou sur WhatsApp, au format PM-123456. Nous vous répondons avec l’état de votre dossier.</p>
+  <form class="panel" id="sf" novalidate><label>Code de suivi<input id="sc" placeholder="PM-123456" style="text-transform:uppercase"></label><p class="err" id="se" role="alert"></p>
+  <button class="btn" type="submit" style="margin-top:14px"><svg class="i"><use href="#find"/></svg>Demander l’état</button></form>
+ </div></section>
+
+ <section class="sec" id="garantie" style="background:#fff"><div class="w">
+  <h2>Vérification de la garantie</h2><p class="sub">Envoyez votre code de réparation sur WhatsApp : nous vérifions votre dossier et vous répondons.</p>
+  <p style="text-align:center"><a class="btn wa" id="gw" href="#"><svg class="i"><use href="#chat"/></svg>Vérifier ma garantie</a></p>
+ </div></section>
+
+ <section class="sec" id="faq"><div class="w">
+  <h2>Questions fréquentes</h2><p class="sub" style="margin-bottom:24px">Les réponses les plus demandées.</p>
+  <details><summary>Quels sont vos horaires ?</summary><p>Nous sommes ouverts de 9h00 à 19h30.</p></details>
+  <details><summary>Où intervenez-vous ?</summary><p>Partout en Côte d’Ivoire : à l’atelier ou à domicile, selon votre choix dans le formulaire.</p></details>
+  <details><summary>Combien coûte la récupération à domicile ?</summary><p>L’aller-retour coûte 1 000 F.</p></details>
+  <details><summary>Comment connaître le prix de ma réparation ?</summary><p>Le prix des écrans Apple et Samsung s’affiche dans la section « Prix des pièces ». Pour les autres pièces ou modèles, demandez sur WhatsApp.</p></details>
+  <details><summary>Comment suivre ma réparation ?</summary><p>Chaque dossier reçoit un code PM-123456. Envoyez-le depuis la section « Suivre l’état de la réparation ».</p></details>
+ </div></section>
+
+ <section class="sec" id="politique" style="background:#fff"><div class="w">
+  <h2>Politique de service</h2><p class="sub">Comment nous travaillons.</p>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+   <div class="card"><h3>Écran</h3><p>Test avant collage si vous êtes présent.</p></div>
+   <div class="card"><h3>Dégât liquide</h3><p>Diagnostic d’abord, devis ensuite.</p></div>
+   <div class="card"><h3>Batterie et charge</h3><p>Nous testons l’allumage et la charge.</p></div>
+  </div>
+ </div></section>
+
+ <section class="sec" id="contact"><div class="w">
+  <h2>Contactez-nous</h2><p class="sub">Une question, un devis, un suivi : écrivez-nous.</p>
+  <div class="ct">
+   <a class="card" id="cw" href="#"><svg class="i"><use href="#chat"/></svg><div><h3>WhatsApp</h3><p>05 01 90 35 35</p></div></a>
+   <div class="card"><svg class="i"><use href="#clock"/></svg><div><h3>Horaires</h3><p>9h00 – 19h30</p></div></div>
+   <div class="card"><svg class="i"><use href="#pin"/></svg><div><h3>Zone</h3><p>Partout en Côte d’Ivoire</p></div></div>
+  </div>
+ </div></section>
+</main>
+
+<footer><div class="w">
+ <div class="fg">
+  <div><img src="/logo.jpg" alt="PM Services"><p style="margin-top:12px;color:var(--mist)">Réparation, vente et accessoires de téléphones.</p></div>
+  <div><h3>Service</h3><a href="#reserver">Réparer un téléphone</a><a href="#prix">Prix des pièces</a><a href="#suivi">Suivi de réparation</a><a href="#garantie">Garantie</a></div>
+  <div><h3>Contact</h3><a id="fw" href="#">WhatsApp 05 01 90 35 35</a><a href="https://www.facebook.com/profile.php?id=61594506811905" target="_blank" rel="noopener">Facebook</a><span style="color:var(--mist)">9h00 – 19h30</span></div>
+ </div>
+ <small>© 2026 PM Services. Tous droits réservés.</small>
+</div></footer>
+
+<div class="fab"><a class="btn wa" id="fb" href="#" style="border-color:var(--wa)"><svg class="i"><use href="#chat"/></svg>Chat</a></div>
+
+<script>
+const WA="2250501903535";
+const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+const $=id=>document.getElementById(id);
+const F=n=>new Intl.NumberFormat("fr-FR").format(n)+" F";
+const P=[["Samsung","Galaxy S23","Original",110000],["Samsung","Galaxy S23 Ultra","2e qualité",60000],["Samsung","Galaxy S24 Ultra","2e qualité",70000],["Samsung","Galaxy A15","Original",35000],["Apple","iPhone 12 Pro","Original",40000],["Apple","iPhone 11 / 11 Pro / 11 Pro Max","Standard",15000],["Apple","iPhone 13","Standard",23000],["Apple","iPhone 13","Original",45000],["Apple","iPhone 14 / 14 Pro / 14 Pro Max","Standard",35000],["Apple","iPhone 14 / 14 Pro / 14 Pro Max","Original",65000],["Apple","iPhone 15 / 15 Pro / 15 Pro Max","Standard",55000],["Apple","iPhone 15 / 15 Pro / 15 Pro Max","Original",80000],["Apple","iPhone 16 / 16 Pro / 16 Plus","Standard",65000],["Apple","iPhone 16 / 16 Pro / 16 Plus","Original",110000],["Apple","iPhone 17 Air","Premium",150000],["Apple","iPhone 17 Air","Apple",200000],["Samsung","Galaxy S20 à S26","Standard",80000],["Samsung","Galaxy S20 à S26","Original",150000]];
+const BR=["Apple","Samsung","Tecno","Infinix","Oppo","Itel","Realme","Xiaomi","Huawei"];
+const PC=["Écran","Batterie","Connecteur de charge","Caméra","Haut-parleur","Autre"];
+const opts=(el,a)=>{el.innerHTML=a.map(x=>"<option>"+x+"</option>").join("")};
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+const SKIP=["iphone","galaxy","samsung","apple","telephone","tel","ecran"];
+function quotes(brand,text){
+ const t=norm(text).split(" ").filter(x=>x.length>=2&&!SKIP.includes(x));
+ if(!t.length||(brand!=="Apple"&&brand!=="Samsung"))return[];
+ const ex=P.filter(r=>r[0]===brand&&norm(r[1])===norm(text));
+ if(ex.length)return ex;
+ const m=P.filter(r=>r[0]===brand&&r[1]!=="Galaxy S20 à S26"&&t.every(x=>norm(r[1]).includes(x)));
+ if(m.length)return m;
+ if(brand==="Samsung"&&t.some(x=>/^s2[0-6]/.test(x)))return P.filter(r=>r[1]==="Galaxy S20 à S26");
+ return[];
+}
+function models(b){return b==="Apple"||b==="Samsung"?[...new Set(P.filter(r=>r[0]===b).map(r=>r[1])),"Autre"]:["Autre"]}
+function quoteHtml(q,label,ask){
+ if(!q.length)return '<div class="res"><p><b>Prix sur demande.</b> '+label+'</p><p style="margin-top:10px"><a class="btn wa" href="'+wa(ask)+'"><svg class="i"><use href="#chat"/></svg>Demander sur WhatsApp</a></p></div>';
+ return '<div class="res"><ul>'+q.map(r=>"<li><span>"+r[1]+" – "+r[2]+'</span><b class="p">'+F(r[3])+"</b></li>").join("")+'</ul><p style="margin-top:10px"><a class="btn wa" href="'+wa("Bonjour PM Services, je veux réparer l’écran de mon "+q[0][1]+".")+'"><svg class="i"><use href="#chat"/></svg>Réserver sur WhatsApp</a></p></div>';
+}
+/* prix */
+opts($("pp"),PC);opts($("pb"),BR);
+function pModels(){opts($("pm"),models($("pb").value));pShow()}
+function pShow(){
+ const other=$("pm").value==="Autre";$("po").hidden=!other;
+ const model=other?$("pot").value.trim():$("pm").value,pc=$("pp").value,b=$("pb").value;
+ const ask="Bonjour PM Services, prix "+pc.toLowerCase()+" pour "+b+" "+(model||"mon téléphone")+".";
+ $("pr").innerHTML=pc==="Écran"?quoteHtml(quotes(b,model),"Le prix de cet écran n’est pas listé.",ask):quoteHtml([],"Le prix "+pc.toLowerCase()+" est confirmé sur WhatsApp.",ask);
+}
+$("pb").onchange=pModels;$("pm").onchange=pShow;$("pp").onchange=pShow;$("pot").oninput=pShow;pModels();
+/* recherche du hero */
+$("hs").onsubmit=e=>{e.preventDefault();const v=$("hq").value.trim();if(!v)return;
+ const hit=P.find(r=>quotes(r[0],v).length&&norm(r[1]).includes(norm(v).split(" ").pop()))||null;
+ const b=hit?hit[0]:(/sam|gal/i.test(v)?"Samsung":"Apple"),q=quotes(b,v);
+ if(q.length){$("pb").value=b;pModels();$("pm").value=q[0][1];$("pp").value="Écran";pShow()}
+ else{$("pp").value="Écran";$("pb").value=BR.find(x=>norm(v).includes(norm(x)))||"Apple";pModels();$("pm").value="Autre";pShow();$("pot").value=v;pShow()}
+ $("prix").scrollIntoView({behavior:"smooth"})};
+/* réservation */
+opts($("rb"),BR);opts($("rp"),PC);
+function rShow(){const pc=$("rp").value;$("rq").innerHTML=pc==="Écran"?quoteHtml(quotes($("rb").value,$("rm").value),"Nous confirmons le prix sur WhatsApp.","Bonjour PM Services, prix écran pour "+$("rb").value+" "+$("rm").value+"."):""}
+["rb","rm","rp"].forEach(i=>$(i).addEventListener("input",rShow));
+$("rf").onsubmit=e=>{e.preventDefault();
+ const n=$("rn").value.trim(),t=$("rt").value.trim(),m=$("rm").value.trim(),i=$("ri").value.trim();
+ if(!n||!t||!m||!i){$("re").textContent="Nom, téléphone, modèle et panne sont obligatoires.";return}
+ if((t.match(/\d/g)||[]).length<8){$("re").textContent="Le numéro doit contenir au moins 8 chiffres.";return}
+ $("re").textContent="";
+ const lieu=document.querySelector("input[name=lieu]:checked").value;
+ const txt="Bonjour PM Services, je veux réserver une réparation.\nNom : "+n+"\nTéléphone : "+t+"\nAppareil : "+$("rb").value+" "+m+"\nPièce : "+$("rp").value+"\nPanne : "+i+"\nLieu : "+lieu;
+ window.open(wa(txt),"_blank","noopener")};
+/* suivi */
+$("sf").onsubmit=e=>{e.preventDefault();const c=$("sc").value.trim().toUpperCase();
+ if(!/^PM-\d{6}$/.test(c)){$("se").textContent="Entrez le code complet, par exemple PM-123456.";return}
+ $("se").textContent="";window.open(wa("Bonjour PM Services, quel est l’état de ma réparation ? Mon code : "+c),"_blank","noopener")};
+/* liens WhatsApp */
+$("gw").href=wa("Bonjour PM Services, je voudrais vérifier la garantie de ma réparation. Mon code : ");
+["cw","fw","fb"].forEach(i=>$(i).href=wa("Bonjour PM Services, je veux un devis."));
+/* menu mobile */
+$("bg").onclick=()=>{const o=$("nav").classList.toggle("open");$("bg").setAttribute("aria-expanded",o)};
+$("nav").addEventListener("click",e=>{if(e.target.tagName==="A")$("nav").classList.remove("open")});
+/* carrousel */
+const S=[...document.querySelectorAll(".sl")];let k=0,tm;
+S.forEach((_,j)=>{const b=document.createElement("button");b.setAttribute("aria-label","Diapositive "+(j+1));b.onclick=()=>{go(j);auto()};$("dots").appendChild(b)});
+function go(j){k=j;S.forEach((s,x)=>s.classList.toggle("on",x===k));[...$("dots").children].forEach((b,x)=>b.setAttribute("aria-current",x===k))}
+function auto(){clearInterval(tm);if(!matchMedia("(prefers-reduced-motion:reduce)").matches)tm=setInterval(()=>go((k+1)%S.length),6000)}
+go(0);auto();
+</script>
+</body>
+</html>
