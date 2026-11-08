@@ -136,7 +136,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
    <div class="dd"><button type="button">Service en ligne</button><div>
     <a href="#prix">Prix des pièces</a><a href="#garantie">Vérification de la garantie</a><a href="#suivi">Suivre l’état de la réparation</a></div></div>
    <div class="dd"><button type="button">Service</button><div>
-    <a href="#reserver">Réserver une réparation de téléphone</a><a href="#prix">Réparation d’écran</a><a href="#contact">Atelier et domicile</a></div></div>
+    <a href="#reserver">Réserver une réparation de téléphone</a><a href="#domicile">Réparation à domicile</a><a href="#prix">Réparation d’écran</a><a href="#contact">Atelier et domicile</a></div></div>
    <div class="dd"><button type="button">Soutien</button><div>
     <a href="#politique">Politique de service</a><a href="#contact">Contactez-nous</a><a href="#faq">FAQ</a></div></div>
   </nav>
@@ -147,7 +147,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
  <div class="car" role="region" aria-roledescription="carrousel" aria-label="Présentation">
   <div class="sl on"><div class="w"><h1>Réparation de téléphones partout en Côte d’Ivoire</h1><p>Écran, batterie, connecteur de charge, caméra. Atelier ou domicile.</p><a class="btn l" href="#reserver">Réserver une réparation</a></div></div>
   <div class="sl"><div class="w"><h2>Le prix de votre écran, tout de suite</h2><p>Choisissez votre modèle Apple ou Samsung : le tarif s’affiche, sans attendre une réponse.</p><a class="btn l" href="#prix">Voir les prix</a></div></div>
-  <div class="sl"><div class="w"><h2>On récupère votre téléphone chez vous</h2><p>Aller-retour à domicile pour 1 000 F. Suivez votre dossier avec votre code.</p><a class="btn l" href="#suivi">Suivre ma réparation</a></div></div>
+  <div class="sl"><div class="w"><h2>On récupère votre téléphone chez vous</h2><p>Aller-retour à domicile pour 1 000 F. Suivez votre dossier avec votre code.</p><a class="btn l" href="#domicile">Demander une récupération</a></div></div>
   <div class="dots" id="dots"></div>
  </div>
  <div class="w"><form class="find" id="hs" role="search"><label class="sr" for="hq" style="position:absolute;left:-9999px">Votre modèle</label><input id="hq" placeholder="Votre modèle, par exemple iPhone 13" autocomplete="off"><button class="btn" type="submit"><svg class="i"><use href="#find"/></svg>Voir le prix</button></form></div>
@@ -170,7 +170,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
    <a class="card" href="#garantie"><svg class="i"><use href="#shield"/></svg><h3>Vérification de la garantie</h3><p>Demandez-la avec votre code</p></a>
    <a class="card" href="#suivi"><svg class="i"><use href="#find"/></svg><h3>Suivre l’état de la réparation</h3><p>Avec le code PM-000000</p></a>
    <a class="card" href="#faq"><svg class="i"><use href="#help"/></svg><h3>FAQ</h3><p>Questions fréquentes</p></a>
-   <a class="card" href="#contact"><svg class="i"><use href="#pin"/></svg><h3>Atelier et domicile</h3><p>Partout en Côte d’Ivoire</p></a>
+   <a class="card" href="#domicile"><svg class="i"><use href="#pin"/></svg><h3>Réparation à domicile</h3><p>Aller-retour : 1 000 F</p></a>
    <a class="card" href="#contact"><svg class="i"><use href="#chat"/></svg><h3>Contactez-nous</h3><p>WhatsApp 05 01 90 35 35</p></a>
    <a class="card" href="#politique"><svg class="i"><use href="#doc"/></svg><h3>Politique de service</h3><p>Comment nous travaillons</p></a>
   </div>
@@ -200,6 +200,23 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <button class="btn wa" type="submit" style="margin-top:16px;width:100%"><svg class="i"><use href="#chat"/></svg>Envoyer ma demande sur WhatsApp</button></form>
  </div></section>
 
+ <section class="sec" id="domicile" style="background:#fff"><div class="w">
+  <h2>Demander une réparation à domicile</h2><p class="sub">Nous récupérons votre téléphone chez vous, nous le réparons, puis nous vous le rapportons. Aller-retour : 1 000 F. Disponible de 9h00 à 19h30.</p>
+  <form class="panel" id="df" novalidate style="background:var(--mist)"><div class="f">
+   <label>Nom<input id="dn" autocomplete="name"></label>
+   <label>Téléphone<input id="dt" inputmode="tel" autocomplete="tel"></label>
+   <label>Ville ou commune<input id="dv" placeholder="Ex. Cocody, Yopougon, Bouaké" autocomplete="address-level2"></label>
+   <label>Quartier et point de repère<input id="da" placeholder="Ex. Angré 8e tranche, près de la pharmacie"></label>
+   <label>Marque<select id="db"></select></label>
+   <label>Modèle<input id="dm" placeholder="Ex. iPhone 13"></label>
+   <label>Pièce<select id="dp"></select></label>
+   <label>Passage souhaité<select id="ds"><option>Dès que possible</option><option>Matin</option><option>Après-midi</option><option>Fin de journée</option></select></label>
+   <label class="full">Panne<textarea id="di" placeholder="Ex. écran cassé, ne charge plus"></textarea></label>
+  </div><div id="dr" aria-live="polite"></div><p class="err" id="de" role="alert"></p>
+  <button class="btn wa" type="submit" style="margin-top:16px;width:100%"><svg class="i"><use href="#chat"/></svg>Envoyer ma demande à domicile</button>
+  <p style="margin-top:10px;color:var(--muted);font-size:.92rem;text-align:center">Votre demande part sur WhatsApp : nous confirmons le prix et l’heure de passage.</p></form>
+ </div></section>
+
  <section class="sec" id="suivi"><div class="w">
   <h2>Suivre l’état de la réparation</h2><p class="sub">Entrez le code remis à l’atelier ou sur WhatsApp, au format PM-123456. Nous vous répondons avec l’état de votre dossier.</p>
   <form class="panel" id="sf" novalidate><label>Code de suivi<input id="sc" placeholder="PM-123456" style="text-transform:uppercase"></label><p class="err" id="se" role="alert"></p>
@@ -215,6 +232,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <h2>Questions fréquentes</h2><p class="sub" style="margin-bottom:24px">Les réponses les plus demandées.</p>
   <details><summary>Quels sont vos horaires ?</summary><p>Nous sommes ouverts de 9h00 à 19h30.</p></details>
   <details><summary>Où intervenez-vous ?</summary><p>Partout en Côte d’Ivoire : à l’atelier ou à domicile, selon votre choix dans le formulaire.</p></details>
+  <details><summary>Comment demander une réparation à domicile ?</summary><p>Remplissez le formulaire « Demander une réparation à domicile » : indiquez votre quartier et un point de repère. Nous confirmons l’heure de passage sur WhatsApp.</p></details>
   <details><summary>Combien coûte la récupération à domicile ?</summary><p>L’aller-retour coûte 1 000 F.</p></details>
   <details><summary>Comment connaître le prix de ma réparation ?</summary><p>Le prix des écrans Apple et Samsung s’affiche dans la section « Prix des pièces ». Pour les autres pièces ou modèles, demandez sur WhatsApp.</p></details>
   <details><summary>Comment suivre ma réparation ?</summary><p>Chaque dossier reçoit un code PM-123456. Envoyez-le depuis la section « Suivre l’état de la réparation ».</p></details>
@@ -242,7 +260,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
 <footer><div class="w">
  <div class="fg">
   <div><img src="/logo.jpg" alt="PM Services"><p style="margin-top:12px;color:var(--mist)">Réparation, vente et accessoires de téléphones.</p></div>
-  <div><h3>Service</h3><a href="#reserver">Réparer un téléphone</a><a href="#prix">Prix des pièces</a><a href="#suivi">Suivi de réparation</a><a href="#garantie">Garantie</a></div>
+  <div><h3>Service</h3><a href="#reserver">Réparer un téléphone</a><a href="#domicile">Réparation à domicile</a><a href="#prix">Prix des pièces</a><a href="#suivi">Suivi de réparation</a><a href="#garantie">Garantie</a></div>
   <div><h3>Contact</h3><a id="fw" href="#">WhatsApp 05 01 90 35 35</a><a href="https://www.facebook.com/profile.php?id=61594506811905" target="_blank" rel="noopener">Facebook</a><span style="color:var(--mist)">9h00 – 19h30</span></div>
  </div>
  <small>© 2026 PM Services. Tous droits réservés.</small>
@@ -304,6 +322,17 @@ $("rf").onsubmit=e=>{e.preventDefault();
  $("re").textContent="";
  const lieu=document.querySelector("input[name=lieu]:checked").value;
  const txt="Bonjour PM Services, je veux réserver une réparation.\nNom : "+n+"\nTéléphone : "+t+"\nAppareil : "+$("rb").value+" "+m+"\nPièce : "+$("rp").value+"\nPanne : "+i+"\nLieu : "+lieu;
+ window.open(wa(txt),"_blank","noopener")};
+/* réparation à domicile */
+opts($("db"),BR);opts($("dp"),PC);
+function dShow(){const pc=$("dp").value;$("dr").innerHTML=pc==="Écran"?quoteHtml(quotes($("db").value,$("dm").value),"Nous confirmons le prix sur WhatsApp.","Bonjour PM Services, prix écran pour "+$("db").value+" "+$("dm").value+"."):""}
+["db","dm","dp"].forEach(i=>$(i).addEventListener("input",dShow));
+$("df").onsubmit=e=>{e.preventDefault();
+ const n=$("dn").value.trim(),t=$("dt").value.trim(),v=$("dv").value.trim(),a=$("da").value.trim(),m=$("dm").value.trim(),i=$("di").value.trim();
+ if(!n||!t||!v||!a||!m||!i){$("de").textContent="Nom, téléphone, ville, quartier, modèle et panne sont obligatoires.";return}
+ if((t.match(/\d/g)||[]).length<8){$("de").textContent="Le numéro doit contenir au moins 8 chiffres.";return}
+ $("de").textContent="";
+ const txt="Bonjour PM Services, je demande une réparation à domicile.\nNom : "+n+"\nTéléphone : "+t+"\nAdresse : "+a+", "+v+"\nAppareil : "+$("db").value+" "+m+"\nPièce : "+$("dp").value+"\nPanne : "+i+"\nPassage souhaité : "+$("ds").value;
  window.open(wa(txt),"_blank","noopener")};
 /* suivi */
 $("sf").onsubmit=e=>{e.preventDefault();const c=$("sc").value.trim().toUpperCase();
