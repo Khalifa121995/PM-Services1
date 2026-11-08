@@ -1,0 +1,7 @@
+{
+  "name": "pm-services-site",
+  "private": true,
+  "dependencies": {
+    "nodemailer": "^6.9.16"
+  }
+}
