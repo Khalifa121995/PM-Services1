@@ -223,12 +223,12 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
  </div></section>
 
  <section class="sec" id="suivi"><div class="w">
-  <h2>Suivre l’état de la réparation</h2><p class="sub">Entrez le code de votre dossier, au format PM-123456, et votre numéro. Nous vous appelons avec l’état de votre réparation.</p>
+  <h2>Suivre l’état de la réparation</h2><p class="sub">Entrez le code de votre dossier (PM-123456) et le numéro donné lors de la demande : l’état de votre réparation s’affiche.</p>
   <form class="panel" id="sf" novalidate><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
    <label>Code de suivi<input id="sc" placeholder="PM-123456" style="text-transform:uppercase"></label>
    <label>Votre téléphone<input id="st" inputmode="tel" autocomplete="tel"></label></div>
   <p class="err" id="se" role="alert"></p><p class="ok" id="sok" role="status"></p>
-  <button class="btn" type="submit" style="margin-top:14px"><svg class="i"><use href="#find"/></svg>Demander l’état</button></form>
+  <button class="btn" type="submit" style="margin-top:14px"><svg class="i"><use href="#find"/></svg>Voir l’état</button></form>
  </div></section>
 
  <section class="sec" id="garantie" style="background:#fff"><div class="w">
@@ -247,7 +247,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <details><summary>Comment demander une réparation à domicile ?</summary><p>Remplissez le formulaire « Demander une réparation à domicile » : indiquez votre quartier et un point de repère. Nous vous appelons pour confirmer l’heure de passage.</p></details>
   <details><summary>Combien coûte la récupération à domicile ?</summary><p>L’aller-retour coûte 1 000 F.</p></details>
   <details><summary>Comment connaître le prix de ma réparation ?</summary><p>Le prix des écrans Apple et Samsung s’affiche dans la section « Prix des pièces ». Pour les autres pièces ou modèles, faites une demande de réparation : nous vous rappelons avec le prix.</p></details>
-  <details><summary>Comment suivre ma réparation ?</summary><p>Chaque dossier reçoit un code PM-123456. Envoyez-le depuis la section « Suivre l’état de la réparation ».</p></details>
+  <details><summary>Comment suivre ma réparation ?</summary><p>Chaque dossier reçoit un code PM-123456. Entrez-le avec votre numéro dans la section « Suivre l’état de la réparation » pour voir où en est votre téléphone.</p></details>
  </div></section>
 
  <section class="sec" id="politique" style="background:#fff"><div class="w">
@@ -273,7 +273,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
  <div class="fg">
   <div><img src="/logo.jpg" alt="PM Services"><p style="margin-top:12px;color:var(--mist)">Réparation, vente et accessoires de téléphones.</p></div>
   <div><h3>Service</h3><a href="#reserver">Réparer un téléphone</a><a href="#domicile">Réparation à domicile</a><a href="#prix">Prix des pièces</a><a href="#suivi">Suivi de réparation</a><a href="#garantie">Garantie</a></div>
-  <div><h3>Contact</h3><a href="https://www.facebook.com/profile.php?id=61594506811905" target="_blank" rel="noopener">Facebook</a><span style="color:var(--mist)">9h00 – 19h30</span></div>
+  <div><h3>Contact</h3><a href="https://www.facebook.com/profile.php?id=61594506811905" target="_blank" rel="noopener">Facebook</a><span style="color:var(--mist)">9h00 – 19h30</span><a href="/admin">Espace atelier</a></div>
  </div>
  <small>© 2026 PM Services. Tous droits réservés.</small>
 </div></footer>
@@ -311,7 +311,7 @@ function quoteHtml(q,label,href){
 function notify(type,data,form){
  return fetch("/api/demande",{method:"POST",headers:{"Content-Type":"application/json"},
   body:JSON.stringify(Object.assign({type:type,hp:form.querySelector(".hp").value},data))})
-  .then(async r=>{let j={};try{j=await r.json()}catch(e){}return{ok:r.ok&&j.ok!==false,error:j.error||("http"+r.status)}})
+  .then(async r=>{let j={};try{j=await r.json()}catch(e){}return{ok:r.ok&&j.ok!==false,error:j.error||("http"+r.status),code:j.code}})
   .catch(()=>({ok:false,error:"network"}))}
 const FAIL="L’envoi n’a pas abouti. Réessayez dans un instant, ou touchez « Parler à un technicien ».";
 let pos=null;
@@ -343,7 +343,7 @@ $("rf").onsubmit=async e=>{e.preventDefault();
  const btn=$("rf").querySelector("button[type=submit]");btn.disabled=true;
  const data={name:n,phone:t,brand:$("rb").value,model:m,piece:$("rp").value,issue:i};
  const r=await notify("atelier",data,$("rf"));btn.disabled=false;
- if(r.ok){$("rok").textContent="✓ Votre demande a bien été envoyée à l’atelier. Nous vous appelons très vite.";$("rf").reset();rShow()}
+ if(r.ok){$("rok").textContent="✓ Votre demande a bien été envoyée à l’atelier. Nous vous appelons très vite."+(r.code?" Votre code de suivi : "+r.code+" (notez-le).":"");$("rf").reset();rShow()}
  else{console.error("envoi e-mail:",r.error);$("rok").textContent="";$("re").textContent=FAIL+" (code : "+r.error+")";}};
 /* réparation à domicile */
 opts($("db"),BR);opts($("dp"),PC);
@@ -357,7 +357,7 @@ $("df").onsubmit=async e=>{e.preventDefault();
  const btn=$("df").querySelector("button[type=submit]");btn.disabled=true;
  const data={name:n,phone:t,city:v,address:a,brand:$("db").value,model:m,piece:$("dp").value,issue:i,slot:$("ds").value,lat:pos&&pos.lat,lng:pos&&pos.lng,acc:pos&&pos.acc};
  const r=await notify("domicile",data,$("df"));btn.disabled=false;
- if(r.ok){$("dok").textContent="✓ Votre demande à domicile a bien été envoyée. Nous vous appelons très vite pour confirmer l’heure de passage.";$("df").reset();pos=null;$("gpst").textContent="Facultatif, mais ça nous aide à vous trouver plus vite.";dShow()}
+ if(r.ok){$("dok").textContent="✓ Votre demande à domicile a bien été envoyée. Nous vous appelons très vite pour confirmer l’heure de passage."+(r.code?" Votre code de suivi : "+r.code+" (notez-le).":"");$("df").reset();pos=null;$("gpst").textContent="Facultatif, mais ça nous aide à vous trouver plus vite.";dShow()}
  else{console.error("envoi e-mail:",r.error);$("dok").textContent="";$("de").textContent=FAIL+" (code : "+r.error+")";}};
 $("gps").onclick=()=>{
  if(!navigator.geolocation){$("gpst").textContent="Position indisponible sur cet appareil. Indiquez le quartier et le repère.";return}
@@ -377,7 +377,16 @@ function codeForm(form,type,codeId,telId,errId,okId,okMsg){
   const r=await notify(type,{code:c,phone:t},$(form));btn.disabled=false;
   if(r.ok){$(okId).textContent=okMsg;$(form).reset()}
   else{console.error("envoi e-mail:",r.error);$(okId).textContent="";$(errId).textContent=FAIL+" (code : "+r.error+")"}}}
-codeForm("sf","suivi","sc","st","se","sok","✓ Demande envoyée. Nous vous appelons avec l’état de votre réparation.");
+$("sf").onsubmit=async e=>{e.preventDefault();
+ const c=$("sc").value.trim().toUpperCase(),t=$("st").value.trim();
+ if(!/^PM-\d{6}$/.test(c)){$("se").textContent="Entrez le code complet, par exemple PM-123456.";return}
+ if((t.match(/\d/g)||[]).length<8){$("se").textContent="Le numéro doit contenir au moins 8 chiffres.";return}
+ $("se").textContent="";$("sok").textContent="Recherche en cours…";
+ try{const r=await fetch("/api/suivi",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:c,phone:t})});
+  const j=await r.json().catch(()=>({}));
+  if(r.ok){$("sok").textContent="✓ "+j.device+" : "+j.label+(j.price?" – prix convenu : "+F(j.price):"")+" (mis à jour le "+new Date(j.updated).toLocaleDateString("fr-FR")+")"}
+  else{$("sok").textContent="";$("se").textContent=r.status===404?"Aucun dossier trouvé avec ce code et ce numéro.":FAIL}
+ }catch(x){$("sok").textContent="";$("se").textContent=FAIL}};
 codeForm("gf","garantie","gc","gt","ge","gok","✓ Demande envoyée. Nous vérifions votre garantie et nous vous appelons.");
 /* bouton « Parler à un technicien » : seul lien WhatsApp du site */
 $("fb").href=wa("Bonjour PM Services, c’est urgent : je voudrais parler à un technicien.");

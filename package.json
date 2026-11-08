@@ -1,4 +1,7 @@
 {
   "name": "pm-services-site",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  }
 }

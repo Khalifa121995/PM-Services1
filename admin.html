@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Espace atelier – PM Services</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+:root{--navy:#0a2a6b;--blue:#1d4fbf;--mist:#eef3fb;--line:#d4e0f2;--ink:#0a1b3d;--muted:#4a6288}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,"Segoe UI",Arial,sans-serif;background:var(--mist);color:var(--ink);line-height:1.45}
+[hidden]{display:none!important}
+.w{max-width:1000px;margin:0 auto;padding:0 14px}
+button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+textarea{min-height:64px;resize:vertical}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn{min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--navy);background:var(--navy);color:#fff;font-weight:700;cursor:pointer}
+.btn.o{background:#fff;color:var(--navy)}
+label{display:block;font-size:.85rem;font-weight:700;color:var(--navy)}
+label input,label select,label textarea{margin-top:4px;font-weight:400}
+#login{min-height:100vh;display:grid;place-items:center;padding:16px}
+.box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;width:100%;max-width:380px}
+.box h1{font-size:1.3rem;color:var(--navy);margin-bottom:14px}
+.err{color:#b00020;font-weight:600;margin-top:10px;min-height:1.2em}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+header .w{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:60px;padding-top:8px;padding-bottom:8px}
+header h1{font-size:1.1rem;color:var(--navy);margin-right:auto}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 12px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:.9rem}
+.chip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.chip b{margin-left:6px}
+.c{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.top b{font-size:1.05rem;color:var(--navy)}
+.top small{color:var(--muted)}
+.top select{width:auto;min-width:190px;margin-left:auto;font-weight:700}
+.st-recu{border-color:#c9a400}.st-diagnostic,.st-cours{border-color:var(--blue)}.st-piece{border-color:#d9731a}.st-pret{border-color:#0a8a4a}.st-livre{border-color:#8896ad}.st-annule{border-color:#b00020}
+.row{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:10px}
+.c a{color:var(--blue);font-weight:700}
+details{margin-top:6px;color:var(--muted)}
+summary{cursor:pointer;color:var(--navy);font-weight:700}
+details p{margin-top:4px;color:var(--ink)}
+dialog{border:0;border-radius:16px;padding:20px;width:min(480px,94vw)}
+dialog::backdrop{background:rgb(6 24 63/50%)}
+.g{display:grid;gap:10px}
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:999px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+@media(max-width:600px){.row{grid-template-columns:1fr}.top select{width:100%;margin-left:0}}
+</style>
+</head>
+<body>
+<main id="login">
+ <form class="box" id="lf">
+  <h1>Espace atelier PM Services</h1>
+  <label>Mot de passe<input type="password" id="pw" autocomplete="current-password" required></label>
+  <p class="err" id="le" role="alert"></p>
+  <button class="btn" type="submit" style="width:100%;margin-top:6px">Se connecter</button>
+ </form>
+</main>
+
+<div id="app" hidden>
+ <header><div class="w">
+  <h1>PM Services · Réparations</h1>
+  <button class="btn" id="nb" type="button">+ Nouvelle réparation</button>
+  <button class="btn o" id="rf" type="button">Actualiser</button>
+  <button class="btn o" id="lo" type="button">Déconnexion</button>
+ </div></header>
+ <div class="w">
+  <div class="chips" id="chips"></div>
+  <label>Rechercher<input id="q" placeholder="Code, nom, téléphone, modèle…" autocomplete="off"></label>
+  <p class="err" id="ae" role="alert"></p>
+  <div id="list" aria-live="polite"></div>
+  <p style="height:40px"></p>
+ </div>
+</div>
+
+<dialog id="nd">
+ <form class="g" id="nf">
+  <h2 style="color:var(--navy)">Nouvelle réparation</h2>
+  <label>Nom du client<input id="nn" autocomplete="off"></label>
+  <label>Téléphone<input id="nt" inputmode="tel" required></label>
+  <label>Marque<input id="nbr" placeholder="Ex. Apple"></label>
+  <label>Modèle<input id="nm" placeholder="Ex. iPhone 13" required></label>
+  <label>Pièce<input id="np" placeholder="Ex. Écran"></label>
+  <label>Panne<textarea id="ni"></textarea></label>
+  <p class="err" id="ne" role="alert"></p>
+  <div style="display:flex;gap:8px"><button class="btn" type="submit" style="flex:1">Enregistrer</button><button class="btn o" type="button" id="nc">Annuler</button></div>
+ </form>
+</dialog>
+<div id="toast" role="status"></div>
+
+<script>
+const ST={recu:"Reçue",diagnostic:"En diagnostic",piece:"En attente de pièce",cours:"En réparation",pret:"Prête à récupérer",livre:"Livrée",annule:"Annulée"};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let rows=[],filter="actives";
+const MSG={password:"Mot de passe incorrect.",config:"Le serveur n’est pas configuré (DATABASE_URL ou ADMIN_PASSWORD manquant sur Vercel).",db:"Erreur de base de données."};
+
+async function api(action,data){
+ const r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({action},data))});
+ const j=await r.json().catch(()=>({}));
+ if(r.status===401&&action!=="login"){show(false);throw new Error("auth")}
+ if(!r.ok)throw new Error(j.error||("http"+r.status));
+ return j}
+function show(on){$("login").hidden=on;$("app").hidden=!on}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),1800)}
+const fmt=d=>new Date(d).toLocaleString("fr-FR",{timeZone:"Africa/Abidjan",dateStyle:"short",timeStyle:"short"});
+
+function chips(){
+ const n=k=>rows.filter(r=>r.status===k).length;
+ const act=rows.filter(r=>r.status!=="livre"&&r.status!=="annule").length;
+ const list=[["actives","En cours",act],...Object.keys(ST).map(k=>[k,ST[k],n(k)]),["tous","Toutes",rows.length]];
+ $("chips").innerHTML=list.map(([k,l,c])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${filter===k}">${esc(l)}<b>${c}</b></button>`).join("")}
+function visible(){
+ const q=$("q").value.trim().toLowerCase();
+ return rows.filter(r=>(filter==="tous"||(filter==="actives"?r.status!=="livre"&&r.status!=="annule":r.status===filter))&&
+  (!q||[r.code,r.name,r.phone,r.brand,r.model,r.piece].join(" ").toLowerCase().includes(q)))}
+function card(r){
+ const map=r.lat!=null?`https://www.google.com/maps?q=${r.lat},${r.lng}`:(r.address?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([r.address,r.city].filter(Boolean).join(", "))}`:"");
+ const dom=r.kind==="domicile";
+ return `<article class="c st-${esc(r.status)}" data-id="${r.id}">
+ <div class="top"><b>${esc(r.code)}</b><small>${esc(fmt(r.created_at))} · ${dom?"À domicile":"Atelier"}</small>
+  <select data-f="status" aria-label="État de la réparation">${Object.keys(ST).map(k=>`<option value="${k}"${k===r.status?" selected":""}>${esc(ST[k])}</option>`).join("")}</select></div>
+ <div>${esc(r.name||"Client")} · <a href="tel:${esc(String(r.phone).replace(/[^\d+]/g,""))}">${esc(r.phone)}</a></div>
+ <div>${esc([r.brand,r.model].filter(Boolean).join(" "))}${r.piece?" – "+esc(r.piece):""}</div>
+ <details><summary>Détails</summary>
+  <p><b>Panne :</b> ${esc(r.issue||"—")}</p>
+  ${dom?`<p><b>Adresse :</b> ${esc([r.address,r.city].filter(Boolean).join(", "))}${r.slot?" · "+esc(r.slot):""}</p>`:""}
+  ${map?`<p><a href="${esc(map)}" target="_blank" rel="noopener">Ouvrir la carte</a></p>`:""}
+  <p><small>Mis à jour le ${esc(fmt(r.updated_at))}</small></p></details>
+ <div class="row"><label>Prix (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="price" value="${r.price??""}"></label>
+  <label>Note interne<textarea data-f="note">${esc(r.note||"")}</textarea></label></div></article>`}
+function render(){
+ chips();const v=visible();
+ $("list").innerHTML=v.length?v.map(card).join(""):'<p style="margin-top:20px;color:var(--muted)">Aucune réparation dans cette vue.</p>'}
+
+async function load(){
+ try{rows=(await api("list")).rows;$("ae").textContent="";render()}
+ catch(e){if(e.message!=="auth")$("ae").textContent=MSG[e.message]||"Chargement impossible ("+e.message+")."}}
+
+$("list").addEventListener("change",async e=>{
+ const t=e.target,f=t.dataset.f,art=t.closest("article");if(!f||!art)return;
+ const id=Number(art.dataset.id),val=t.value;
+ try{const j=await api("update",{id,[f]:val});
+  const i=rows.findIndex(r=>r.id===id);if(i>-1)rows[i]=j.row;
+  toast("✓ Enregistré");
+  if(f==="status"){art.className="c st-"+j.row.status;chips()}}
+ catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");load()}}});
+$("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.k;render()};
+$("q").oninput=render;
+$("rf").onclick=load;
+$("lo").onclick=async()=>{try{await api("logout")}catch(e){}show(false)};
+$("lf").onsubmit=async e=>{e.preventDefault();$("le").textContent="";
+ try{await api("login",{password:$("pw").value});$("pw").value="";show(true);load()}
+ catch(x){$("le").textContent=MSG[x.message]||"Connexion impossible ("+x.message+")."}};
+$("nb").onclick=()=>{$("nf").reset();$("ne").textContent="";$("nd").showModal()};
+$("nc").onclick=()=>$("nd").close();
+$("nf").onsubmit=async e=>{e.preventDefault();
+ try{const j=await api("create",{name:$("nn").value,phone:$("nt").value,brand:$("nbr").value,model:$("nm").value,piece:$("np").value,issue:$("ni").value});
+  $("nd").close();toast("✓ Dossier créé : "+j.code);filter="actives";load()}
+ catch(x){$("ne").textContent=x.message==="invalid"?"Téléphone et modèle obligatoires.":"Création impossible ("+x.message+")."}};
+setInterval(()=>{const a=document.activeElement;if(!$("app").hidden&&!$("nd").open&&!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))load()},60000);
+/* session déjà ouverte ? */
+api("list").then(j=>{rows=j.rows;show(true);render()}).catch(()=>{});
+</script>
+</body>
+</html>
