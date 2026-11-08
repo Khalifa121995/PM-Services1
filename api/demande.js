@@ -1,5 +1,3 @@
-const nodemailer = require("nodemailer");
-
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const one = (s, n = 200) => String(s ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, n);
@@ -42,9 +40,12 @@ module.exports = async (req, res) => {
   if (domicile && (!d.city || !d.address)) {
     return res.status(400).json({ ok: false, error: "invalid" });
   }
-  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = (process.env.NOTIFY_TO || "").trim();
+  if (!apiKey || !to) {
     return res.status(500).json({ ok: false, error: "config" });
   }
+  const from = process.env.MAIL_FROM || "PM Services <onboarding@resend.dev>";
 
   const hasGps = d.lat !== null && d.lng !== null;
   const fullAddress = [d.address, d.city].filter(Boolean).join(", ");
@@ -90,20 +91,24 @@ module.exports = async (req, res) => {
     `<a href="https://wa.me/${esc(waNumber)}" style="background:#128c4a;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none">WhatsApp</a></p></div>`;
 
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD },
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from,
+        to: to.split(",").map((x) => x.trim()).filter(Boolean),
+        subject: `Réparation ${kind} – ${d.name} – ${`${d.brand} ${d.model}`.trim()}`,
+        text,
+        html,
+      }),
     });
-    await transporter.sendMail({
-      from: `"PM Services – site" <${process.env.GMAIL_USER}>`,
-      to: process.env.NOTIFY_TO || process.env.GMAIL_USER,
-      subject: `Réparation ${kind} – ${d.name} – ${`${d.brand} ${d.model}`.trim()}`,
-      text,
-      html,
-    });
+    if (!r.ok) {
+      console.error("resend error", r.status, await r.text());
+      return res.status(502).json({ ok: false, error: "mail_" + r.status });
+    }
     return res.status(200).json({ ok: true });
   } catch (e) {
-    console.error("mail error", e && e.message);
-    return res.status(502).json({ ok: false, error: "mail" });
+    console.error("resend network error", e && e.message);
+    return res.status(502).json({ ok: false, error: "mail_network" });
   }
 };
