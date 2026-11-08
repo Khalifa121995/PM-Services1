@@ -76,6 +76,7 @@ textarea{min-height:90px}
 .res b.p{font-family:Outfit,sans-serif;color:var(--navy)}
 .err{color:#b00020;font-weight:600;margin-top:10px}
 .ok{color:#0a6b3a;font-weight:600;margin-top:10px}
+[hidden]{display:none!important}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .seg{display:flex;gap:8px}
 .seg label{flex:1}
@@ -189,7 +190,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
  </div></section>
 
  <section class="sec band" id="reserver"><div class="w">
-  <h2>Réserver une réparation</h2><p class="sub">Remplissez le formulaire : votre demande part sur WhatsApp, nous confirmons le prix et l’horaire.</p>
+  <h2>Réserver une réparation</h2><p class="sub">Remplissez le formulaire : votre demande est envoyée directement à l’atelier, nous vous appelons pour confirmer le prix et l’horaire.</p>
   <form class="panel" id="rf" style="color:var(--ink)" novalidate><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
    <label>Nom<input id="rn" autocomplete="name"></label>
    <label>Téléphone<input id="rt" inputmode="tel" autocomplete="tel"></label>
@@ -198,8 +199,8 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
    <label>Pièce<select id="rp"></select></label>
    <div><label>Lieu</label><p style="margin-top:6px;color:var(--muted)">Dépôt à l’atelier. Pour une récupération chez vous, utilisez <a href="#domicile" style="color:var(--blue);font-weight:700;text-decoration:underline">Réparation à domicile</a>.</p></div>
    <label class="full">Panne<textarea id="ri" placeholder="Ex. écran cassé, ne charge plus"></textarea></label>
-  </div><div id="rq" aria-live="polite"></div><p class="err" id="re" role="alert"></p><p class="ok" id="rok" role="status"></p>
-  <button class="btn wa" type="submit" style="margin-top:16px;width:100%"><svg class="i"><use href="#chat"/></svg>Envoyer ma demande sur WhatsApp</button></form>
+  </div><div id="rq" aria-live="polite"></div><p class="err" id="re" role="alert"></p><p class="ok" id="rok" role="status"></p><a class="btn wa" id="rwa" href="#" hidden style="margin-top:10px"><svg class="i"><use href="#chat"/></svg>Envoyer par WhatsApp à la place</a>
+  <button class="btn wa" type="submit" style="margin-top:16px;width:100%"><svg class="i"><use href="#chat"/></svg>Envoyer ma demande</button></form>
  </div></section>
 
  <section class="sec" id="domicile" style="background:#fff"><div class="w">
@@ -215,9 +216,9 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
    <label>Passage souhaité<select id="ds"><option>Dès que possible</option><option>Matin</option><option>Après-midi</option><option>Fin de journée</option></select></label>
    <div class="full"><button type="button" class="btn o" id="gps"><svg class="i"><use href="#pin"/></svg>Partager ma position</button> <span id="gpst" style="margin-left:8px;color:var(--muted)">Facultatif, mais ça nous aide à vous trouver plus vite.</span></div>
    <label class="full">Panne<textarea id="di" placeholder="Ex. écran cassé, ne charge plus"></textarea></label>
-  </div><div id="dr" aria-live="polite"></div><p class="err" id="de" role="alert"></p><p class="ok" id="dok" role="status"></p>
+  </div><div id="dr" aria-live="polite"></div><p class="err" id="de" role="alert"></p><p class="ok" id="dok" role="status"></p><a class="btn wa" id="dwa" href="#" hidden style="margin-top:10px"><svg class="i"><use href="#chat"/></svg>Envoyer par WhatsApp à la place</a>
   <button class="btn wa" type="submit" style="margin-top:16px;width:100%"><svg class="i"><use href="#chat"/></svg>Envoyer ma demande à domicile</button>
-  <p style="margin-top:10px;color:var(--muted);font-size:.92rem;text-align:center">Votre demande part sur WhatsApp : nous confirmons le prix et l’heure de passage.</p></form>
+  <p style="margin-top:10px;color:var(--muted);font-size:.92rem;text-align:center">Votre demande est envoyée directement à l’atelier : nous vous appelons pour confirmer le prix et l’heure de passage.</p></form>
  </div></section>
 
  <section class="sec" id="suivi"><div class="w">
@@ -235,7 +236,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <h2>Questions fréquentes</h2><p class="sub" style="margin-bottom:24px">Les réponses les plus demandées.</p>
   <details><summary>Quels sont vos horaires ?</summary><p>Nous sommes ouverts de 9h00 à 19h30.</p></details>
   <details><summary>Où intervenez-vous ?</summary><p>Partout en Côte d’Ivoire : à l’atelier ou à domicile, selon votre choix dans le formulaire.</p></details>
-  <details><summary>Comment demander une réparation à domicile ?</summary><p>Remplissez le formulaire « Demander une réparation à domicile » : indiquez votre quartier et un point de repère. Nous confirmons l’heure de passage sur WhatsApp.</p></details>
+  <details><summary>Comment demander une réparation à domicile ?</summary><p>Remplissez le formulaire « Demander une réparation à domicile » : indiquez votre quartier et un point de repère. Nous vous appelons pour confirmer l’heure de passage.</p></details>
   <details><summary>Combien coûte la récupération à domicile ?</summary><p>L’aller-retour coûte 1 000 F.</p></details>
   <details><summary>Comment connaître le prix de ma réparation ?</summary><p>Le prix des écrans Apple et Samsung s’affiche dans la section « Prix des pièces ». Pour les autres pièces ou modèles, demandez sur WhatsApp.</p></details>
   <details><summary>Comment suivre ma réparation ?</summary><p>Chaque dossier reçoit un code PM-123456. Envoyez-le depuis la section « Suivre l’état de la réparation ».</p></details>
@@ -299,9 +300,11 @@ function quoteHtml(q,label,ask){
 }
 /* envoi de la demande par e-mail */
 function notify(type,data,form){
- return fetch("/api/demande",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,
+ return fetch("/api/demande",{method:"POST",headers:{"Content-Type":"application/json"},
   body:JSON.stringify(Object.assign({type:type,hp:form.querySelector(".hp").value},data))})
-  .then(r=>r.ok).catch(()=>false)}
+  .then(async r=>{let j={};try{j=await r.json()}catch(e){}return{ok:r.ok&&j.ok!==false,error:j.error||("http"+r.status)}})
+  .catch(()=>({ok:false,error:"network"}))}
+const FAIL="L’envoi n’a pas abouti. Réessayez dans un instant, ou envoyez votre demande par WhatsApp.";
 let pos=null;
 /* prix */
 opts($("pp"),PC);opts($("pb"),BR);
@@ -324,29 +327,32 @@ $("hs").onsubmit=e=>{e.preventDefault();const v=$("hq").value.trim();if(!v)retur
 opts($("rb"),BR);opts($("rp"),PC);
 function rShow(){const pc=$("rp").value;$("rq").innerHTML=pc==="Écran"?quoteHtml(quotes($("rb").value,$("rm").value),"Nous confirmons le prix sur WhatsApp.","Bonjour PM Services, prix écran pour "+$("rb").value+" "+$("rm").value+"."):""}
 ["rb","rm","rp"].forEach(i=>$(i).addEventListener("input",rShow));
-$("rf").onsubmit=e=>{e.preventDefault();
+$("rf").onsubmit=async e=>{e.preventDefault();
  const n=$("rn").value.trim(),t=$("rt").value.trim(),m=$("rm").value.trim(),i=$("ri").value.trim();
  if(!n||!t||!m||!i){$("re").textContent="Nom, téléphone, modèle et panne sont obligatoires.";return}
  if((t.match(/\d/g)||[]).length<8){$("re").textContent="Le numéro doit contenir au moins 8 chiffres.";return}
- $("re").textContent="";
- const sent=notify("atelier",{name:n,phone:t,brand:$("rb").value,model:m,piece:$("rp").value,issue:i},$("rf"));
- const txt="Bonjour PM Services, je veux réserver une réparation.\nNom : "+n+"\nTéléphone : "+t+"\nAppareil : "+$("rb").value+" "+m+"\nPièce : "+$("rp").value+"\nPanne : "+i+"\nLieu : Atelier";
- window.open(wa(txt),"_blank","noopener");
- $("rok").textContent="";
- sent.then(ok=>{if(ok)$("rok").textContent="✓ Votre demande a bien été envoyée à l’atelier.";else $("re").textContent="L’envoi automatique a échoué : terminez votre demande avec WhatsApp."})};
+ $("re").textContent="";$("rok").textContent="Envoi en cours…";$("rwa").hidden=true;
+ const btn=$("rf").querySelector("button[type=submit]");btn.disabled=true;
+ const data={name:n,phone:t,brand:$("rb").value,model:m,piece:$("rp").value,issue:i};
+ const r=await notify("atelier",data,$("rf"));btn.disabled=false;
+ if(r.ok){$("rok").textContent="✓ Votre demande a bien été envoyée à l’atelier. Nous vous appelons très vite.";$("rf").reset();rShow()}
+ else{console.error("envoi e-mail:",r.error);$("rok").textContent="";$("re").textContent=FAIL+" (code : "+r.error+")";
+  $("rwa").href=wa("Bonjour PM Services, je veux réserver une réparation.\nNom : "+n+"\nTéléphone : "+t+"\nAppareil : "+data.brand+" "+m+"\nPièce : "+data.piece+"\nPanne : "+i+"\nLieu : Atelier");$("rwa").hidden=false}};
 /* réparation à domicile */
 opts($("db"),BR);opts($("dp"),PC);
 function dShow(){const pc=$("dp").value;$("dr").innerHTML=pc==="Écran"?quoteHtml(quotes($("db").value,$("dm").value),"Nous confirmons le prix sur WhatsApp.","Bonjour PM Services, prix écran pour "+$("db").value+" "+$("dm").value+"."):""}
 ["db","dm","dp"].forEach(i=>$(i).addEventListener("input",dShow));
-$("df").onsubmit=e=>{e.preventDefault();
+$("df").onsubmit=async e=>{e.preventDefault();
  const n=$("dn").value.trim(),t=$("dt").value.trim(),v=$("dv").value.trim(),a=$("da").value.trim(),m=$("dm").value.trim(),i=$("di").value.trim();
  if(!n||!t||!v||!a||!m||!i){$("de").textContent="Nom, téléphone, ville, quartier, modèle et panne sont obligatoires.";return}
  if((t.match(/\d/g)||[]).length<8){$("de").textContent="Le numéro doit contenir au moins 8 chiffres.";return}
- $("de").textContent="";$("dok").textContent="";
- const sent=notify("domicile",{name:n,phone:t,city:v,address:a,brand:$("db").value,model:m,piece:$("dp").value,issue:i,slot:$("ds").value,lat:pos&&pos.lat,lng:pos&&pos.lng,acc:pos&&pos.acc},$("df"));
- const txt="Bonjour PM Services, je demande une réparation à domicile.\nNom : "+n+"\nTéléphone : "+t+"\nAdresse : "+a+", "+v+(pos?"\nPosition : https://www.google.com/maps?q="+pos.lat+","+pos.lng:"")+"\nAppareil : "+$("db").value+" "+m+"\nPièce : "+$("dp").value+"\nPanne : "+i+"\nPassage souhaité : "+$("ds").value;
- window.open(wa(txt),"_blank","noopener");
- sent.then(ok=>{if(ok)$("dok").textContent="✓ Votre demande a bien été envoyée à l’atelier.";else $("de").textContent="L’envoi automatique a échoué : terminez votre demande avec WhatsApp."})};
+ $("de").textContent="";$("dok").textContent="Envoi en cours…";$("dwa").hidden=true;
+ const btn=$("df").querySelector("button[type=submit]");btn.disabled=true;
+ const data={name:n,phone:t,city:v,address:a,brand:$("db").value,model:m,piece:$("dp").value,issue:i,slot:$("ds").value,lat:pos&&pos.lat,lng:pos&&pos.lng,acc:pos&&pos.acc};
+ const r=await notify("domicile",data,$("df"));btn.disabled=false;
+ if(r.ok){$("dok").textContent="✓ Votre demande à domicile a bien été envoyée. Nous vous appelons très vite pour confirmer l’heure de passage.";$("df").reset();pos=null;$("gpst").textContent="Facultatif, mais ça nous aide à vous trouver plus vite.";dShow()}
+ else{console.error("envoi e-mail:",r.error);$("dok").textContent="";$("de").textContent=FAIL+" (code : "+r.error+")";
+  $("dwa").href=wa("Bonjour PM Services, je demande une réparation à domicile.\nNom : "+n+"\nTéléphone : "+t+"\nAdresse : "+a+", "+v+(pos?"\nPosition : https://www.google.com/maps?q="+pos.lat+","+pos.lng:"")+"\nAppareil : "+data.brand+" "+m+"\nPièce : "+data.piece+"\nPanne : "+i+"\nPassage souhaité : "+data.slot);$("dwa").hidden=false}};
 $("gps").onclick=()=>{
  if(!navigator.geolocation){$("gpst").textContent="Position indisponible sur cet appareil. Indiquez le quartier et le repère.";return}
  $("gpst").textContent="Recherche de votre position…";
