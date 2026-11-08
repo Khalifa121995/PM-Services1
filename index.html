@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PM Services – Réparation de téléphones en Côte d’Ivoire</title>
-<meta name="description" content="PM Services : réparation de téléphones, vente et accessoires. Prix des écrans, demande de réparation en ligne, suivi par code. WhatsApp 05 01 90 35 35.">
+<meta name="description" content="PM Services : réparation de téléphones, vente et accessoires. Prix des écrans, demande de réparation en ligne, suivi par code.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,6 +101,7 @@ footer h3{font-size:1rem;margin-bottom:8px}
 footer a{display:block;color:var(--mist);padding:3px 0}
 footer small{display:block;margin-top:24px;color:#9fb3d9}
 .fab{position:fixed;right:16px;bottom:16px;z-index:40;display:flex;flex-direction:column;gap:10px}
+.fab small{display:block;font-size:.74rem;font-weight:600;opacity:.92;line-height:1.1}
 .fab a{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border-radius:999px;color:#fff;font-weight:700;box-shadow:0 8px 20px rgb(0 0 0/22%)}
 @media(max-width:860px){
  .burger{display:block}
@@ -166,7 +167,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
  </div></section>
 
  <section class="sec" style="background:#fff"><div class="w">
-  <h2>Nos services</h2><p class="sub" style="margin-bottom:28px">Tout se fait en ligne ou sur WhatsApp.</p>
+  <h2>Nos services</h2><p class="sub" style="margin-bottom:28px">Tout se fait en ligne.</p>
   <div class="grid">
    <a class="card" href="#reserver"><svg class="i"><use href="#phone"/></svg><h3>Réparer un téléphone</h3><p>Écran, batterie, charge, dégât liquide</p></a>
    <a class="card" href="#prix"><svg class="i"><use href="#tag"/></svg><h3>Prix des pièces</h3><p>Tarifs écrans Apple et Samsung</p></a>
@@ -174,13 +175,13 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
    <a class="card" href="#suivi"><svg class="i"><use href="#find"/></svg><h3>Suivre l’état de la réparation</h3><p>Avec le code PM-000000</p></a>
    <a class="card" href="#faq"><svg class="i"><use href="#help"/></svg><h3>FAQ</h3><p>Questions fréquentes</p></a>
    <a class="card" href="#domicile"><svg class="i"><use href="#pin"/></svg><h3>Réparation à domicile</h3><p>Aller-retour : 1 000 F</p></a>
-   <a class="card" href="#contact"><svg class="i"><use href="#chat"/></svg><h3>Contactez-nous</h3><p>WhatsApp 05 01 90 35 35</p></a>
+   <a class="card" href="#contact"><svg class="i"><use href="#chat"/></svg><h3>Contactez-nous</h3><p>Par le formulaire en ligne</p></a>
    <a class="card" href="#politique"><svg class="i"><use href="#doc"/></svg><h3>Politique de service</h3><p>Comment nous travaillons</p></a>
   </div>
  </div></section>
 
  <section class="sec" id="prix"><div class="w">
-  <h2>Prix des pièces</h2><p class="sub">Choisissez la pièce, la marque et le modèle. Si le prix n’est pas affiché, demandez-le sur WhatsApp.</p>
+  <h2>Prix des pièces</h2><p class="sub">Choisissez la pièce, la marque et le modèle. Si le prix n’est pas affiché, faites une demande de réparation : nous vous rappelons avec le prix.</p>
   <div class="panel"><div class="f">
    <label>Pièce<select id="pp"></select></label>
    <label>Marque<select id="pb"></select></label>
@@ -199,7 +200,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
    <label>Pièce<select id="rp"></select></label>
    <div><label>Lieu</label><p style="margin-top:6px;color:var(--muted)">Dépôt à l’atelier. Pour une récupération chez vous, utilisez <a href="#domicile" style="color:var(--blue);font-weight:700;text-decoration:underline">Réparation à domicile</a>.</p></div>
    <label class="full">Panne<textarea id="ri" placeholder="Ex. écran cassé, ne charge plus"></textarea></label>
-  </div><div id="rq" aria-live="polite"></div><p class="err" id="re" role="alert"></p><p class="ok" id="rok" role="status"></p><a class="btn wa" id="rwa" href="#" hidden style="margin-top:10px"><svg class="i"><use href="#chat"/></svg>Envoyer par WhatsApp à la place</a>
+  </div><div id="rq" aria-live="polite"></div><p class="err" id="re" role="alert"></p><p class="ok" id="rok" role="status"></p>
   <button class="btn wa" type="submit" style="margin-top:16px;width:100%"><svg class="i"><use href="#chat"/></svg>Envoyer ma demande</button></form>
  </div></section>
 
@@ -216,20 +217,27 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
    <label>Passage souhaité<select id="ds"><option>Dès que possible</option><option>Matin</option><option>Après-midi</option><option>Fin de journée</option></select></label>
    <div class="full"><button type="button" class="btn o" id="gps"><svg class="i"><use href="#pin"/></svg>Partager ma position</button> <span id="gpst" style="margin-left:8px;color:var(--muted)">Facultatif, mais ça nous aide à vous trouver plus vite.</span></div>
    <label class="full">Panne<textarea id="di" placeholder="Ex. écran cassé, ne charge plus"></textarea></label>
-  </div><div id="dr" aria-live="polite"></div><p class="err" id="de" role="alert"></p><p class="ok" id="dok" role="status"></p><a class="btn wa" id="dwa" href="#" hidden style="margin-top:10px"><svg class="i"><use href="#chat"/></svg>Envoyer par WhatsApp à la place</a>
+  </div><div id="dr" aria-live="polite"></div><p class="err" id="de" role="alert"></p><p class="ok" id="dok" role="status"></p>
   <button class="btn wa" type="submit" style="margin-top:16px;width:100%"><svg class="i"><use href="#chat"/></svg>Envoyer ma demande à domicile</button>
   <p style="margin-top:10px;color:var(--muted);font-size:.92rem;text-align:center">Votre demande est envoyée directement à l’atelier : nous vous appelons pour confirmer le prix et l’heure de passage.</p></form>
  </div></section>
 
  <section class="sec" id="suivi"><div class="w">
-  <h2>Suivre l’état de la réparation</h2><p class="sub">Entrez le code remis à l’atelier ou sur WhatsApp, au format PM-123456. Nous vous répondons avec l’état de votre dossier.</p>
-  <form class="panel" id="sf" novalidate><label>Code de suivi<input id="sc" placeholder="PM-123456" style="text-transform:uppercase"></label><p class="err" id="se" role="alert"></p>
+  <h2>Suivre l’état de la réparation</h2><p class="sub">Entrez le code de votre dossier, au format PM-123456, et votre numéro. Nous vous appelons avec l’état de votre réparation.</p>
+  <form class="panel" id="sf" novalidate><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
+   <label>Code de suivi<input id="sc" placeholder="PM-123456" style="text-transform:uppercase"></label>
+   <label>Votre téléphone<input id="st" inputmode="tel" autocomplete="tel"></label></div>
+  <p class="err" id="se" role="alert"></p><p class="ok" id="sok" role="status"></p>
   <button class="btn" type="submit" style="margin-top:14px"><svg class="i"><use href="#find"/></svg>Demander l’état</button></form>
  </div></section>
 
  <section class="sec" id="garantie" style="background:#fff"><div class="w">
-  <h2>Vérification de la garantie</h2><p class="sub">Envoyez votre code de réparation sur WhatsApp : nous vérifions votre dossier et vous répondons.</p>
-  <p style="text-align:center"><a class="btn wa" id="gw" href="#"><svg class="i"><use href="#chat"/></svg>Vérifier ma garantie</a></p>
+  <h2>Vérification de la garantie</h2><p class="sub">Entrez le code de votre réparation et votre numéro : nous vérifions votre dossier et nous vous appelons.</p>
+  <form class="panel" id="gf" novalidate style="background:var(--mist)"><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
+   <label>Code de réparation<input id="gc" placeholder="PM-123456" style="text-transform:uppercase"></label>
+   <label>Votre téléphone<input id="gt" inputmode="tel" autocomplete="tel"></label></div>
+  <p class="err" id="ge" role="alert"></p><p class="ok" id="gok" role="status"></p>
+  <button class="btn" type="submit" style="margin-top:14px"><svg class="i"><use href="#shield"/></svg>Vérifier ma garantie</button></form>
  </div></section>
 
  <section class="sec" id="faq"><div class="w">
@@ -238,7 +246,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <details><summary>Où intervenez-vous ?</summary><p>Partout en Côte d’Ivoire : à l’atelier ou à domicile, selon votre choix dans le formulaire.</p></details>
   <details><summary>Comment demander une réparation à domicile ?</summary><p>Remplissez le formulaire « Demander une réparation à domicile » : indiquez votre quartier et un point de repère. Nous vous appelons pour confirmer l’heure de passage.</p></details>
   <details><summary>Combien coûte la récupération à domicile ?</summary><p>L’aller-retour coûte 1 000 F.</p></details>
-  <details><summary>Comment connaître le prix de ma réparation ?</summary><p>Le prix des écrans Apple et Samsung s’affiche dans la section « Prix des pièces ». Pour les autres pièces ou modèles, demandez sur WhatsApp.</p></details>
+  <details><summary>Comment connaître le prix de ma réparation ?</summary><p>Le prix des écrans Apple et Samsung s’affiche dans la section « Prix des pièces ». Pour les autres pièces ou modèles, faites une demande de réparation : nous vous rappelons avec le prix.</p></details>
   <details><summary>Comment suivre ma réparation ?</summary><p>Chaque dossier reçoit un code PM-123456. Envoyez-le depuis la section « Suivre l’état de la réparation ».</p></details>
  </div></section>
 
@@ -252,9 +260,9 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
  </div></section>
 
  <section class="sec" id="contact"><div class="w">
-  <h2>Contactez-nous</h2><p class="sub">Une question, un devis, un suivi : écrivez-nous.</p>
+  <h2>Contactez-nous</h2><p class="sub">Une question, un devis, un suivi : utilisez les formulaires. En cas d’urgence, touchez « Parler à un technicien ».</p>
   <div class="ct">
-   <a class="card" id="cw" href="#"><svg class="i"><use href="#chat"/></svg><div><h3>WhatsApp</h3><p>05 01 90 35 35</p></div></a>
+   <a class="card" href="#reserver"><svg class="i"><use href="#chat"/></svg><div><h3>Demande en ligne</h3><p>Nous vous rappelons</p></div></a>
    <div class="card"><svg class="i"><use href="#clock"/></svg><div><h3>Horaires</h3><p>9h00 – 19h30</p></div></div>
    <div class="card"><svg class="i"><use href="#pin"/></svg><div><h3>Zone</h3><p>Partout en Côte d’Ivoire</p></div></div>
   </div>
@@ -265,12 +273,12 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
  <div class="fg">
   <div><img src="/logo.jpg" alt="PM Services"><p style="margin-top:12px;color:var(--mist)">Réparation, vente et accessoires de téléphones.</p></div>
   <div><h3>Service</h3><a href="#reserver">Réparer un téléphone</a><a href="#domicile">Réparation à domicile</a><a href="#prix">Prix des pièces</a><a href="#suivi">Suivi de réparation</a><a href="#garantie">Garantie</a></div>
-  <div><h3>Contact</h3><a id="fw" href="#">WhatsApp 05 01 90 35 35</a><a href="https://www.facebook.com/profile.php?id=61594506811905" target="_blank" rel="noopener">Facebook</a><span style="color:var(--mist)">9h00 – 19h30</span></div>
+  <div><h3>Contact</h3><a href="https://www.facebook.com/profile.php?id=61594506811905" target="_blank" rel="noopener">Facebook</a><span style="color:var(--mist)">9h00 – 19h30</span></div>
  </div>
  <small>© 2026 PM Services. Tous droits réservés.</small>
 </div></footer>
 
-<div class="fab"><a class="btn wa" id="fb" href="#" style="border-color:var(--wa)"><svg class="i"><use href="#chat"/></svg>Chat</a></div>
+<div class="fab"><a class="btn wa" id="fb" href="#" style="border-color:var(--wa)"><svg class="i"><use href="#chat"/></svg><span>Parler à un technicien<small>Urgence – réponse rapide</small></span></a></div>
 
 <script>
 const WA="2250501903535";
@@ -294,9 +302,10 @@ function quotes(brand,text){
  return[];
 }
 function models(b){return b==="Apple"||b==="Samsung"?[...new Set(P.filter(r=>r[0]===b).map(r=>r[1])),"Autre"]:["Autre"]}
-function quoteHtml(q,label,ask){
- if(!q.length)return '<div class="res"><p><b>Prix sur demande.</b> '+label+'</p><p style="margin-top:10px"><a class="btn wa" href="'+wa(ask)+'"><svg class="i"><use href="#chat"/></svg>Demander sur WhatsApp</a></p></div>';
- return '<div class="res"><ul>'+q.map(r=>"<li><span>"+r[1]+" – "+r[2]+'</span><b class="p">'+F(r[3])+"</b></li>").join("")+'</ul><p style="margin-top:10px"><a class="btn wa" href="'+wa("Bonjour PM Services, je veux réparer l’écran de mon "+q[0][1]+".")+'"><svg class="i"><use href="#chat"/></svg>Réserver sur WhatsApp</a></p></div>';
+function quoteHtml(q,label,href){
+ const btn=t=>href?'<p style="margin-top:10px"><a class="btn" href="'+href+'"><svg class="i"><use href="#cal"/></svg>'+t+'</a></p>':"";
+ if(!q.length)return '<div class="res"><p><b>Prix sur demande.</b> '+label+'</p>'+btn("Faire une demande de réparation")+'</div>';
+ return '<div class="res"><ul>'+q.map(r=>"<li><span>"+r[1]+" – "+r[2]+'</span><b class="p">'+F(r[3])+"</b></li>").join("")+'</ul>'+btn("Réserver cette réparation")+'</div>';
 }
 /* envoi de la demande par e-mail */
 function notify(type,data,form){
@@ -304,7 +313,7 @@ function notify(type,data,form){
   body:JSON.stringify(Object.assign({type:type,hp:form.querySelector(".hp").value},data))})
   .then(async r=>{let j={};try{j=await r.json()}catch(e){}return{ok:r.ok&&j.ok!==false,error:j.error||("http"+r.status)}})
   .catch(()=>({ok:false,error:"network"}))}
-const FAIL="L’envoi n’a pas abouti. Réessayez dans un instant, ou envoyez votre demande par WhatsApp.";
+const FAIL="L’envoi n’a pas abouti. Réessayez dans un instant, ou touchez « Parler à un technicien ».";
 let pos=null;
 /* prix */
 opts($("pp"),PC);opts($("pb"),BR);
@@ -312,8 +321,7 @@ function pModels(){opts($("pm"),models($("pb").value));pShow()}
 function pShow(){
  const other=$("pm").value==="Autre";$("po").hidden=!other;
  const model=other?$("pot").value.trim():$("pm").value,pc=$("pp").value,b=$("pb").value;
- const ask="Bonjour PM Services, prix "+pc.toLowerCase()+" pour "+b+" "+(model||"mon téléphone")+".";
- $("pr").innerHTML=pc==="Écran"?quoteHtml(quotes(b,model),"Le prix de cet écran n’est pas listé.",ask):quoteHtml([],"Le prix "+pc.toLowerCase()+" est confirmé sur WhatsApp.",ask);
+ $("pr").innerHTML=pc==="Écran"?quoteHtml(quotes(b,model),"Le prix de cet écran n’est pas listé.","#reserver"):quoteHtml([],"Le prix "+pc.toLowerCase()+" est confirmé après votre demande.","#reserver");
 }
 $("pb").onchange=pModels;$("pm").onchange=pShow;$("pp").onchange=pShow;$("pot").oninput=pShow;pModels();
 /* recherche du hero */
@@ -325,34 +333,32 @@ $("hs").onsubmit=e=>{e.preventDefault();const v=$("hq").value.trim();if(!v)retur
  $("prix").scrollIntoView({behavior:"smooth"})};
 /* réservation */
 opts($("rb"),BR);opts($("rp"),PC);
-function rShow(){const pc=$("rp").value;$("rq").innerHTML=pc==="Écran"?quoteHtml(quotes($("rb").value,$("rm").value),"Nous confirmons le prix sur WhatsApp.","Bonjour PM Services, prix écran pour "+$("rb").value+" "+$("rm").value+"."):""}
+function rShow(){const pc=$("rp").value;$("rq").innerHTML=pc==="Écran"?quoteHtml(quotes($("rb").value,$("rm").value),"Nous confirmons le prix par téléphone.",""):""}
 ["rb","rm","rp"].forEach(i=>$(i).addEventListener("input",rShow));
 $("rf").onsubmit=async e=>{e.preventDefault();
  const n=$("rn").value.trim(),t=$("rt").value.trim(),m=$("rm").value.trim(),i=$("ri").value.trim();
  if(!n||!t||!m||!i){$("re").textContent="Nom, téléphone, modèle et panne sont obligatoires.";return}
  if((t.match(/\d/g)||[]).length<8){$("re").textContent="Le numéro doit contenir au moins 8 chiffres.";return}
- $("re").textContent="";$("rok").textContent="Envoi en cours…";$("rwa").hidden=true;
+ $("re").textContent="";$("rok").textContent="Envoi en cours…";
  const btn=$("rf").querySelector("button[type=submit]");btn.disabled=true;
  const data={name:n,phone:t,brand:$("rb").value,model:m,piece:$("rp").value,issue:i};
  const r=await notify("atelier",data,$("rf"));btn.disabled=false;
  if(r.ok){$("rok").textContent="✓ Votre demande a bien été envoyée à l’atelier. Nous vous appelons très vite.";$("rf").reset();rShow()}
- else{console.error("envoi e-mail:",r.error);$("rok").textContent="";$("re").textContent=FAIL+" (code : "+r.error+")";
-  $("rwa").href=wa("Bonjour PM Services, je veux réserver une réparation.\nNom : "+n+"\nTéléphone : "+t+"\nAppareil : "+data.brand+" "+m+"\nPièce : "+data.piece+"\nPanne : "+i+"\nLieu : Atelier");$("rwa").hidden=false}};
+ else{console.error("envoi e-mail:",r.error);$("rok").textContent="";$("re").textContent=FAIL+" (code : "+r.error+")";}};
 /* réparation à domicile */
 opts($("db"),BR);opts($("dp"),PC);
-function dShow(){const pc=$("dp").value;$("dr").innerHTML=pc==="Écran"?quoteHtml(quotes($("db").value,$("dm").value),"Nous confirmons le prix sur WhatsApp.","Bonjour PM Services, prix écran pour "+$("db").value+" "+$("dm").value+"."):""}
+function dShow(){const pc=$("dp").value;$("dr").innerHTML=pc==="Écran"?quoteHtml(quotes($("db").value,$("dm").value),"Nous confirmons le prix par téléphone.",""):""}
 ["db","dm","dp"].forEach(i=>$(i).addEventListener("input",dShow));
 $("df").onsubmit=async e=>{e.preventDefault();
  const n=$("dn").value.trim(),t=$("dt").value.trim(),v=$("dv").value.trim(),a=$("da").value.trim(),m=$("dm").value.trim(),i=$("di").value.trim();
  if(!n||!t||!v||!a||!m||!i){$("de").textContent="Nom, téléphone, ville, quartier, modèle et panne sont obligatoires.";return}
  if((t.match(/\d/g)||[]).length<8){$("de").textContent="Le numéro doit contenir au moins 8 chiffres.";return}
- $("de").textContent="";$("dok").textContent="Envoi en cours…";$("dwa").hidden=true;
+ $("de").textContent="";$("dok").textContent="Envoi en cours…";
  const btn=$("df").querySelector("button[type=submit]");btn.disabled=true;
  const data={name:n,phone:t,city:v,address:a,brand:$("db").value,model:m,piece:$("dp").value,issue:i,slot:$("ds").value,lat:pos&&pos.lat,lng:pos&&pos.lng,acc:pos&&pos.acc};
  const r=await notify("domicile",data,$("df"));btn.disabled=false;
  if(r.ok){$("dok").textContent="✓ Votre demande à domicile a bien été envoyée. Nous vous appelons très vite pour confirmer l’heure de passage.";$("df").reset();pos=null;$("gpst").textContent="Facultatif, mais ça nous aide à vous trouver plus vite.";dShow()}
- else{console.error("envoi e-mail:",r.error);$("dok").textContent="";$("de").textContent=FAIL+" (code : "+r.error+")";
-  $("dwa").href=wa("Bonjour PM Services, je demande une réparation à domicile.\nNom : "+n+"\nTéléphone : "+t+"\nAdresse : "+a+", "+v+(pos?"\nPosition : https://www.google.com/maps?q="+pos.lat+","+pos.lng:"")+"\nAppareil : "+data.brand+" "+m+"\nPièce : "+data.piece+"\nPanne : "+i+"\nPassage souhaité : "+data.slot);$("dwa").hidden=false}};
+ else{console.error("envoi e-mail:",r.error);$("dok").textContent="";$("de").textContent=FAIL+" (code : "+r.error+")";}};
 $("gps").onclick=()=>{
  if(!navigator.geolocation){$("gpst").textContent="Position indisponible sur cet appareil. Indiquez le quartier et le repère.";return}
  $("gpst").textContent="Recherche de votre position…";
@@ -360,13 +366,21 @@ $("gps").onclick=()=>{
   p=>{pos={lat:+p.coords.latitude.toFixed(6),lng:+p.coords.longitude.toFixed(6),acc:Math.round(p.coords.accuracy)};$("gpst").textContent="✓ Position enregistrée (précision environ "+pos.acc+" m)"},
   ()=>{pos=null;$("gpst").textContent="Position non partagée. Indiquez le quartier et le repère."},
   {enableHighAccuracy:true,timeout:15000})};
-/* suivi */
-$("sf").onsubmit=e=>{e.preventDefault();const c=$("sc").value.trim().toUpperCase();
- if(!/^PM-\d{6}$/.test(c)){$("se").textContent="Entrez le code complet, par exemple PM-123456.";return}
- $("se").textContent="";window.open(wa("Bonjour PM Services, quel est l’état de ma réparation ? Mon code : "+c),"_blank","noopener")};
-/* liens WhatsApp */
-$("gw").href=wa("Bonjour PM Services, je voudrais vérifier la garantie de ma réparation. Mon code : ");
-["cw","fw","fb"].forEach(i=>$(i).href=wa("Bonjour PM Services, je veux un devis."));
+/* suivi et garantie : envoyés par e-mail */
+function codeForm(form,type,codeId,telId,errId,okId,okMsg){
+ $(form).onsubmit=async e=>{e.preventDefault();
+  const c=$(codeId).value.trim().toUpperCase(),t=$(telId).value.trim();
+  if(!/^PM-\d{6}$/.test(c)){$(errId).textContent="Entrez le code complet, par exemple PM-123456.";return}
+  if((t.match(/\d/g)||[]).length<8){$(errId).textContent="Le numéro doit contenir au moins 8 chiffres.";return}
+  $(errId).textContent="";$(okId).textContent="Envoi en cours…";
+  const btn=$(form).querySelector("button[type=submit]");btn.disabled=true;
+  const r=await notify(type,{code:c,phone:t},$(form));btn.disabled=false;
+  if(r.ok){$(okId).textContent=okMsg;$(form).reset()}
+  else{console.error("envoi e-mail:",r.error);$(okId).textContent="";$(errId).textContent=FAIL+" (code : "+r.error+")"}}}
+codeForm("sf","suivi","sc","st","se","sok","✓ Demande envoyée. Nous vous appelons avec l’état de votre réparation.");
+codeForm("gf","garantie","gc","gt","ge","gok","✓ Demande envoyée. Nous vérifions votre garantie et nous vous appelons.");
+/* bouton « Parler à un technicien » : seul lien WhatsApp du site */
+$("fb").href=wa("Bonjour PM Services, c’est urgent : je voudrais parler à un technicien.");
 /* menu mobile */
 $("bg").onclick=()=>{const o=$("nav").classList.toggle("open");$("bg").setAttribute("aria-expanded",o)};
 $("nav").addEventListener("click",e=>{if(e.target.tagName==="A")$("nav").classList.remove("open")});

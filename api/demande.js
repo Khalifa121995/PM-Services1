@@ -19,9 +19,12 @@ module.exports = async (req, res) => {
   b = b || {};
   if (b.hp) return res.status(200).json({ ok: true }); // champ piège anti-robot
 
-  const domicile = b.type === "domicile";
+  const type = ["domicile", "suivi", "garantie"].includes(b.type) ? b.type : "atelier";
+  const domicile = type === "domicile";
+  const lookup = type === "suivi" || type === "garantie";
   const d = {
     name: one(b.name, 80),
+    code: one(b.code, 20).toUpperCase(),
     phone: one(b.phone, 30),
     city: one(b.city, 80),
     address: one(b.address, 200),
@@ -34,7 +37,8 @@ module.exports = async (req, res) => {
     lng: num(b.lng, -180, 180),
     acc: num(b.acc, 0, 100000),
   };
-  if (!d.name || !d.phone || !d.model || !d.issue || (d.phone.match(/\d/g) || []).length < 8) {
+  const phoneOk = (d.phone.match(/\d/g) || []).length >= 8;
+  if (lookup ? !phoneOk || !/^PM-\d{6}$/.test(d.code) : !d.name || !phoneOk || !d.model || !d.issue) {
     return res.status(400).json({ ok: false, error: "invalid" });
   }
   if (domicile && (!d.city || !d.address)) {
@@ -58,8 +62,17 @@ module.exports = async (req, res) => {
   const waNumber = digits.length === 10 ? "225" + digits : digits;
   const when = new Date().toLocaleString("fr-FR", { timeZone: "Africa/Abidjan" });
   const kind = domicile ? "à domicile" : "à l’atelier";
+  const title =
+    type === "suivi" ? "Demande de suivi de réparation"
+    : type === "garantie" ? "Vérification de garantie"
+    : "Nouvelle demande de réparation " + kind;
 
-  const rows = [
+  const rows = lookup ? [
+    ["Type de demande", title],
+    ["Reçue le", when],
+    ["Code", d.code],
+    ["Téléphone", d.phone],
+  ] : [
     ["Type de demande", "Réparation " + kind],
     ["Reçue le", when],
     ["Nom", d.name],
@@ -71,7 +84,7 @@ module.exports = async (req, res) => {
   if (domicile) {
     rows.push(["Ville ou commune", d.city], ["Quartier et repère", d.address], ["Passage souhaité", d.slot]);
     if (hasGps) rows.push(["Position GPS", `${d.lat}, ${d.lng}` + (d.acc !== null ? ` (précision environ ${Math.round(d.acc)} m)` : "")]);
-  } else {
+  } else if (!lookup) {
     rows.push(["Lieu", "Atelier"]);
   }
 
@@ -82,7 +95,7 @@ module.exports = async (req, res) => {
 
   const html =
     `<div style="font-family:Arial,sans-serif;color:#0a1b3d;max-width:560px">` +
-    `<h2 style="color:#0a2a6b;margin:0 0 12px">Nouvelle demande de réparation ${esc(kind)}</h2>` +
+    `<h2 style="color:#0a2a6b;margin:0 0 12px">${esc(title)}</h2>` +
     `<table style="border-collapse:collapse;width:100%">` +
     rows.map(([k, v]) => `<tr><td style="padding:8px;border:1px solid #d4e0f2;background:#eef3fb;font-weight:bold;width:38%">${esc(k)}</td><td style="padding:8px;border:1px solid #d4e0f2">${esc(v).replace(/\n/g, "<br>")}</td></tr>`).join("") +
     `</table><p style="margin-top:16px">` +
@@ -97,7 +110,9 @@ module.exports = async (req, res) => {
       body: JSON.stringify({
         from,
         to: to.split(",").map((x) => x.trim()).filter(Boolean),
-        subject: `Réparation ${kind} – ${d.name} – ${`${d.brand} ${d.model}`.trim()}`,
+        subject: lookup
+          ? `${type === "suivi" ? "Suivi" : "Garantie"} ${d.code} – ${d.phone}`
+          : `Réparation ${kind} – ${d.name} – ${`${d.brand} ${d.model}`.trim()}`,
         text,
         html,
       }),
