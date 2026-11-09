@@ -47,6 +47,17 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
 .g{display:grid;gap:10px}
 #toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:999px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s}
 #toast.on{opacity:1}
+.tabs{display:flex;gap:8px;margin-top:16px}
+.tab{flex:1;min-height:44px;border:2px solid var(--line);background:#fff;border-radius:12px;font-weight:700;cursor:pointer;color:var(--navy)}
+.tab[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.pg{margin-top:18px;color:var(--navy);font-size:1.05rem}
+.pr{display:grid;grid-template-columns:1fr 130px auto;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:6px}
+.pr small{color:var(--muted);display:block}
+.pr input{min-height:40px}
+.pr .acts{display:flex;gap:6px}
+.mini{min-height:40px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:700;cursor:pointer;color:var(--navy)}
+.mini.d{color:#b00020}
+@media(max-width:600px){.pr{grid-template-columns:1fr}}
 @media(max-width:600px){.row{grid-template-columns:1fr}.top select{width:100%;margin-left:0}}
 </style>
 </head>
@@ -68,19 +79,45 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
   <button class="btn o" id="lo" type="button">Déconnexion</button>
  </div></header>
  <div class="w">
-  <div class="chips" id="chips"></div>
-  <label>Rechercher<input id="q" placeholder="Code, nom, téléphone, modèle…" autocomplete="off"></label>
+  <div class="tabs"><button class="tab" id="t1" type="button" aria-pressed="true">Réparations</button><button class="tab" id="t2" type="button" aria-pressed="false">Prix</button></div>
   <p class="err" id="ae" role="alert"></p>
-  <div id="list" aria-live="polite"></div>
+  <section id="v1">
+   <div class="chips" id="chips"></div>
+   <label>Rechercher<input id="q" placeholder="Code, nom, téléphone, modèle…" autocomplete="off"></label>
+   <div id="list" aria-live="polite"></div>
+  </section>
+  <section id="v2" hidden>
+   <div style="display:flex;gap:8px;align-items:end;margin-top:16px;flex-wrap:wrap">
+    <label style="flex:1;min-width:200px">Rechercher un prix<input id="pq" placeholder="Modèle, marque, pièce…" autocomplete="off"></label>
+    <button class="btn" id="pa" type="button">+ Ajouter un prix</button></div>
+   <div id="plist"></div>
+  </section>
   <p style="height:40px"></p>
  </div>
 </div>
+
+<dialog id="pd">
+ <form class="g" id="pf">
+  <h2 style="color:var(--navy)" id="pdt">Prix</h2>
+  <input type="hidden" id="pid">
+  <label>Pièce<input id="ppc" list="pcs" placeholder="Écran, Vitre arrière, Coque complète…" required></label>
+  <label>Marque<input id="pbr" list="brs" placeholder="Apple, Samsung…" required></label>
+  <label>Modèle(s)<input id="plb" placeholder="Ex. iPhone 13 / 13 MINI" required></label>
+  <label>Qualité (facultatif)<input id="pql" placeholder="Standard, Original, 2e qualité…"></label>
+  <label>Prix (F)<input id="ppr" type="number" min="0" step="500" inputmode="numeric" required></label>
+  <label>Modèles d’une catégorie (facultatif, séparés par des virgules)<textarea id="pmo" placeholder="Ex. Samsung A12, Redmi 9A, Tecno Hot 12i"></textarea></label>
+  <datalist id="pcs"></datalist><datalist id="brs"></datalist>
+  <p class="err" id="pe" role="alert"></p>
+  <div style="display:flex;gap:8px"><button class="btn" type="submit" style="flex:1">Enregistrer</button><button class="btn o" type="button" id="pc">Annuler</button></div>
+ </form>
+</dialog>
 
 <dialog id="nd">
  <form class="g" id="nf">
   <h2 style="color:var(--navy)">Nouvelle réparation</h2>
   <label>Nom du client<input id="nn" autocomplete="off"></label>
   <label>Téléphone<input id="nt" inputmode="tel" required></label>
+  <label>E-mail du client (facultatif)<input id="nem" type="email"></label>
   <label>Marque<input id="nbr" placeholder="Ex. Apple"></label>
   <label>Modèle<input id="nm" placeholder="Ex. iPhone 13" required></label>
   <label>Pièce<input id="np" placeholder="Ex. Écran"></label>
@@ -124,6 +161,7 @@ function card(r){
  <div class="top"><b>${esc(r.code)}</b><small>${esc(fmt(r.created_at))} · ${dom?"À domicile":"Atelier"}</small>
   <select data-f="status" aria-label="État de la réparation">${Object.keys(ST).map(k=>`<option value="${k}"${k===r.status?" selected":""}>${esc(ST[k])}</option>`).join("")}</select></div>
  <div>${esc(r.name||"Client")} · <a href="tel:${esc(String(r.phone).replace(/[^\d+]/g,""))}">${esc(r.phone)}</a></div>
+ ${r.email?`<div><small>✉ ${esc(r.email)} (prévenu à chaque changement d’état)</small></div>`:`<div><small>Pas d’e-mail : le client ne sera pas prévenu</small></div>`}
  <div>${esc([r.brand,r.model].filter(Boolean).join(" "))}${r.piece?" – "+esc(r.piece):""}</div>
  <details><summary>Détails</summary>
   <p><b>Panne :</b> ${esc(r.issue||"—")}</p>
@@ -145,7 +183,7 @@ $("list").addEventListener("change",async e=>{
  const id=Number(art.dataset.id),val=t.value;
  try{const j=await api("update",{id,[f]:val});
   const i=rows.findIndex(r=>r.id===id);if(i>-1)rows[i]=j.row;
-  toast("✓ Enregistré");
+  toast(f==="status"?(j.mail==="sent"?"✓ Enregistré · e-mail envoyé au client":j.mail==="failed"?"Enregistré, mais l’e-mail n’a pas pu partir":"✓ Enregistré (pas d’e-mail client)"):"✓ Enregistré");
   if(f==="status"){art.className="c st-"+j.row.status;chips()}}
  catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");load()}}});
 $("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.k;render()};
@@ -158,9 +196,49 @@ $("lf").onsubmit=async e=>{e.preventDefault();$("le").textContent="";
 $("nb").onclick=()=>{$("nf").reset();$("ne").textContent="";$("nd").showModal()};
 $("nc").onclick=()=>$("nd").close();
 $("nf").onsubmit=async e=>{e.preventDefault();
- try{const j=await api("create",{name:$("nn").value,phone:$("nt").value,brand:$("nbr").value,model:$("nm").value,piece:$("np").value,issue:$("ni").value});
+ try{const j=await api("create",{name:$("nn").value,phone:$("nt").value,email:$("nem").value,brand:$("nbr").value,model:$("nm").value,piece:$("np").value,issue:$("ni").value});
   $("nd").close();toast("✓ Dossier créé : "+j.code);filter="actives";load()}
  catch(x){$("ne").textContent=x.message==="invalid"?"Téléphone et modèle obligatoires.":"Création impossible ("+x.message+")."}};
+/* onglets */
+let prices=[],tab=1;
+function setTab(n){tab=n;$("v1").hidden=n!==1;$("v2").hidden=n!==2;$("t1").setAttribute("aria-pressed",n===1);$("t2").setAttribute("aria-pressed",n===2);if(n===2)loadPrices()}
+$("t1").onclick=()=>setTab(1);$("t2").onclick=()=>setTab(2);
+const F=n=>new Intl.NumberFormat("fr-FR").format(n);
+async function loadPrices(){
+ try{prices=(await api("price_list")).rows;$("ae").textContent="";renderPrices()}
+ catch(e){if(e.message!=="auth")$("ae").textContent="Chargement des prix impossible ("+e.message+")."}}
+function renderPrices(){
+ const q=$("pq").value.trim().toLowerCase();
+ const v=prices.filter(r=>!q||[r.piece,r.brand,r.label,r.quality,r.models].join(" ").toLowerCase().includes(q));
+ $("pcs").innerHTML=[...new Set(prices.map(r=>r.piece))].map(x=>`<option value="${esc(x)}">`).join("");
+ $("brs").innerHTML=[...new Set(prices.map(r=>r.brand))].map(x=>`<option value="${esc(x)}">`).join("");
+ let out="",last="";
+ for(const r of v){const g=r.piece+" · "+r.brand;
+  if(g!==last){out+=`<h3 class="pg">${esc(g)}</h3>`;last=g}
+  out+=`<div class="pr" data-id="${r.id}"><div><b>${esc(r.label)}</b>${r.quality?" – "+esc(r.quality):""}${r.models?`<small>${esc(r.models)}</small>`:""}</div>
+   <label style="font-size:.78rem">Prix (F)<input type="number" min="0" step="500" inputmode="numeric" data-p="price" value="${r.price}"></label>
+   <div class="acts"><button type="button" class="mini" data-a="edit">Modifier</button><button type="button" class="mini d" data-a="del">Suppr.</button></div></div>`}
+ $("plist").innerHTML=out||'<p style="margin-top:20px;color:var(--muted)">Aucun prix.</p>'}
+$("pq").oninput=renderPrices;
+$("plist").addEventListener("change",async e=>{
+ const t=e.target;if(t.dataset.p!=="price")return;
+ const r=prices.find(x=>x.id===Number(t.closest(".pr").dataset.id));if(!r)return;
+ try{const j=await api("price_save",Object.assign({},r,{price:t.value}));Object.assign(r,j.row);toast("✓ Prix mis à jour : "+F(j.row.price)+" F")}
+ catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");loadPrices()}}});
+$("plist").addEventListener("click",async e=>{
+ const b=e.target.closest("button[data-a]");if(!b)return;
+ const r=prices.find(x=>x.id===Number(b.closest(".pr").dataset.id));if(!r)return;
+ if(b.dataset.a==="edit"){openPrice(r)}
+ else if(confirm("Supprimer « "+r.label+" » ?")){try{await api("price_delete",{id:r.id});prices=prices.filter(x=>x!==r);renderPrices();toast("✓ Prix supprimé")}catch(x){if(x.message!=="auth")toast("Suppression impossible")}}});
+function openPrice(r){
+ $("pdt").textContent=r?"Modifier le prix":"Ajouter un prix";$("pe").textContent="";
+ $("pid").value=r?r.id:"";$("ppc").value=r?r.piece:"Écran";$("pbr").value=r?r.brand:"";$("plb").value=r?r.label:"";
+ $("pql").value=r&&r.quality||"";$("ppr").value=r?r.price:"";$("pmo").value=r&&r.models||"";$("pd").showModal()}
+$("pa").onclick=()=>openPrice(null);$("pc").onclick=()=>$("pd").close();
+$("pf").onsubmit=async e=>{e.preventDefault();
+ try{await api("price_save",{id:$("pid").value,piece:$("ppc").value,brand:$("pbr").value,label:$("plb").value,quality:$("pql").value,price:$("ppr").value,models:$("pmo").value});
+  $("pd").close();toast("✓ Prix enregistré");loadPrices()}
+ catch(x){$("pe").textContent=x.message==="exists"?"Ce prix existe déjà (même pièce, marque, modèle et qualité).":x.message==="invalid"?"Remplissez pièce, marque, modèle et prix.":"Enregistrement impossible ("+x.message+")."}};
 setInterval(()=>{const a=document.activeElement;if(!$("app").hidden&&!$("nd").open&&!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))load()},60000);
 /* session déjà ouverte ? */
 api("list").then(j=>{rows=j.rows;show(true);render()}).catch(()=>{});

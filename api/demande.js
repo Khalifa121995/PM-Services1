@@ -1,4 +1,4 @@
-const { createRepair } = require("./_lib");
+const { createRepair, sendMail, EMAIL_RE } = require("./_lib");
 
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -28,6 +28,7 @@ module.exports = async (req, res) => {
     name: one(b.name, 80),
     code: one(b.code, 20).toUpperCase(),
     phone: one(b.phone, 30),
+    email: one(b.email, 120),
     city: one(b.city, 80),
     address: one(b.address, 200),
     brand: one(b.brand, 40),
@@ -41,6 +42,9 @@ module.exports = async (req, res) => {
   };
   const phoneOk = (d.phone.match(/\d/g) || []).length >= 8;
   if (lookup ? !phoneOk || !/^PM-\d{6}$/.test(d.code) : !d.name || !phoneOk || !d.model || !d.issue) {
+    return res.status(400).json({ ok: false, error: "invalid" });
+  }
+  if (d.email && !EMAIL_RE.test(d.email)) {
     return res.status(400).json({ ok: false, error: "invalid" });
   }
   if (domicile && (!d.city || !d.address)) {
@@ -85,6 +89,7 @@ module.exports = async (req, res) => {
         ...(code ? [["Code de suivi", code]] : []),
         ["Nom", d.name],
         ["Téléphone", d.phone],
+        ...(d.email ? [["E-mail du client", d.email]] : []),
         ["Appareil", `${d.brand} ${d.model}`.trim()],
         ["Pièce", d.piece],
         ["Panne", d.issue],
@@ -111,33 +116,29 @@ module.exports = async (req, res) => {
     `<a href="https://wa.me/${esc(waNumber)}" style="background:#128c4a;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none">WhatsApp</a></p></div>`;
 
   let emailed = false;
-  let failure = "mail";
+  let failure = "config";
   if (hasMail) {
-    try {
-      const r = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          from,
-          to: to.split(",").map((x) => x.trim()).filter(Boolean),
-          subject: lookup
-            ? `Garantie ${d.code} – ${d.phone}`
-            : `Réparation ${kind} – ${d.name} – ${`${d.brand} ${d.model}`.trim()}${code ? " – " + code : ""}`,
-          text,
-          html,
-        }),
-      });
-      emailed = r.ok;
-      if (!r.ok) {
-        failure = "mail_" + r.status;
-        console.error("resend error", r.status, await r.text());
-      }
-    } catch (e) {
-      failure = "mail_network";
-      console.error("resend network error", e && e.message);
-    }
-  } else {
-    failure = "config";
+    const m = await sendMail({
+      to: to.split(",").map((x) => x.trim()).filter(Boolean),
+      subject: lookup
+        ? `Garantie ${d.code} – ${d.phone}`
+        : `Réparation ${kind} – ${d.name} – ${`${d.brand} ${d.model}`.trim()}${code ? " – " + code : ""}`,
+      text,
+      html,
+    });
+    emailed = m.ok;
+    if (!m.ok) failure = "mail_" + m.status;
+  }
+
+  // confirmation au client (s'il a donné son e-mail) : ne bloque jamais la demande
+  if (!lookup && code && d.email) {
+    const host = req.headers["x-forwarded-host"] || req.headers.host;
+    await sendMail({
+      to: d.email,
+      subject: `PM Services – Demande reçue (${code})`,
+      text: `Bonjour ${d.name},\n\nNous avons bien reçu votre demande de réparation (${`${d.brand} ${d.model}`.trim()}).\nVotre code de suivi : ${code}\nVous serez prévenu par e-mail à chaque changement d'état.\n${host ? "Suivi : https://" + host + "/#suivi\n" : ""}\nPM Services`,
+      html: `<div style="font-family:Arial,sans-serif;color:#0a1b3d;max-width:520px"><h2 style="color:#0a2a6b">Demande reçue</h2><p>Bonjour ${esc(d.name)}, nous avons bien reçu votre demande de réparation (${esc(`${d.brand} ${d.model}`.trim())}).</p><p>Votre code de suivi : <b style="font-size:1.2em">${esc(code)}</b></p><p>Vous serez prévenu par e-mail à chaque changement d’état.</p>${host ? `<p><a href="https://${esc(host)}/#suivi" style="background:#0a2a6b;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none">Suivre ma réparation</a></p>` : ""}<p style="color:#4a6288">PM Services</p></div>`,
+    });
   }
 
   // la demande est réussie si elle est enregistrée OU envoyée par e-mail

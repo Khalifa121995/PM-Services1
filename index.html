@@ -150,23 +150,13 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
 <main id="accueil">
  <div class="car" role="region" aria-roledescription="carrousel" aria-label="Présentation">
   <div class="sl on"><div class="w"><h1>Réparation de téléphones partout en Côte d’Ivoire</h1><p>Écran, batterie, connecteur de charge, caméra. Atelier ou domicile.</p><a class="btn l" href="#reserver">Réserver une réparation</a></div></div>
-  <div class="sl"><div class="w"><h2>Le prix de votre écran, tout de suite</h2><p>Choisissez votre modèle Apple ou Samsung : le tarif s’affiche, sans attendre une réponse.</p><a class="btn l" href="#prix">Voir les prix</a></div></div>
+  <div class="sl"><div class="w"><h2>Prix imbattables, montage gratuit</h2><p>Anti-choc et écouteurs offerts pour tout remplacement d’écran. Choisissez votre modèle : le prix s’affiche.</p><a class="btn l" href="#prix">Voir les prix</a></div></div>
   <div class="sl"><div class="w"><h2>On récupère votre téléphone chez vous</h2><p>Aller-retour à domicile pour 1 000 F. Suivez votre dossier avec votre code.</p><a class="btn l" href="#domicile">Demander une récupération</a></div></div>
   <div class="dots" id="dots"></div>
  </div>
  <div class="w"><form class="find" id="hs" role="search"><label class="sr" for="hq" style="position:absolute;left:-9999px">Votre modèle</label><input id="hq" placeholder="Votre modèle, par exemple iPhone 13" autocomplete="off"><button class="btn" type="submit"><svg class="i"><use href="#find"/></svg>Voir le prix</button></form></div>
 
- <section class="sec" style="padding-top:40px"><div class="w">
-  <h2>Service après-vente professionnel</h2>
-  <div class="strip">
-   <div><svg class="i"><use href="#cal"/></svg>Réservation en ligne</div>
-   <div><svg class="i"><use href="#phone"/></svg>Diagnostic du téléphone</div>
-   <div><svg class="i"><use href="#tool"/></svg>Réparation professionnelle</div>
-   <div><svg class="i"><use href="#sync"/></svg>Mise à jour logicielle</div>
-  </div>
- </div></section>
-
- <section class="sec" style="background:#fff"><div class="w">
+ <section class="sec" style="background:#fff;padding-top:80px"><div class="w">
   <h2>Nos services</h2><p class="sub" style="margin-bottom:28px">Tout se fait en ligne.</p>
   <div class="grid">
    <a class="card" href="#reserver"><svg class="i"><use href="#phone"/></svg><h3>Réparer un téléphone</h3><p>Écran, batterie, charge, dégât liquide</p></a>
@@ -181,7 +171,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
  </div></section>
 
  <section class="sec" id="prix"><div class="w">
-  <h2>Prix des pièces</h2><p class="sub">Choisissez la pièce, la marque et le modèle. Si le prix n’est pas affiché, faites une demande de réparation : nous vous rappelons avec le prix.</p>
+  <h2>Prix des pièces</h2><p class="sub">Écran, vitre arrière, coque complète : choisissez la pièce, la marque et le modèle. Si le prix n’est pas affiché, faites une demande de réparation : nous vous rappelons avec le prix.</p>
   <div class="panel"><div class="f">
    <label>Pièce<select id="pp"></select></label>
    <label>Marque<select id="pb"></select></label>
@@ -195,6 +185,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <form class="panel" id="rf" style="color:var(--ink)" novalidate><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
    <label>Nom<input id="rn" autocomplete="name"></label>
    <label>Téléphone<input id="rt" inputmode="tel" autocomplete="tel"></label>
+   <label class="full">E-mail (facultatif) : pour être prévenu à chaque étape<input id="rem" type="email" autocomplete="email"></label>
    <label>Marque<select id="rb"></select></label>
    <label>Modèle<input id="rm" placeholder="Ex. iPhone 13"></label>
    <label>Pièce<select id="rp"></select></label>
@@ -209,6 +200,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <form class="panel" id="df" novalidate style="background:var(--mist)"><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
    <label>Nom<input id="dn" autocomplete="name"></label>
    <label>Téléphone<input id="dt" inputmode="tel" autocomplete="tel"></label>
+   <label class="full">E-mail (facultatif) : pour être prévenu à chaque étape<input id="dem" type="email" autocomplete="email"></label>
    <label>Ville ou commune<input id="dv" placeholder="Ex. Cocody, Yopougon, Bouaké" autocomplete="address-level2"></label>
    <label>Quartier et point de repère<input id="da" placeholder="Ex. Angré 8e tranche, près de la pharmacie"></label>
    <label>Marque<select id="db"></select></label>
@@ -285,29 +277,34 @@ const WA="2250501903535";
 const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
 const $=id=>document.getElementById(id);
 const F=n=>new Intl.NumberFormat("fr-FR").format(n)+" F";
-const P=[["Samsung","Galaxy S23","Original",110000],["Samsung","Galaxy S23 Ultra","2e qualité",60000],["Samsung","Galaxy S24 Ultra","2e qualité",70000],["Samsung","Galaxy A15","Original",35000],["Apple","iPhone 12 Pro","Original",40000],["Apple","iPhone 11 / 11 Pro / 11 Pro Max","Standard",15000],["Apple","iPhone 13","Standard",23000],["Apple","iPhone 13","Original",45000],["Apple","iPhone 14 / 14 Pro / 14 Pro Max","Standard",35000],["Apple","iPhone 14 / 14 Pro / 14 Pro Max","Original",65000],["Apple","iPhone 15 / 15 Pro / 15 Pro Max","Standard",55000],["Apple","iPhone 15 / 15 Pro / 15 Pro Max","Original",80000],["Apple","iPhone 16 / 16 Pro / 16 Plus","Standard",65000],["Apple","iPhone 16 / 16 Pro / 16 Plus","Original",110000],["Apple","iPhone 17 Air","Premium",150000],["Apple","iPhone 17 Air","Apple",200000],["Samsung","Galaxy S20 à S26","Standard",80000],["Samsung","Galaxy S20 à S26","Original",150000]];
-const BR=["Apple","Samsung","Tecno","Infinix","Oppo","Itel","Realme","Xiaomi","Huawei"];
-const PC=["Écran","Batterie","Connecteur de charge","Caméra","Haut-parleur","Autre"];
-const opts=(el,a)=>{el.innerHTML=a.map(x=>"<option>"+x+"</option>").join("")};
-const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
-const SKIP=["iphone","galaxy","samsung","apple","telephone","tel","ecran"];
-function quotes(brand,text){
- const t=norm(text).split(" ").filter(x=>x.length>=2&&!SKIP.includes(x));
- if(!t.length||(brand!=="Apple"&&brand!=="Samsung"))return[];
- const ex=P.filter(r=>r[0]===brand&&norm(r[1])===norm(text));
- if(ex.length)return ex;
- const m=P.filter(r=>r[0]===brand&&r[1]!=="Galaxy S20 à S26"&&t.every(x=>norm(r[1]).includes(x)));
- if(m.length)return m;
- if(brand==="Samsung"&&t.some(x=>/^s2[0-6]/.test(x)))return P.filter(r=>r[1]==="Galaxy S20 à S26");
- return[];
-}
-function models(b){return b==="Apple"||b==="Samsung"?[...new Set(P.filter(r=>r[0]===b).map(r=>r[1])),"Autre"]:["Autre"]}
-function quoteHtml(q,label,href){
+const OTHER="Autre modèle (saisir)";
+const BR=["Apple","Samsung","Huawei","Xiaomi","Honor","Vivo","Realme","Tecno","Infinix","Oppo","Itel"];
+const PC=["Écran","Vitre arrière","Coque complète","Batterie","Connecteur de charge","Caméra","Haut-parleur","Autre"];
+let PR=[],PRERR=false;
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const opts=(el,a)=>{const v=el.value;el.innerHTML=a.map(x=>"<option>"+esc(x)+"</option>").join("");if(a.includes(v))el.value=v};
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\+/g," plus ").replace(/[^a-z0-9]+/g," ").trim();
+const STOP=["iphone","galaxy","samsung","apple","huawei","honor","vivo","realme","xiaomi","tecno","infinix","telephone","tel","ecran","simple"];
+const toks=s=>norm(s).split(" ").filter(x=>x&&!STOP.includes(x));
+function variants(l){
+ const parts=l.split("/").map(x=>x.trim()),f=parts[0].split(/\s+/),i=f.findIndex(w=>/\d/.test(w)),pre=i>0?f.slice(0,i).join(" "):"";
+ return parts.map((p,k)=>{const w=p.split(/\s+/)[0];return k>0&&pre&&(/\d/.test(w)||w.length<=2)?pre+" "+p:p})}
+function search(piece,text){
+ const t=toks(text);if(!t.length)return[];
+ const key=t.join(" "),R=PR.filter(r=>r.piece===piece);
+ const ex=R.filter(r=>!r.models&&variants(r.label).some(v=>toks(v).join(" ")===key));
+ const cat=R.filter(r=>r.models&&r.models.split(/[,;\n]/).some(it=>{const k=toks(it);return t.every(x=>k.includes(x))}));
+ if(ex.length||cat.length)return[...ex,...cat];
+ return R.filter(r=>!r.models&&t.every(x=>toks(r.label).includes(x))).slice(0,6)}
+const pieces=()=>[...PC.slice(0,-1),...[...new Set(PR.map(r=>r.piece))].filter(x=>!PC.includes(x)),"Autre"];
+const brands=()=>[...BR,...[...new Set(PR.map(r=>r.brand))].filter(x=>!BR.includes(x)&&x!=="Autres Android")];
+const models=(pc,b)=>[...new Set(PR.filter(r=>r.piece===pc&&r.brand===b).map(r=>r.label)),OTHER];
+const nm=r=>r.brand==="Autres Android"?"Android – "+r.label:r.label.toLowerCase().startsWith(r.brand.toLowerCase())?r.label:r.brand+" "+r.label;
+function quoteHtml(q,label,href,pc){
  const btn=t=>href?'<p style="margin-top:10px"><a class="btn" href="'+href+'"><svg class="i"><use href="#cal"/></svg>'+t+'</a></p>':"";
  if(!q.length)return '<div class="res"><p><b>Prix sur demande.</b> '+label+'</p>'+btn("Faire une demande de réparation")+'</div>';
- return '<div class="res"><ul>'+q.map(r=>"<li><span>"+r[1]+" – "+r[2]+'</span><b class="p">'+F(r[3])+"</b></li>").join("")+'</ul>'+btn("Réserver cette réparation")+'</div>';
+ return '<div class="res"><ul>'+q.map(r=>"<li><span>"+esc(nm(r))+(r.quality?" – "+esc(r.quality):"")+'</span><b class="p">'+F(r.price)+"</b></li>").join("")+'</ul>'+(pc==="Écran"?'<p style="margin-top:8px;color:var(--muted);font-size:.92rem">Montage gratuit. Anti-choc et écouteurs offerts pour tout remplacement d’écran.</p>':"")+btn("Réserver cette réparation")+'</div>';
 }
-/* envoi de la demande par e-mail */
 function notify(type,data,form){
  return fetch("/api/demande",{method:"POST",headers:{"Content-Type":"application/json"},
   body:JSON.stringify(Object.assign({type:type,hp:form.querySelector(".hp").value},data))})
@@ -316,46 +313,48 @@ function notify(type,data,form){
 const FAIL="L’envoi n’a pas abouti. Réessayez dans un instant, ou touchez « Parler à un technicien ».";
 let pos=null;
 /* prix */
-opts($("pp"),PC);opts($("pb"),BR);
-function pModels(){opts($("pm"),models($("pb").value));pShow()}
+function pModels(){opts($("pm"),models($("pp").value,$("pb").value));pShow()}
 function pShow(){
- const other=$("pm").value==="Autre";$("po").hidden=!other;
- const model=other?$("pot").value.trim():$("pm").value,pc=$("pp").value,b=$("pb").value;
- $("pr").innerHTML=pc==="Écran"?quoteHtml(quotes(b,model),"Le prix de cet écran n’est pas listé.","#reserver"):quoteHtml([],"Le prix "+pc.toLowerCase()+" est confirmé après votre demande.","#reserver");
-}
-$("pb").onchange=pModels;$("pm").onchange=pShow;$("pp").onchange=pShow;$("pot").oninput=pShow;pModels();
+ const pc=$("pp").value,sel=$("pm").value,other=sel===OTHER,t=$("pot").value.trim();
+ if(PRERR){$("po").hidden=true;$("pr").innerHTML='<div class="res"><p>Les prix ne sont pas disponibles pour le moment. Faites une demande de réparation : nous vous rappelons avec le prix.</p></div>';return}
+ if(PR.length&&!PR.some(r=>r.piece===pc)){$("po").hidden=true;$("pr").innerHTML=quoteHtml([],"Le prix de cette pièce est confirmé après votre demande.","#reserver",pc);return}
+ $("po").hidden=!other;
+ if(!PR.length||(other&&!t)){$("pr").innerHTML="";return}
+ const q=other?search(pc,t):PR.filter(r=>r.piece===pc&&r.brand===$("pb").value&&r.label===sel);
+ $("pr").innerHTML=quoteHtml(q,"Le prix de ce modèle n’est pas listé.","#reserver",pc)}
+$("pp").onchange=pModels;$("pb").onchange=pModels;$("pm").onchange=pShow;$("pot").oninput=pShow;
+function fill(){["pp","rp","dp"].forEach(i=>opts($(i),pieces()));["pb","rb","db"].forEach(i=>opts($(i),brands()));pModels();rShow();dShow()}
 /* recherche du hero */
 $("hs").onsubmit=e=>{e.preventDefault();const v=$("hq").value.trim();if(!v)return;
- const hit=P.find(r=>quotes(r[0],v).length&&norm(r[1]).includes(norm(v).split(" ").pop()))||null;
- const b=hit?hit[0]:(/sam|gal/i.test(v)?"Samsung":"Apple"),q=quotes(b,v);
- if(q.length){$("pb").value=b;pModels();$("pm").value=q[0][1];$("pp").value="Écran";pShow()}
- else{$("pp").value="Écran";$("pb").value=BR.find(x=>norm(v).includes(norm(x)))||"Apple";pModels();$("pm").value="Autre";pShow();$("pot").value=v;pShow()}
+ $("pp").value="Écran";pModels();$("pm").value=OTHER;$("pot").value=v;pShow();
  $("prix").scrollIntoView({behavior:"smooth"})};
 /* réservation */
 opts($("rb"),BR);opts($("rp"),PC);
-function rShow(){const pc=$("rp").value;$("rq").innerHTML=pc==="Écran"?quoteHtml(quotes($("rb").value,$("rm").value),"Nous confirmons le prix par téléphone.",""):""}
+function rShow(){const t=$("rm").value.trim();$("rq").innerHTML=t&&PR.length?quoteHtml(search($("rp").value,t),"Nous confirmons le prix par téléphone.","",$("rp").value):""}
 ["rb","rm","rp"].forEach(i=>$(i).addEventListener("input",rShow));
 $("rf").onsubmit=async e=>{e.preventDefault();
  const n=$("rn").value.trim(),t=$("rt").value.trim(),m=$("rm").value.trim(),i=$("ri").value.trim();
  if(!n||!t||!m||!i){$("re").textContent="Nom, téléphone, modèle et panne sont obligatoires.";return}
  if((t.match(/\d/g)||[]).length<8){$("re").textContent="Le numéro doit contenir au moins 8 chiffres.";return}
+ if($("rem").value.trim()&&!/^\S+@\S+\.\S+$/.test($("rem").value.trim())){$("re").textContent="Cet e-mail ne semble pas valide.";return}
  $("re").textContent="";$("rok").textContent="Envoi en cours…";
  const btn=$("rf").querySelector("button[type=submit]");btn.disabled=true;
- const data={name:n,phone:t,brand:$("rb").value,model:m,piece:$("rp").value,issue:i};
+ const data={name:n,phone:t,email:$("rem").value.trim(),brand:$("rb").value,model:m,piece:$("rp").value,issue:i};
  const r=await notify("atelier",data,$("rf"));btn.disabled=false;
  if(r.ok){$("rok").textContent="✓ Votre demande a bien été envoyée à l’atelier. Nous vous appelons très vite."+(r.code?" Votre code de suivi : "+r.code+" (notez-le).":"");$("rf").reset();rShow()}
  else{console.error("envoi e-mail:",r.error);$("rok").textContent="";$("re").textContent=FAIL+" (code : "+r.error+")";}};
 /* réparation à domicile */
 opts($("db"),BR);opts($("dp"),PC);
-function dShow(){const pc=$("dp").value;$("dr").innerHTML=pc==="Écran"?quoteHtml(quotes($("db").value,$("dm").value),"Nous confirmons le prix par téléphone.",""):""}
+function dShow(){const t=$("dm").value.trim();$("dr").innerHTML=t&&PR.length?quoteHtml(search($("dp").value,t),"Nous confirmons le prix par téléphone.","",$("dp").value):""}
 ["db","dm","dp"].forEach(i=>$(i).addEventListener("input",dShow));
 $("df").onsubmit=async e=>{e.preventDefault();
  const n=$("dn").value.trim(),t=$("dt").value.trim(),v=$("dv").value.trim(),a=$("da").value.trim(),m=$("dm").value.trim(),i=$("di").value.trim();
  if(!n||!t||!v||!a||!m||!i){$("de").textContent="Nom, téléphone, ville, quartier, modèle et panne sont obligatoires.";return}
  if((t.match(/\d/g)||[]).length<8){$("de").textContent="Le numéro doit contenir au moins 8 chiffres.";return}
+ if($("dem").value.trim()&&!/^\S+@\S+\.\S+$/.test($("dem").value.trim())){$("de").textContent="Cet e-mail ne semble pas valide.";return}
  $("de").textContent="";$("dok").textContent="Envoi en cours…";
  const btn=$("df").querySelector("button[type=submit]");btn.disabled=true;
- const data={name:n,phone:t,city:v,address:a,brand:$("db").value,model:m,piece:$("dp").value,issue:i,slot:$("ds").value,lat:pos&&pos.lat,lng:pos&&pos.lng,acc:pos&&pos.acc};
+ const data={name:n,phone:t,email:$("dem").value.trim(),city:v,address:a,brand:$("db").value,model:m,piece:$("dp").value,issue:i,slot:$("ds").value,lat:pos&&pos.lat,lng:pos&&pos.lng,acc:pos&&pos.acc};
  const r=await notify("domicile",data,$("df"));btn.disabled=false;
  if(r.ok){$("dok").textContent="✓ Votre demande à domicile a bien été envoyée. Nous vous appelons très vite pour confirmer l’heure de passage."+(r.code?" Votre code de suivi : "+r.code+" (notez-le).":"");$("df").reset();pos=null;$("gpst").textContent="Facultatif, mais ça nous aide à vous trouver plus vite.";dShow()}
  else{console.error("envoi e-mail:",r.error);$("dok").textContent="";$("de").textContent=FAIL+" (code : "+r.error+")";}};
@@ -390,6 +389,9 @@ $("sf").onsubmit=async e=>{e.preventDefault();
 codeForm("gf","garantie","gc","gt","ge","gok","✓ Demande envoyée. Nous vérifions votre garantie et nous vous appelons.");
 /* bouton « Parler à un technicien » : seul lien WhatsApp du site */
 $("fb").href=wa("Bonjour PM Services, c’est urgent : je voudrais parler à un technicien.");
+/* prix depuis la base de données */
+opts($("pp"),PC);opts($("pb"),BR);pModels();
+fetch("/api/prix").then(r=>r.json()).then(j=>{if(!j.ok)throw 0;PR=j.rows;fill()}).catch(()=>{PRERR=true;pShow()});
 /* menu mobile */
 $("bg").onclick=()=>{const o=$("nav").classList.toggle("open");$("bg").setAttribute("aria-expanded",o)};
 $("nav").addEventListener("click",e=>{if(e.target.tagName==="A")$("nav").classList.remove("open")});
