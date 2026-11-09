@@ -103,12 +103,23 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
 .fab{position:fixed;right:16px;bottom:16px;z-index:40;display:flex;flex-direction:column;gap:10px}
 .fab small{display:block;font-size:.74rem;font-weight:600;opacity:.92;line-height:1.1}
 .fab a{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border-radius:999px;color:#fff;font-weight:700;box-shadow:0 8px 20px rgb(0 0 0/22%)}
-@media(max-width:860px){
+.view{display:none;min-height:62vh}
+.view.on{display:block}
+nav.m>a{padding:22px 10px;font-weight:700;font-size:.95rem;color:var(--navy);white-space:nowrap}
+nav.m>a:hover{color:var(--blue)}
+nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
+.back{display:inline-block;margin-bottom:14px;font-weight:700;color:var(--blue)}
+.band .back{color:#fff}
+@media(max-width:1040px){
  .burger{display:block}
+ nav.m>a{padding:12px 0;white-space:normal}
+ nav.m a[aria-current=page]{box-shadow:none;color:var(--blue)}
  nav.m{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;padding:8px 16px 16px}
  nav.m.open{display:flex}
  .dd>button{padding:12px 0;width:100%;text-align:left}
  .dd>div{display:block;position:static;border:0;box-shadow:none;padding:0 0 6px 10px}
+}
+@media(max-width:860px){
  .strip,.grid{grid-template-columns:repeat(2,1fr)}
  .ct,.fg,.f{grid-template-columns:1fr}
  .find{margin-inline:16px;flex-direction:column}
@@ -118,6 +129,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
 <symbol id="phone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
 <symbol id="cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
 <symbol id="find" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
@@ -135,19 +147,21 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
 <header>
  <div class="w bar">
   <a class="logo" href="#accueil" aria-label="PM Services, accueil"><img src="/logo.jpg" alt="PM Services – Réparation, vente, accessoires"></a>
-  <button class="burger" id="bg" aria-label="Ouvrir le menu" aria-expanded="false"><svg class="i" style="margin:auto"><use href="#find"/></svg></button>
+  <button class="burger" id="bg" aria-label="Ouvrir le menu" aria-expanded="false"><svg class="i" style="margin:auto"><use href="#menu"/></svg></button>
   <nav class="m" id="nav" aria-label="Navigation principale">
-   <div class="dd"><button type="button">Service en ligne</button><div>
-    <a href="#prix">Prix des pièces</a><a href="#garantie">Vérification de la garantie</a><a href="#suivi">Suivre l’état de la réparation</a></div></div>
-   <div class="dd"><button type="button">Service</button><div>
-    <a href="#reserver">Réserver une réparation de téléphone</a><a href="#domicile">Réparation à domicile</a><a href="#prix">Réparation d’écran</a><a href="#contact">Atelier et domicile</a></div></div>
-   <div class="dd"><button type="button">Soutien</button><div>
-    <a href="#politique">Politique de service</a><a href="#contact">Contactez-nous</a><a href="#faq">FAQ</a></div></div>
+   <a href="#accueil">Accueil</a>
+   <a href="#reserver">Demander une réparation</a>
+   <a href="#domicile">Réparation à domicile</a>
+   <a href="#prix">Vérifier le prix</a>
+   <a href="#suivi">Suivre ma réparation</a>
+   <div class="dd"><button type="button">Plus</button><div>
+    <a href="#garantie">Vérification de la garantie</a><a href="#faq">FAQ</a><a href="#politique">Politique de service</a><a href="#contact">Contact</a></div></div>
   </nav>
  </div>
 </header>
 
-<main id="accueil">
+<main>
+<div class="view" id="accueil">
  <div class="car" role="region" aria-roledescription="carrousel" aria-label="Présentation">
   <div class="sl on"><div class="w"><h1>Réparation de téléphones partout en Côte d’Ivoire</h1><p>Écran, batterie, connecteur de charge, caméra. Atelier ou domicile.</p><a class="btn l" href="#reserver">Réserver une réparation</a></div></div>
   <div class="sl"><div class="w"><h2>Prix imbattables, montage gratuit</h2><p>Anti-choc et écouteurs offerts pour tout remplacement d’écran. Choisissez votre modèle : le prix s’affiche.</p><a class="btn l" href="#prix">Voir les prix</a></div></div>
@@ -170,7 +184,9 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   </div>
  </div></section>
 
- <section class="sec" id="prix"><div class="w">
+</div>
+
+ <section class="sec view" id="prix" data-t="Vérifier le prix"><div class="w">
   <h2>Prix des pièces</h2><p class="sub">Écran, vitre arrière, coque complète : choisissez la pièce, la marque et le modèle. Si le prix n’est pas affiché, faites une demande de réparation : nous vous rappelons avec le prix.</p>
   <div class="panel"><div class="f">
    <label>Pièce<select id="pp"></select></label>
@@ -180,7 +196,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   </div><div id="pr" aria-live="polite"></div></div>
  </div></section>
 
- <section class="sec band" id="reserver"><div class="w">
+ <section class="sec band view" id="reserver" data-t="Demander une réparation"><div class="w">
   <h2>Réserver une réparation</h2><p class="sub">Remplissez le formulaire : votre demande est envoyée directement à l’atelier, nous vous appelons pour confirmer le prix et l’horaire.</p>
   <form class="panel" id="rf" style="color:var(--ink)" novalidate><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
    <label>Nom<input id="rn" autocomplete="name"></label>
@@ -195,7 +211,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <button class="btn wa" type="submit" style="margin-top:16px;width:100%"><svg class="i"><use href="#chat"/></svg>Envoyer ma demande</button></form>
  </div></section>
 
- <section class="sec" id="domicile" style="background:#fff"><div class="w">
+ <section class="sec view" id="domicile" data-t="Réparation à domicile" style="background:#fff"><div class="w">
   <h2>Demander une réparation à domicile</h2><p class="sub">Nous récupérons votre téléphone chez vous, nous le réparons, puis nous vous le rapportons. Aller-retour : 1 000 F. Disponible de 9h00 à 19h30.</p>
   <form class="panel" id="df" novalidate style="background:var(--mist)"><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
    <label>Nom<input id="dn" autocomplete="name"></label>
@@ -214,7 +230,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <p style="margin-top:10px;color:var(--muted);font-size:.92rem;text-align:center">Votre demande est envoyée directement à l’atelier : nous vous appelons pour confirmer le prix et l’heure de passage.</p></form>
  </div></section>
 
- <section class="sec" id="suivi"><div class="w">
+ <section class="sec view" id="suivi" data-t="Suivre ma réparation"><div class="w">
   <h2>Suivre l’état de la réparation</h2><p class="sub">Entrez le code de votre dossier (PM-123456) et le numéro donné lors de la demande : l’état de votre réparation s’affiche.</p>
   <form class="panel" id="sf" novalidate><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
    <label>Code de suivi<input id="sc" placeholder="PM-123456" style="text-transform:uppercase"></label>
@@ -223,7 +239,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <button class="btn" type="submit" style="margin-top:14px"><svg class="i"><use href="#find"/></svg>Voir l’état</button></form>
  </div></section>
 
- <section class="sec" id="garantie" style="background:#fff"><div class="w">
+ <section class="sec view" id="garantie" data-t="Vérification de la garantie" style="background:#fff"><div class="w">
   <h2>Vérification de la garantie</h2><p class="sub">Entrez le code de votre réparation et votre numéro : nous vérifions votre dossier et nous vous appelons.</p>
   <form class="panel" id="gf" novalidate style="background:var(--mist)"><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
    <label>Code de réparation<input id="gc" placeholder="PM-123456" style="text-transform:uppercase"></label>
@@ -232,7 +248,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <button class="btn" type="submit" style="margin-top:14px"><svg class="i"><use href="#shield"/></svg>Vérifier ma garantie</button></form>
  </div></section>
 
- <section class="sec" id="faq"><div class="w">
+ <section class="sec view" id="faq" data-t="Questions fréquentes"><div class="w">
   <h2>Questions fréquentes</h2><p class="sub" style="margin-bottom:24px">Les réponses les plus demandées.</p>
   <details><summary>Quels sont vos horaires ?</summary><p>Nous sommes ouverts de 9h00 à 19h30.</p></details>
   <details><summary>Où intervenez-vous ?</summary><p>Partout en Côte d’Ivoire : à l’atelier ou à domicile, selon votre choix dans le formulaire.</p></details>
@@ -242,7 +258,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   <details><summary>Comment suivre ma réparation ?</summary><p>Chaque dossier reçoit un code PM-123456. Entrez-le avec votre numéro dans la section « Suivre l’état de la réparation » pour voir où en est votre téléphone.</p></details>
  </div></section>
 
- <section class="sec" id="politique" style="background:#fff"><div class="w">
+ <section class="sec view" id="politique" data-t="Politique de service" style="background:#fff"><div class="w">
   <h2>Politique de service</h2><p class="sub">Comment nous travaillons.</p>
   <div class="grid" style="grid-template-columns:repeat(3,1fr)">
    <div class="card"><h3>Écran</h3><p>Test avant collage si vous êtes présent.</p></div>
@@ -251,7 +267,7 @@ footer small{display:block;margin-top:24px;color:#9fb3d9}
   </div>
  </div></section>
 
- <section class="sec" id="contact"><div class="w">
+ <section class="sec view" id="contact" data-t="Contact"><div class="w">
   <h2>Contactez-nous</h2><p class="sub">Une question, un devis, un suivi : utilisez les formulaires. En cas d’urgence, touchez « Parler à un technicien ».</p>
   <div class="ct">
    <a class="card" href="#reserver"><svg class="i"><use href="#chat"/></svg><div><h3>Demande en ligne</h3><p>Nous vous rappelons</p></div></a>
@@ -327,7 +343,7 @@ function fill(){["pp","rp","dp"].forEach(i=>opts($(i),pieces()));["pb","rb","db"
 /* recherche du hero */
 $("hs").onsubmit=e=>{e.preventDefault();const v=$("hq").value.trim();if(!v)return;
  $("pp").value="Écran";pModels();$("pm").value=OTHER;$("pot").value=v;pShow();
- $("prix").scrollIntoView({behavior:"smooth"})};
+ location.hash="#prix"};
 /* réservation */
 opts($("rb"),BR);opts($("rp"),PC);
 function rShow(){const t=$("rm").value.trim();$("rq").innerHTML=t&&PR.length?quoteHtml(search($("rp").value,t),"Nous confirmons le prix par téléphone.","",$("rp").value):""}
@@ -392,6 +408,17 @@ $("fb").href=wa("Bonjour PM Services, c’est urgent : je voudrais parler à un 
 /* prix depuis la base de données */
 opts($("pp"),PC);opts($("pb"),BR);pModels();
 fetch("/api/prix").then(r=>r.json()).then(j=>{if(!j.ok)throw 0;PR=j.rows;fill()}).catch(()=>{PRERR=true;pShow()});
+/* pages : une seule à l’écran, choisie par le lien cliqué */
+const VIEWS=[...document.querySelectorAll(".view")];
+VIEWS.forEach(v=>{if(v.id!=="accueil"){const b=document.createElement("a");b.className="back";b.href="#accueil";b.textContent="← Accueil";const w=v.querySelector(".w");w.insertBefore(b,w.firstChild)}});
+function route(){
+ const v=VIEWS.find(x=>x.id===location.hash.slice(1))||VIEWS[0];
+ VIEWS.forEach(x=>x.classList.toggle("on",x===v));
+ document.querySelectorAll("nav.m a").forEach(a=>a.getAttribute("href")==="#"+v.id?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
+ document.title=(v.dataset.t?v.dataset.t+" – ":"")+"PM Services, réparation de téléphones";
+ $("nav").classList.remove("open");$("bg").setAttribute("aria-expanded","false");
+ window.scrollTo(0,0)}
+addEventListener("hashchange",route);route();
 /* menu mobile */
 $("bg").onclick=()=>{const o=$("nav").classList.toggle("open");$("bg").setAttribute("aria-expanded",o)};
 $("nav").addEventListener("click",e=>{if(e.target.tagName==="A")$("nav").classList.remove("open")});
