@@ -30,6 +30,30 @@ function statusMail(r, host) {
 }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+const fr = (n) => (n == null ? "—" : new Intl.NumberFormat("fr-FR").format(n) + " F");
+/* e-mail d'alerte au propriétaire (NOTIFY_TO) à chaque suppression ou modification d'une réparation */
+async function alertOwner(title, changes, r) {
+  const to = (process.env.NOTIFY_TO || "").split(",").map((x) => x.trim()).filter(Boolean);
+  if (!to.length) return "none";
+  const when = new Date().toLocaleString("fr-FR", { timeZone: "Africa/Abidjan" });
+  const info = [
+    ["Code", r.code],
+    ["Client", `${r.name || "—"} · ${r.phone}`],
+    ["Appareil", [r.brand, r.model].filter(Boolean).join(" ") || "—"],
+    ["Réparation", r.piece || "—"],
+    ["Prix client", fr(r.price)],
+    ["Achat", fr(r.cost)],
+    ["État", STATUSES[r.status] || r.status],
+  ];
+  const td = "padding:6px;border:1px solid #d4e0f2;font-size:13px";
+  const html = `<div style="font-family:Arial,sans-serif;color:#0a1b3d;max-width:560px">
+    <h2 style="color:#b00020;margin:0 0 4px">${esc(title)}</h2><p style="margin:0 0 12px;color:#4a6288">${esc(when)}</p>
+    ${changes.length ? `<ul>${changes.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
+    <table style="border-collapse:collapse;width:100%">${info.map(([k, v]) => `<tr><td style="${td};background:#eef3fb;font-weight:bold;width:34%">${esc(k)}</td><td style="${td}">${esc(v)}</td></tr>`).join("")}</table></div>`;
+  const text = `${title}\n${when}\n\n${changes.join("\n")}\n\n` + info.map(([k, v]) => `${k} : ${v}`).join("\n");
+  return (await sendMail({ to, subject: `${title} – ${r.code}`, html, text })).ok ? "sent" : "failed";
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -86,7 +110,13 @@ module.exports = async (req, res) => {
         const host = req.headers["x-forwarded-host"] || req.headers.host;
         mail = (await sendMail(statusMail(row, host))).ok ? "sent" : "failed";
       }
-      return res.status(200).json({ ok: true, row, mail });
+      const changes = [];
+      if (row.status !== cur.status) changes.push(`État : ${STATUSES[cur.status] || cur.status} → ${STATUSES[row.status] || row.status}`);
+      if (row.price !== cur.price) changes.push(`Prix client : ${fr(cur.price)} → ${fr(row.price)}`);
+      if (row.cost !== cur.cost) changes.push(`Achat : ${fr(cur.cost)} → ${fr(row.cost)}`);
+      if ((row.note || "") !== (cur.note || "")) changes.push(`Note interne : « ${cur.note || ""} » → « ${row.note || ""} »`);
+      const alert = changes.length ? await alertOwner("Réparation modifiée", changes, row) : "none";
+      return res.status(200).json({ ok: true, row, mail, alert });
     }
     if (b.action === "create") {
       const email = one(b.email, 120);
@@ -94,12 +124,20 @@ module.exports = async (req, res) => {
       const items = (Array.isArray(b.items) ? b.items : []).slice(0, 10)
         .map((i) => ({ piece: one(i.piece, 60), sale: n0(i.sale), cost: n0(i.cost) })).filter((i) => i.piece);
       const sale = items.reduce((s, i) => s + i.sale, 0), cost = items.reduce((s, i) => s + i.cost, 0);
-      const d = { kind: "atelier", name: one(b.name, 80), phone: one(b.phone, 30), email: EMAIL_RE.test(email) ? email : "", brand: one(b.brand, 40),
+      const d = { kind: "atelier", source: "atelier", name: one(b.name, 80), phone: one(b.phone, 30), email: EMAIL_RE.test(email) ? email : "", brand: one(b.brand, 40),
         model: one(b.model, 80), piece: items.map((i) => i.piece).join(" + ").slice(0, 200), issue: one(b.issue, 800),
         price: items.length ? sale : null, cost: items.length ? cost : null, items: items.length ? JSON.stringify(items) : null };
       if (!d.phone || !d.model) return res.status(400).json({ ok: false, error: "invalid" });
       const code = await createRepair(d);
       return res.status(200).json({ ok: true, code });
+    }
+    if (b.action === "delete") {
+      const id = Number(b.id);
+      const cur = (await q`select * from repairs where id = ${id}`)[0];
+      if (!cur) return res.status(404).json({ ok: false, error: "notfound" });
+      await q`delete from repairs where id = ${id}`;
+      const alert = await alertOwner("Réparation SUPPRIMÉE", ["Cette réparation a été supprimée de l'espace atelier."], cur);
+      return res.status(200).json({ ok: true, alert });
     }
     if (b.action === "report_now") {
       const r = await sendReport();

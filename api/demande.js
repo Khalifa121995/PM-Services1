@@ -61,7 +61,7 @@ module.exports = async (req, res) => {
   let code = null;
   if (!lookup && hasDb) {
     try {
-      code = await createRepair({ kind: type, ...d });
+      code = await createRepair({ kind: type, source: "en_ligne", ...d });
     } catch (e) {
       console.error("db error", e && e.message);
     }

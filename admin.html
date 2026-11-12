@@ -36,6 +36,9 @@ header h1{font-size:1.1rem;color:var(--navy);margin-right:auto}
 .top b{font-size:1.05rem;color:var(--navy)}
 .top small{color:var(--muted)}
 .top select{width:auto;min-width:190px;margin-left:auto;font-weight:700}
+.src{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:700}
+.src.web{background:#e3f0ff;color:#0a4fbf;border:1px solid #9cc2f5}.src.at{background:#e6f6ec;color:#0a6a3a;border:1px solid #9bd5b4}
+.c.web{border-left:6px solid #1d4fbf}.c.at{border-left:6px solid #0a8a4a}
 .st-recu{border-color:#c9a400}.st-diagnostic,.st-cours{border-color:var(--blue)}.st-piece{border-color:#d9731a}.st-pret{border-color:#0a8a4a}.st-livre{border-color:#8896ad}.st-annule{border-color:#b00020}
 .row{display:grid;grid-template-columns:1fr 1fr 2fr;gap:10px;margin-top:10px}
 .c a{color:var(--blue);font-weight:700}
@@ -88,6 +91,7 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
   <p class="err" id="ae" role="alert"></p>
   <section id="v1">
    <div class="chips" id="chips"></div>
+   <div class="tabs" id="srcs" style="margin-top:0;margin-bottom:10px"><button class="tab" type="button" data-s="" aria-pressed="true">Toutes origines</button><button class="tab" type="button" data-s="en_ligne" aria-pressed="false">🌐 Commandées en ligne</button><button class="tab" type="button" data-s="atelier" aria-pressed="false">🏪 Enregistrées à l’atelier</button></div>
    <label>Rechercher<input id="q" placeholder="Code, nom, téléphone, modèle…" autocomplete="off"></label>
    <div id="list" aria-live="polite"></div>
   </section>
@@ -143,7 +147,7 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
 const ST={recu:"Reçue",diagnostic:"En diagnostic",piece:"En attente de pièce",cours:"En réparation",pret:"Prête à récupérer",livre:"Livrée",annule:"Annulée"};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let rows=[],filter="actives";
+let rows=[],filter="actives",src="";
 const MSG={password:"Mot de passe incorrect.",config:"Le serveur n’est pas configuré (DATABASE_URL ou ADMIN_PASSWORD manquant sur Vercel).",db:"Erreur de base de données."};
 
 async function api(action,data){
@@ -157,19 +161,22 @@ function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clear
 const fmt=d=>new Date(d).toLocaleString("fr-FR",{timeZone:"Africa/Abidjan",dateStyle:"short",timeStyle:"short"});
 
 function chips(){
- const n=k=>rows.filter(r=>r.status===k).length;
- const act=rows.filter(r=>r.status!=="livre"&&r.status!=="annule").length;
- const list=[["actives","En cours",act],...Object.keys(ST).map(k=>[k,ST[k],n(k)]),["tous","Toutes",rows.length]];
+ const base=rows.filter(r=>!src||r.source===src);
+ const n=k=>base.filter(r=>r.status===k).length;
+ const act=base.filter(r=>r.status!=="livre"&&r.status!=="annule").length;
+ const list=[["actives","En cours",act],...Object.keys(ST).map(k=>[k,ST[k],n(k)]),["tous","Toutes",base.length]];
  $("chips").innerHTML=list.map(([k,l,c])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${filter===k}">${esc(l)}<b>${c}</b></button>`).join("")}
 function visible(){
  const q=$("q").value.trim().toLowerCase();
- return rows.filter(r=>(filter==="tous"||(filter==="actives"?r.status!=="livre"&&r.status!=="annule":r.status===filter))&&
+ return rows.filter(r=>(!src||r.source===src)&&(filter==="tous"||(filter==="actives"?r.status!=="livre"&&r.status!=="annule":r.status===filter))&&
   (!q||[r.code,r.name,r.phone,r.brand,r.model,r.piece].join(" ").toLowerCase().includes(q)))}
 function card(r){
  const map=r.lat!=null?`https://www.google.com/maps?q=${r.lat},${r.lng}`:(r.address?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([r.address,r.city].filter(Boolean).join(", "))}`:"");
  const dom=r.kind==="domicile";
- return `<article class="c st-${esc(r.status)}" data-id="${r.id}">
- <div class="top"><b>${esc(r.code)}</b><small>${esc(fmt(r.created_at))} · ${dom?"À domicile":"Atelier"}</small>
+ const web=r.source==="en_ligne",at=r.source==="atelier";
+ const badge=web?'<span class="src web">🌐 Commandée en ligne</span>':at?'<span class="src at">🏪 Enregistrée à l’atelier</span>':"";
+ return `<article class="c st-${esc(r.status)} ${web?"web":at?"at":""}" data-id="${r.id}">
+ <div class="top"><b>${esc(r.code)}</b>${badge}<small>${esc(fmt(r.created_at))}${web?" · "+(dom?"À domicile":"Dépôt à l’atelier"):""}</small>
   <select data-f="status" aria-label="État de la réparation">${Object.keys(ST).map(k=>`<option value="${k}"${k===r.status?" selected":""}>${esc(ST[k])}</option>`).join("")}</select></div>
  <div>${esc(r.name||"Client")} · <a href="tel:${esc(String(r.phone).replace(/[^\d+]/g,""))}">${esc(r.phone)}</a></div>
  ${r.email?`<div><small>✉ ${esc(r.email)} (prévenu à chaque changement d’état)</small></div>`:`<div><small>Pas d’e-mail : le client ne sera pas prévenu</small></div>`}
@@ -200,7 +207,7 @@ $("list").addEventListener("change",async e=>{
   let msg=f==="status"?(j.mail==="sent"?"✓ Enregistré · e-mail envoyé au client":j.mail==="failed"?"Enregistré, mais l’e-mail n’a pas pu partir":"✓ Enregistré (pas d’e-mail client)"):"✓ Enregistré";
   if(j.alert==="failed")msg+=" · alerte e-mail non envoyée";
   toast(msg);
-  if(f==="status"){art.className="c st-"+j.row.status;chips()}}
+  if(f==="status"){art.className="c st-"+j.row.status+(j.row.source==="en_ligne"?" web":j.row.source==="atelier"?" at":"");chips()}}
  catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");load()}}});
 $("list").addEventListener("click",async e=>{
  const b=e.target.closest("button[data-del]");if(!b)return;
@@ -211,6 +218,7 @@ $("list").addEventListener("click",async e=>{
  catch(x){if(x.message!=="auth")toast("Suppression impossible ("+x.message+")")}});
 $("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.k;render()};
 $("q").oninput=render;
+$("srcs").onclick=e=>{const b=e.target.closest("button[data-s]");if(!b)return;src=b.dataset.s;document.querySelectorAll("#srcs .tab").forEach(x=>x.setAttribute("aria-pressed",x===b));render()};
 $("rf").onclick=load;
 $("lo").onclick=async()=>{try{await api("logout")}catch(e){}show(false)};
 $("lf").onsubmit=async e=>{e.preventDefault();$("le").textContent="";

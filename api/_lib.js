@@ -39,6 +39,10 @@ async function db() {
       await q`alter table repairs add column if not exists email text`;
       await q`alter table repairs add column if not exists cost integer`;
       await q`alter table repairs add column if not exists items text`;
+      await q`alter table repairs add column if not exists source text`;
+      // anciens dossiers : à domicile => commandé en ligne ; avec détail des pièces => saisi à l'atelier
+      await q`update repairs set source = 'en_ligne' where source is null and kind = 'domicile'`;
+      await q`update repairs set source = 'atelier' where source is null and items is not null`;
       await q`create table if not exists prices (
         id serial primary key,
         piece text not null, brand text not null, label text not null,
@@ -66,8 +70,8 @@ async function createRepair(d) {
   for (let i = 0; i < 6; i++) {
     const code = "PM-" + crypto.randomInt(100000, 1000000);
     try {
-      await q`insert into repairs (code, kind, name, phone, email, brand, model, piece, issue, city, address, slot, lat, lng, price, cost, items)
-        values (${code}, ${d.kind || "atelier"}, ${d.name || null}, ${d.phone}, ${d.email || null}, ${d.brand || null}, ${d.model || null},
+      await q`insert into repairs (code, kind, source, name, phone, email, brand, model, piece, issue, city, address, slot, lat, lng, price, cost, items)
+        values (${code}, ${d.kind || "atelier"}, ${d.source || "atelier"}, ${d.name || null}, ${d.phone}, ${d.email || null}, ${d.brand || null}, ${d.model || null},
         ${d.piece || null}, ${d.issue || null}, ${d.city || null}, ${d.address || null}, ${d.slot || null},
         ${d.lat ?? null}, ${d.lng ?? null}, ${d.price ?? null}, ${d.cost ?? null}, ${d.items ?? null})`;
       return code;

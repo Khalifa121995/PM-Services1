@@ -18,7 +18,7 @@ async function sendReport() {
   const day = new Date().toLocaleDateString("fr-FR", { timeZone: "Africa/Abidjan", dateStyle: "full" });
   const td = "padding:6px;border:1px solid #d4e0f2;font-size:13px";
   const lines = rows.map((r) =>
-    `<tr><td style="${td}">${esc(r.code)}</td><td style="${td}">${esc(r.name || "—")}<br>${esc(r.phone)}</td>` +
+    `<tr><td style="${td}">${esc(r.code)}<br><small>${r.source === "en_ligne" ? "🌐 En ligne" : r.source === "atelier" ? "🏪 Atelier" : ""}</small></td><td style="${td}">${esc(r.name || "—")}<br>${esc(r.phone)}</td>` +
     `<td style="${td}">${esc([r.brand, r.model].filter(Boolean).join(" "))}<br><small>${esc(r.piece || "")}</small></td>` +
     `<td style="${td};text-align:right">${F(r.price)}</td><td style="${td};text-align:right">${F(r.cost)}</td>` +
     `<td style="${td};text-align:right">${r.price != null ? F(r.price - (r.cost || 0)) : "—"}</td><td style="${td}">${esc(ST[r.status] || r.status)}</td></tr>`
