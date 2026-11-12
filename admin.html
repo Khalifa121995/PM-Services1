@@ -36,6 +36,7 @@ header h1{font-size:1.1rem;color:var(--navy);margin-right:auto}
 .top b{font-size:1.05rem;color:var(--navy)}
 .top small{color:var(--muted)}
 .top select{width:auto;min-width:190px;margin-left:auto;font-weight:700}
+.rc{margin:6px 0;padding:10px 12px;background:var(--mist);border:2px dashed var(--navy);border-radius:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.rc small{color:var(--muted);flex:1;min-width:160px}.rc strong{font-size:1.5rem;letter-spacing:.06em;color:var(--navy);user-select:all}
 .src{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:700}
 .src.web{background:#e3f0ff;color:#0a4fbf;border:1px solid #9cc2f5}.src.at{background:#e6f6ec;color:#0a6a3a;border:1px solid #9bd5b4}
 .c.web{border-left:6px solid #1d4fbf}.c.at{border-left:6px solid #0a8a4a}
@@ -182,6 +183,7 @@ function card(r){
  ${r.email?`<div><small>✉ ${esc(r.email)} (prévenu à chaque changement d’état)</small></div>`:`<div><small>Pas d’e-mail : le client ne sera pas prévenu</small></div>`}
  <div>${esc([r.brand,r.model].filter(Boolean).join(" "))}${r.piece?" – "+esc(r.piece):""}</div>
  <details><summary>Détails</summary>
+  <div class="rc"><small>Code de la réparation à écrire sur le reçu du client</small><strong>${esc(r.code)}</strong><button type="button" class="mini" data-copy="${esc(r.code)}">Copier</button></div>
   <p><b>Panne :</b> ${esc(r.issue||"—")}</p>
   ${dom?`<p><b>Adresse :</b> ${esc([r.address,r.city].filter(Boolean).join(", "))}${r.slot?" · "+esc(r.slot):""}</p>`:""}
   ${map?`<p><a href="${esc(map)}" target="_blank" rel="noopener">Ouvrir la carte</a></p>`:""}
@@ -210,6 +212,7 @@ $("list").addEventListener("change",async e=>{
   if(f==="status"){art.className="c st-"+j.row.status+(j.row.source==="en_ligne"?" web":j.row.source==="atelier"?" at":"");chips()}}
  catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");load()}}});
 $("list").addEventListener("click",async e=>{
+ const cp=e.target.closest("button[data-copy]");if(cp){const c=cp.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast("✓ Code "+c+" copié"),()=>toast("Code : "+c));return}
  const b=e.target.closest("button[data-del]");if(!b)return;
  const art=b.closest("article"),id=Number(art.dataset.id),r=rows.find(x=>x.id===id);if(!r)return;
  if(!confirm("Supprimer définitivement la réparation "+r.code+" ("+(r.name||"client")+") ?\nCette action est irréversible. Vous serez averti par e-mail."))return;
