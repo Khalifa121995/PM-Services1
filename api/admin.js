@@ -103,7 +103,7 @@ module.exports = async (req, res) => {
   try {
     const q = await db();
     if (b.action === "list") {
-      const rows = await q`select * from repairs order by created_at desc limit 500`;
+      const rows = await q`select * from repairs order by created_at desc limit 2000`;
       return res.status(200).json({ ok: true, rows });
     }
     if (b.action === "update") {

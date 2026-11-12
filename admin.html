@@ -70,6 +70,53 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
 .ck{display:flex;gap:8px;align-items:center}.ck input{width:auto;min-height:0;margin:0;accent-color:var(--navy)}
 .pp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.hint{grid-column:1/-1;color:var(--muted);font-weight:400}
 #ntot{background:var(--mist);border-radius:10px;padding:8px 10px}
+
+/* ===== v2 : design ===== */
+body{background:linear-gradient(180deg,#dfe9fb 0,#f3f6fc 280px) fixed}
+header{background:linear-gradient(135deg,#071d4d,#1d4fbf);border:0;box-shadow:0 4px 18px rgb(10 42 107/28%)}
+header h1{color:#fff;display:flex;align-items:center;gap:10px;font-size:1.15rem}
+header h1 i{font-style:normal;background:#fff;color:var(--navy);width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:1rem}
+header .btn{border-color:#fff;background:#fff;color:var(--navy);min-height:40px;padding:0 14px;font-size:.88rem}
+header .btn.o{background:rgb(255 255 255/14%);color:#fff;border-color:rgb(255 255 255/50%)}
+.c{box-shadow:0 2px 10px rgb(10 42 107/6%);transition:box-shadow .15s}
+.c:hover{box-shadow:0 8px 24px rgb(10 42 107/13%)}
+.tabs.main{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#fff;padding:6px;border-radius:16px;border:1px solid var(--line)}
+.tabs.main .tab{border:0;background:transparent;min-height:46px;border-radius:12px;font-size:.88rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1.1}
+.tabs.main .tab[aria-pressed=true]{background:var(--navy);color:#fff;box-shadow:0 4px 12px rgb(10 42 107/30%)}
+.tabs.main .tab small{font-size:.7rem;font-weight:700;opacity:.8}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-align:left;cursor:pointer}
+.kpi b{display:block;font-size:1.6rem;color:var(--navy);line-height:1.1}
+.kpi span{font-size:.76rem;color:var(--muted);font-weight:700}
+.kpi.warn b{color:#d9731a}.kpi.ok b{color:#0a8a4a}
+@media(max-width:600px){.kpis{grid-template-columns:repeat(2,1fr)}header .btn{padding:0 10px;font-size:.8rem}}
+.top select{border-width:2px;border-radius:999px;background:var(--mist)}
+.st-recu .top select{border-color:#c9a400}.st-pret .top select{border-color:#0a8a4a;background:#e6f6ec}.st-piece .top select{border-color:#d9731a}.st-cours .top select,.st-diagnostic .top select{border-color:var(--blue)}
+.arch{display:inline-block;background:#eef0f4;color:#4a5568;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:700}
+.bar{display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:12px}.bar label{flex:1;min-width:180px}
+.note{background:#fff8e1;border:1px solid #f0d98a;border-radius:10px;padding:8px 12px;color:#6b5200;font-size:.88rem;margin-top:10px}
+/* choix de la marque */
+.brs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bt{min-height:46px;border:2px solid var(--line);background:#fff;border-radius:12px;font-weight:700;color:var(--navy);cursor:pointer;padding:4px}
+.bt[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.sg{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;max-height:150px;overflow:auto}
+.sg button{border:1px solid var(--line);background:var(--mist);border-radius:999px;padding:6px 12px;font-weight:700;color:var(--navy);cursor:pointer;font-size:.85rem}
+.sg button:hover{background:#dbe7fb}
+.sg small{color:var(--muted)}
+/* assistant */
+.fab{position:fixed;right:16px;bottom:18px;z-index:20;min-height:52px;padding:0 18px;border-radius:999px;border:0;background:linear-gradient(135deg,#1d4fbf,#0a2a6b);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgb(10 42 107/40%)}
+#as{position:fixed;right:12px;bottom:80px;width:min(390px,calc(100vw - 24px));height:min(560px,72vh);display:flex;flex-direction:column;background:#fff;border-radius:20px;box-shadow:0 18px 50px rgb(6 24 63/35%);z-index:21;overflow:hidden;border:1px solid var(--line)}
+#as .ah{background:linear-gradient(135deg,#071d4d,#1d4fbf);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px}
+#as .ah b{flex:1}#as .ah button{background:transparent;border:0;color:#fff;font-size:1.3rem;cursor:pointer;min-height:36px;min-width:36px}
+#am{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#f7f9fd}
+.m{max-width:92%;padding:9px 12px;border-radius:14px;font-size:.92rem;line-height:1.45}
+.m.b{background:#fff;border:1px solid var(--line);align-self:flex-start}
+.m.u{background:var(--navy);color:#fff;align-self:flex-end}
+.m ul,.m ol{margin:6px 0 0 18px}.m li{margin-top:3px}
+#aq{display:flex;gap:6px;flex-wrap:wrap;padding:8px 10px;border-top:1px solid var(--line);max-height:96px;overflow:auto}
+#aq button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 10px;font-size:.78rem;font-weight:700;color:var(--navy);cursor:pointer}
+#af{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--line)}#af input{min-height:42px}#af button{min-height:42px;padding:0 14px}
+#srcs .tab{min-height:38px;font-size:.78rem;padding:2px 4px}
 </style>
 </head>
 <body>
@@ -84,20 +131,30 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
 
 <div id="app" hidden>
  <header><div class="w">
-  <h1>PM Services · Réparations</h1>
+  <h1><i>🔧</i>PM Services · Atelier</h1>
   <button class="btn" id="nb" type="button">+ Nouvelle réparation</button>
   <button class="btn o" id="rf" type="button">Actualiser</button>
   <button class="btn o" id="rp" type="button">Envoyer le rapport</button>
   <button class="btn o" id="lo" type="button">Déconnexion</button>
  </div></header>
  <div class="w">
-  <div class="tabs"><button class="tab" id="t1" type="button" aria-pressed="true">Réparations</button><button class="tab" id="t2" type="button" aria-pressed="false">Prix</button><button class="tab" id="t3" type="button" aria-pressed="false">Caisse</button></div>
+  <div class="tabs main"><button class="tab" id="t1" type="button" aria-pressed="true">🛠️ Atelier<small id="c1"></small></button><button class="tab" id="t4" type="button" aria-pressed="false">📦 Archives<small id="c4"></small></button><button class="tab" id="t2" type="button" aria-pressed="false">🏷️ Prix</button><button class="tab" id="t3" type="button" aria-pressed="false">💰 Caisse</button></div>
   <p class="err" id="ae" role="alert"></p>
   <section id="v1">
+   <div class="kpis" id="kpis"></div>
    <div class="chips" id="chips"></div>
    <div class="tabs" id="srcs" style="margin-top:0;margin-bottom:10px"><button class="tab" type="button" data-s="" aria-pressed="true">Toutes origines</button><button class="tab" type="button" data-s="en_ligne" aria-pressed="false">🌐 Commandées en ligne</button><button class="tab" type="button" data-s="atelier" aria-pressed="false">🏪 Enregistrées à l’atelier</button></div>
    <label>Rechercher<input id="q" placeholder="Code, nom, téléphone, modèle…" autocomplete="off"></label>
    <div id="list" aria-live="polite"></div>
+  </section>
+    <section id="v4" hidden>
+   <p class="note">📦 Ici se trouvent toutes les réparations <b>terminées</b> (Livrée) ou <b>annulées</b>. Elles ne gênent plus la liste de l’atelier. Pour en rouvrir une, changez simplement son état.</p>
+   <div class="bar">
+    <label>Rechercher dans les archives<input id="aqs" placeholder="Code, nom, téléphone, modèle…" autocomplete="off"></label>
+    <label style="max-width:190px;flex:0 0 190px">Période<select id="ap"><option value="all">Tout</option><option value="7">7 derniers jours</option><option value="month">Ce mois-ci</option></select></label>
+   </div>
+   <p id="asum" style="margin-top:10px;color:var(--navy);font-weight:700"></p>
+   <div id="alist" aria-live="polite"></div>
   </section>
   <section id="v2" hidden>
    <div style="display:flex;gap:8px;align-items:end;margin-top:16px;flex-wrap:wrap">
@@ -142,8 +199,13 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
   <label>Nom du client<input id="nn" autocomplete="off"></label>
   <label>Téléphone<input id="nt" inputmode="tel" required></label>
   <label>E-mail du client (facultatif)<input id="nem" type="email"></label>
-  <label>Marque<input id="nbr" placeholder="Ex. Apple"></label>
-  <label>Modèle<input id="nm" placeholder="Ex. iPhone 13" required></label>
+  <div><label style="margin-bottom:6px">1 · Choisissez la marque</label>
+   <div class="brs" id="nbrs"></div>
+   <input type="hidden" id="nbr">
+   <label id="nbol" hidden style="margin-top:8px">Nom de la marque<input id="nbo" placeholder="Ex. Nokia, Lenovo…"></label></div>
+  <div><label for="nm" style="margin-bottom:4px">2 · Modèle (tapez ou touchez dans la liste)</label>
+   <input id="nm" placeholder="Choisissez d’abord la marque" autocomplete="off" required>
+   <div class="sg" id="nsg"></div></div>
   <fieldset class="pcs"><legend>Réparations (cochez)</legend>
    <div class="it" data-p="Écran"><label class="ck"><input type="checkbox"> Écran</label><div class="pp" hidden><label>Vente (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="sale"></label><label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="cost"></label><small class="hint"></small></div></div>
    <div class="it" data-p="Vitre arrière"><label class="ck"><input type="checkbox"> Vitre arrière</label><div class="pp" hidden><label>Vente (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="sale"></label><label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="cost"></label><small class="hint"></small></div></div>
@@ -156,6 +218,13 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
   <div style="display:flex;gap:8px"><button class="btn" type="submit" style="flex:1">Enregistrer</button><button class="btn o" type="button" id="nc">Annuler</button></div>
  </form>
 </dialog>
+<button class="fab" id="fab" type="button" hidden aria-expanded="false" aria-controls="as">🤖 Aide</button>
+<aside id="as" hidden aria-label="Assistant atelier">
+ <div class="ah"><span style="font-size:1.4rem">🤖</span><b>Assistant PM Services</b><button type="button" id="ax" aria-label="Fermer">×</button></div>
+ <div id="am" aria-live="polite"></div>
+ <div id="aq"></div>
+ <form id="af"><input id="ai" placeholder="Posez votre question…" autocomplete="off"><button class="btn" type="submit">OK</button></form>
+</aside>
 <div id="toast" role="status"></div>
 
 <script>
@@ -163,6 +232,8 @@ const ST={recu:"Reçue",diagnostic:"En diagnostic",piece:"En attente de pièce",
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let rows=[],filter="actives",src="";
+const archived=r=>r.status==="livre"||r.status==="annule";
+const ACT=["recu","diagnostic","piece","cours","pret"];
 const MSG={password:"Mot de passe incorrect.",config:"Le serveur n’est pas configuré (DATABASE_URL ou ADMIN_PASSWORD manquant sur Vercel).",db:"Erreur de base de données."};
 
 async function api(action,data){
@@ -171,27 +242,41 @@ async function api(action,data){
  if(r.status===401&&action!=="login"){show(false);throw new Error("auth")}
  if(!r.ok)throw new Error(j.error||("http"+r.status));
  return j}
-function show(on){$("login").hidden=on;$("app").hidden=!on}
+function show(on){$("login").hidden=on;$("app").hidden=!on;$("fab").hidden=!on;if(!on)$("as").hidden=true}
 function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),1800)}
 const fmt=d=>new Date(d).toLocaleString("fr-FR",{timeZone:"Africa/Abidjan",dateStyle:"short",timeStyle:"short"});
 
 function chips(){
- const base=rows.filter(r=>!src||r.source===src);
+ const base=rows.filter(r=>!archived(r)&&(!src||r.source===src));
  const n=k=>base.filter(r=>r.status===k).length;
- const act=base.filter(r=>r.status!=="livre"&&r.status!=="annule").length;
- const list=[["actives","En cours",act],...Object.keys(ST).map(k=>[k,ST[k],n(k)]),["tous","Toutes",base.length]];
- $("chips").innerHTML=list.map(([k,l,c])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${filter===k}">${esc(l)}<b>${c}</b></button>`).join("")}
+ const list=[["actives","En cours",base.length],...ACT.map(k=>[k,ST[k],n(k)])];
+ $("chips").innerHTML=list.map(([k,l,c])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${filter===k}">${esc(l)}<b>${c}</b></button>`).join("");
+ const all=rows.filter(r=>!archived(r)),nb=k=>all.filter(r=>r.status===k).length;
+ $("kpis").innerHTML=`<button type="button" class="kpi" data-k="actives"><b>${all.length}</b><span>En cours</span></button>
+  <button type="button" class="kpi warn" data-k="recu"><b>${nb("recu")}</b><span>À prendre en charge</span></button>
+  <button type="button" class="kpi ok" data-k="pret"><b>${nb("pret")}</b><span>Prêtes à récupérer</span></button>
+  <button type="button" class="kpi" data-k="piece"><b>${nb("piece")}</b><span>En attente de pièce</span></button>`;
+ $("c1").textContent=all.length+" en cours";$("c4").textContent=(rows.length-all.length)+" dossiers"}
 function visible(){
  const q=$("q").value.trim().toLowerCase();
- return rows.filter(r=>(!src||r.source===src)&&(filter==="tous"||(filter==="actives"?r.status!=="livre"&&r.status!=="annule":r.status===filter))&&
+ return rows.filter(r=>!archived(r)&&(!src||r.source===src)&&(filter==="actives"||r.status===filter)&&
   (!q||[r.code,r.name,r.phone,r.brand,r.model,r.piece].join(" ").toLowerCase().includes(q)))}
+function visibleArch(){
+ const q=$("aqs").value.trim().toLowerCase(),per=$("ap").value,now=new Date();
+ const from=per==="7"?Date.now()-7*864e5:per==="month"?new Date(now.getFullYear(),now.getMonth(),1).getTime():0;
+ return rows.filter(r=>archived(r)&&new Date(r.updated_at).getTime()>=from&&
+  (!q||[r.code,r.name,r.phone,r.brand,r.model,r.piece].join(" ").toLowerCase().includes(q))).sort((a,b)=>new Date(b.updated_at)-new Date(a.updated_at))}
+function renderArch(){
+ const v=visibleArch(),tot=v.filter(r=>r.status==="livre").reduce((s,r)=>s+(r.price||0),0);
+ $("asum").textContent=v.length?v.length+" dossier(s) · "+F(tot)+" F encaissés sur les réparations livrées":"";
+ $("alist").innerHTML=v.length?v.slice(0,150).map(card).join("")+(v.length>150?'<p style="margin-top:10px;color:var(--muted)">150 premiers résultats affichés : affinez la recherche.</p>':""):'<p style="margin-top:20px;color:var(--muted)">Aucun dossier archivé pour cette recherche.</p>'}
 function card(r){
  const map=r.lat!=null?`https://www.google.com/maps?q=${r.lat},${r.lng}`:(r.address?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([r.address,r.city].filter(Boolean).join(", "))}`:"");
  const dom=r.kind==="domicile";
  const web=r.source==="en_ligne",at=r.source==="atelier";
  const badge=web?'<span class="src web">🌐 Commandée en ligne</span>':at?'<span class="src at">🏪 Enregistrée à l’atelier</span>':"";
  return `<article class="c st-${esc(r.status)} ${web?"web":at?"at":""}" data-id="${r.id}">
- <div class="top"><b>${esc(r.code)}</b>${badge}<small>${esc(fmt(r.created_at))}${web?" · "+(dom?"À domicile":"Dépôt à l’atelier"):""}</small>
+ <div class="top"><b>${esc(r.code)}</b>${badge}<small>${esc(fmt(r.created_at))}${web?" · "+(dom?"À domicile":"Dépôt à l’atelier"):""}</small>${archived(r)?`<span class="arch">📦 ${r.status==="livre"?"Livrée":"Annulée"} le ${esc(fmt(r.updated_at))}</span>`:""}
   <select data-f="status" aria-label="État de la réparation">${Object.keys(ST).map(k=>`<option value="${k}"${k===r.status?" selected":""}>${esc(ST[k])}</option>`).join("")}</select></div>
  <div>${esc(r.name||"Client")} · <a href="tel:${esc(String(r.phone).replace(/[^\d+]/g,""))}">${esc(r.phone)}</a></div>
  ${r.email?`<div><small>✉ ${esc(r.email)} (prévenu à chaque changement d’état)</small></div>`:`<div><small>Pas d’e-mail : le client ne sera pas prévenu</small></div>`}
@@ -209,38 +294,49 @@ function card(r){
  <div style="margin-top:10px"><button type="button" class="mini d" data-del="1">Supprimer cette réparation</button></div></article>`}
 function render(){
  chips();const v=visible();
- $("list").innerHTML=v.length?v.map(card).join(""):'<p style="margin-top:20px;color:var(--muted)">Aucune réparation dans cette vue.</p>'}
+ $("list").innerHTML=v.length?v.map(card).join(""):'<p style="margin-top:20px;color:var(--muted)">🎉 Aucune réparation dans cette vue. Les dossiers livrés sont dans l’onglet Archives.</p>';
+ renderArch()}
 
 async function load(){
  try{rows=(await api("list")).rows;$("ae").textContent="";render()}
  catch(e){if(e.message!=="auth")$("ae").textContent=MSG[e.message]||"Chargement impossible ("+e.message+")."}}
 
-$("list").addEventListener("change",async e=>{
+const onChange=async e=>{
  const t=e.target,f=t.dataset.f,art=t.closest("article");if(!f||!art)return;
- const id=Number(art.dataset.id),val=t.value;
+ const id=Number(art.dataset.id),val=t.value,cur=rows.find(r=>r.id===id);
+ if(f==="status"&&cur){
+  if(val==="livre"){
+   const warn=cur.price==null?"\n⚠ Aucun prix n’est enregistré pour ce dossier.":"";
+   if(!confirm("Confirmer la remise du téléphone au client ("+cur.code+") ?\nLe dossier sera déplacé dans les ARCHIVES."+warn)){t.value=cur.status;return}}
+  else if(val==="annule"&&!confirm("Annuler la réparation "+cur.code+" ?\nLe dossier ira dans les archives.")){t.value=cur.status;return}
+  else if(val==="pret"&&cur.price==null&&!confirm("Aucun prix n’est enregistré pour "+cur.code+".\nMarquer quand même comme prête ?")){t.value=cur.status;return}}
  try{const j=await api("update",{id,[f]:val});
-  const i=rows.findIndex(r=>r.id===id);if(i>-1)rows[i]=j.row;
+  const i=rows.findIndex(r=>r.id===id),was=i>-1?archived(rows[i]):false;if(i>-1)rows[i]=j.row;
   let msg=f==="status"?(j.mail==="sent"?"✓ Enregistré · e-mail envoyé au client":j.mail==="failed"?"Enregistré, mais l’e-mail n’a pas pu partir":"✓ Enregistré (pas d’e-mail client)"):"✓ Enregistré";
-  toast(msg);
-  if(f==="status"){art.className="c st-"+j.row.status+(j.row.source==="en_ligne"?" web":j.row.source==="atelier"?" at":"");chips()}}
- catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");load()}}});
-$("list").addEventListener("click",async e=>{
+  if(f==="status"&&archived(j.row)!==was){msg=(archived(j.row)?"📦 Dossier archivé · ":"↩ Dossier rouvert · ")+msg.replace("✓ ","");render()}
+  else if(f==="status"){art.className="c st-"+j.row.status+(j.row.source==="en_ligne"?" web":j.row.source==="atelier"?" at":"");chips()}
+  toast(msg)}
+ catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");load()}}};
+$("list").addEventListener("change",onChange);$("alist").addEventListener("change",onChange);
+const onClick=async e=>{
  const cp=e.target.closest("button[data-copy]");if(cp){const c=cp.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast("✓ Code "+c+" copié"),()=>toast("Code : "+c));return}
  const b=e.target.closest("button[data-del]");if(!b)return;
  const art=b.closest("article"),id=Number(art.dataset.id),r=rows.find(x=>x.id===id);if(!r)return;
  if(!confirm("Supprimer définitivement la réparation "+r.code+" ("+(r.name||"client")+") ?\nCette action est irréversible."))return;
  try{const j=await api("delete",{id});rows=rows.filter(x=>x.id!==id);render();
   toast("✓ Réparation supprimée")}
- catch(x){if(x.message!=="auth")toast("Suppression impossible ("+x.message+")")}});
+ catch(x){if(x.message!=="auth")toast("Suppression impossible ("+x.message+")")}};
+$("list").addEventListener("click",onClick);$("alist").addEventListener("click",onClick);
 $("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.k;render()};
-$("q").oninput=render;
+$("q").oninput=render;$("aqs").oninput=renderArch;$("ap").onchange=renderArch;
+$("kpis").onclick=e=>{const b=e.target.closest(".kpi");if(!b)return;filter=b.dataset.k;render()};
 $("srcs").onclick=e=>{const b=e.target.closest("button[data-s]");if(!b)return;src=b.dataset.s;document.querySelectorAll("#srcs .tab").forEach(x=>x.setAttribute("aria-pressed",x===b));render()};
-$("rf").onclick=()=>tab===3?loadCash():load();
+$("rf").onclick=()=>tab===3?loadCash():tab===2?loadPrices():load();
 $("lo").onclick=async()=>{try{await api("logout")}catch(e){}show(false)};
 $("lf").onsubmit=async e=>{e.preventDefault();$("le").textContent="";
  try{await api("login",{password:$("pw").value});$("pw").value="";show(true);load()}
  catch(x){$("le").textContent=MSG[x.message]||"Connexion impossible ("+x.message+")."}};
-$("nb").onclick=()=>{$("nf").reset();$("ne").textContent="";$("nd").showModal();autoFill();
+$("nb").onclick=()=>{$("nf").reset();$("ne").textContent="";initBrands();$("nd").showModal();autoFill();
  if(!prices.length)api("price_list").then(j=>{prices=j.rows;autoFill()}).catch(()=>{})};
 $("rp").onclick=async()=>{try{const j=await api("report_now");toast("✓ Rapport envoyé ("+j.count+" réparation(s))")}catch(x){if(x.message!=="auth")toast("Rapport non envoyé ("+x.message+")")}};
 function itemsHtml(r){let a=[];try{a=JSON.parse(r.items||"[]")}catch{}
@@ -263,13 +359,58 @@ function getItems(){return [...document.querySelectorAll("#nd .it")].filter(el=>
 $("nd").addEventListener("input",e=>{if(e.target.dataset.k==="sale")delete e.target.dataset.auto;autoFill()});
 $("nc").onclick=()=>$("nd").close();
 $("nf").onsubmit=async e=>{e.preventDefault();
- try{const items=getItems();const j=await api("create",{name:$("nn").value,phone:$("nt").value,email:$("nem").value,brand:$("nbr").value,model:$("nm").value,items,issue:$("ni").value});
-  $("nd").close();toast("✓ Dossier créé : "+j.code);filter="actives";load()}
+ const brand=brandVal(),model=$("nm").value.trim(),phone=$("nt").value.trim(),items=getItems();$("ne").textContent="";
+ if(!brand){$("ne").textContent="Choisissez la marque du téléphone.";return}
+ if(phone.replace(/\D/g,"").length<8){$("ne").textContent="Numéro de téléphone trop court.";return}
+ const dup=rows.find(r=>!archived(r)&&r.phone.replace(/\D/g,"").slice(-8)===phone.replace(/\D/g,"").slice(-8)&&(r.model||"").toLowerCase()===model.toLowerCase());
+ if(dup&&!confirm("Un dossier en cours existe déjà pour ce numéro et ce modèle ("+dup.code+").\nCréer quand même une nouvelle réparation ?"))return;
+ const sale=items.reduce((a,i)=>a+(+i.sale||0),0),cost=items.reduce((a,i)=>a+(+i.cost||0),0);
+ if(items.length&&cost>sale&&!confirm("Attention : l’achat ("+F(cost)+" F) dépasse la vente ("+F(sale)+" F). Vous perdez "+F(cost-sale)+" F.\nEnregistrer quand même ?"))return;
+ try{const j=await api("create",{name:$("nn").value,phone,email:$("nem").value,brand,model,items,issue:$("ni").value});
+  $("nd").close();toast("✓ Dossier créé : "+j.code);filter="actives";setTab(1);load()}
  catch(x){$("ne").textContent=x.message==="invalid"?"Téléphone et modèle obligatoires.":"Création impossible ("+x.message+")."}};
+/* marque -> modèle */
+const CAT={
+ "Apple":["iPhone 6","iPhone 6S","iPhone 7","iPhone 7 Plus","iPhone 8","iPhone 8 Plus","iPhone X","iPhone XR","iPhone XS","iPhone XS Max","iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max","iPhone 12 Mini","iPhone 12","iPhone 12 Pro","iPhone 12 Pro Max","iPhone 13 Mini","iPhone 13","iPhone 13 Pro","iPhone 13 Pro Max","iPhone 14","iPhone 14 Plus","iPhone 14 Pro","iPhone 14 Pro Max","iPhone 15","iPhone 15 Plus","iPhone 15 Pro","iPhone 15 Pro Max","iPhone 16","iPhone 16 Plus","iPhone 16 Pro","iPhone 16 Pro Max","iPhone 17","iPhone 17 Air","iPhone 17 Pro","iPhone 17 Pro Max"],
+ "Samsung":["Galaxy A02","Galaxy A03","Galaxy A04","Galaxy A05","Galaxy A10","Galaxy A12","Galaxy A13","Galaxy A14","Galaxy A15","Galaxy A20","Galaxy A21s","Galaxy A22","Galaxy A23","Galaxy A24","Galaxy A25","Galaxy A30","Galaxy A31","Galaxy A32","Galaxy A33","Galaxy A34","Galaxy A35","Galaxy A50","Galaxy A51","Galaxy A52","Galaxy A53","Galaxy A54","Galaxy A55","Galaxy A70","Galaxy A71","Galaxy A72","Galaxy A73","Galaxy A80","Galaxy A9","Galaxy A90","Galaxy J7 Pro","Galaxy J8","Galaxy M11","Galaxy M12","Galaxy M33","Galaxy Note 9","Galaxy Note 10","Galaxy Note 20","Galaxy Note 20 Ultra","Galaxy S8","Galaxy S9","Galaxy S10","Galaxy S20","Galaxy S20 FE","Galaxy S21","Galaxy S21 Ultra","Galaxy S22","Galaxy S22 Plus","Galaxy S22 Ultra","Galaxy S23","Galaxy S23 Plus","Galaxy S23 Ultra","Galaxy S24","Galaxy S24 Plus","Galaxy S24 Ultra"],
+ "Tecno":["Spark 7","Spark 8","Spark 9","Spark 10","Spark 20","Spark Go","Camon 15","Camon 16","Camon 17","Camon 18","Camon 19","Camon 20","Pova 3","Pova 4","Phantom X"],
+ "Infinix":["Smart 5","Smart 6","Smart 7","Smart 8","Hot 9","Hot 10","Hot 11","Hot 12i","Hot 20","Hot 30","Hot 40","Hot 60i","Note 8","Note 10","Note 12","Zero 5G"],
+ "Itel":["A56","A58","A60","P37","P38","P40","S23","Vision 1","Vision 3"],
+ "Xiaomi":["Redmi 9","Redmi 9A","Redmi 9T","Redmi 10","Redmi 12","Redmi 13","Redmi Note 9","Redmi Note 10","Redmi Note 11","Redmi Note 12","Redmi Note 13","Poco X3","Poco X5","Poco X6","Poco M5"],
+ "Huawei":["Y6","Y7","Y9 2019","P20 Lite","P30 Lite","P30","P30 Pro","P40 Lite","P40","Nova 7","Nova 10 SE","Mate 30 Pro"],
+ "Oppo":["A15","A16","A17","A31","A53","A54","A57","A58","Reno 5","Reno 6","Reno 7","Reno 8"],
+ "Vivo":["Y12","Y20","Y21","Y33s","Y36","V20","V21","V23"],
+ "Realme":["C11","C15","C21","C25","C35","C55","9 Pro","10"],
+ "Honor":["Honor 8X","Honor 9S","Honor 50","Honor 70","Honor 90"],
+ "Google":["Pixel 4","Pixel 5","Pixel 6","Pixel 7","Pixel 8"]};
+function brandList(){const b=Object.keys(CAT);prices.forEach(r=>{if(r.brand&&r.brand!=="Autres Android"&&!b.includes(r.brand))b.push(r.brand)});return b}
+function modelList(br){
+ const out=(CAT[br]||[]).slice(),have=new Set(out.map(x=>x.toLowerCase()));
+ prices.filter(r=>r.brand===br&&r.brand!=="Autres Android").forEach(r=>{
+  const seg=r.label.split("/").map(x=>x.trim()).filter(Boolean),pre=((seg[0]||"").match(/^\D*/)||[""])[0];
+  seg.forEach(x=>{const m=/^\d/.test(x)?pre+x:x;if(!have.has(m.toLowerCase())){have.add(m.toLowerCase());out.push(m)}})});
+ return out}
+const brandVal=()=>$("nbr").value==="Autre"?($("nbo").value.trim()||"Autre"):$("nbr").value;
+function initBrands(){
+ $("nbr").value="";$("nbol").hidden=true;$("nm").placeholder="Choisissez d’abord la marque";
+ $("nbrs").innerHTML=[...brandList(),"Autre"].map(b=>`<button type="button" class="bt" data-b="${esc(b)}" aria-pressed="false">${esc(b)}</button>`).join("");
+ $("nsg").innerHTML="<small>Les modèles apparaîtront ici après le choix de la marque.</small>"}
+function showModels(){
+ const br=$("nbr").value;if(!br)return;
+ if(br==="Autre"){$("nsg").innerHTML="<small>Tapez le modèle dans la case ci-dessus.</small>";return}
+ const q=$("nm").value.trim().toLowerCase(),l=modelList(br).filter(m=>!q||m.toLowerCase().includes(q));
+ $("nsg").innerHTML=l.length?l.slice(0,40).map(m=>`<button type="button" data-m="${esc(m)}">${esc(m)}</button>`).join(""):"<small>Aucun modèle dans la liste : gardez ce que vous avez tapé.</small>"}
+$("nbrs").onclick=e=>{const b=e.target.closest(".bt");if(!b)return;
+ document.querySelectorAll("#nbrs .bt").forEach(x=>x.setAttribute("aria-pressed",x===b));
+ $("nbr").value=b.dataset.b;$("nbol").hidden=b.dataset.b!=="Autre";$("nm").value="";
+ $("nm").placeholder=b.dataset.b==="Autre"?"Ex. modèle du téléphone":"Ex. "+(modelList(b.dataset.b)[0]||"modèle");
+ showModels();autoFill();(b.dataset.b==="Autre"?$("nbo"):$("nm")).focus({preventScroll:false})};
+$("nsg").onclick=e=>{const b=e.target.closest("button[data-m]");if(!b)return;$("nm").value=b.dataset.m;showModels();autoFill()};
+$("nm").addEventListener("input",showModels);
 /* onglets */
 let prices=[],tab=1;
-function setTab(n){tab=n;[1,2,3].forEach(i=>{$("v"+i).hidden=n!==i;$("t"+i).setAttribute("aria-pressed",n===i)});if(n===2)loadPrices();if(n===3)loadCash()}
-$("t1").onclick=()=>setTab(1);$("t2").onclick=()=>setTab(2);$("t3").onclick=()=>setTab(3);
+function setTab(n){tab=n;[1,2,3,4].forEach(i=>{$("v"+i).hidden=n!==i;$("t"+i).setAttribute("aria-pressed",n===i)});if(n===2)loadPrices();if(n===3)loadCash()}
+$("t1").onclick=()=>setTab(1);$("t2").onclick=()=>setTab(2);$("t3").onclick=()=>setTab(3);$("t4").onclick=()=>setTab(4);
 /* caisse */
 let cash=null;
 async function loadCash(){
@@ -327,6 +468,56 @@ $("pf").onsubmit=async e=>{e.preventDefault();
  try{await api("price_save",{id:$("pid").value,piece:$("ppc").value,brand:$("pbr").value,label:$("plb").value,quality:$("pql").value,price:$("ppr").value,models:$("pmo").value});
   $("pd").close();toast("✓ Prix enregistré");loadPrices()}
  catch(x){$("pe").textContent=x.message==="exists"?"Ce prix existe déjà (même pièce, marque, modèle et qualité).":x.message==="invalid"?"Remplissez pièce, marque, modèle et prix.":"Enregistrement impossible ("+x.message+")."}};
+
+/* ===== assistant ===== */
+const KB=[
+ {q:"Créer une réparation",k:"nouvelle creer ajouter enregistrer dossier client deposer reparation",a:"<ol><li>Touchez <b>+ Nouvelle réparation</b> en haut.</li><li>Écrivez le nom et le téléphone du client (e-mail facultatif : il sera prévenu à chaque changement d’état).</li><li>Touchez la <b>marque</b>, puis le <b>modèle</b> dans la liste (ou tapez-le).</li><li>Cochez ce qu’il faut réparer : écran, vitre arrière, ensemble… Le prix de vente apparaît tout seul s’il est dans l’onglet Prix. Ajoutez le prix d’achat de la pièce.</li><li>Touchez <b>Enregistrer</b> : un code <b>PM-xxxxxx</b> est créé, à écrire sur le reçu du client.</li></ol>"},
+ {q:"Changer l’état",k:"etat statut changer modifier avancer diagnostic piece reparation prete",a:"Sur la carte du dossier, ouvrez la liste en haut à droite et choisissez le nouvel état : <b>Reçue → En diagnostic → En attente de pièce → En réparation → Prête à récupérer → Livrée</b>. Si le client a un e-mail, il est prévenu automatiquement."},
+ {q:"Où va une réparation livrée ?",k:"livree livre archive archives terminee finie ranger encombre disparait",a:"Quand vous choisissez <b>Livrée</b>, le dossier est <b>archivé</b> : il quitte la liste de l’atelier et va dans l’onglet <b>📦 Archives</b>. Vous y retrouvez tout par recherche (code, nom, téléphone, modèle) ou par période. Une réparation <b>annulée</b> est archivée aussi."},
+ {q:"Rouvrir un dossier archivé",k:"rouvrir restaurer remettre retour archive erreur annuler livraison",a:"Allez dans <b>📦 Archives</b>, retrouvez le dossier, puis changez son état (par exemple <b>Prête à récupérer</b> ou <b>En réparation</b>). Il revient aussitôt dans l’atelier."},
+ {q:"Le code PM-xxxxxx",k:"code pm suivi client reçu numero suivre",a:"Chaque réparation a un code <b>PM-xxxxxx</b>. Le client le saisit avec son numéro de téléphone sur le site (rubrique suivi) pour voir l’état de son téléphone. Ouvrez <b>Détails</b> sur la carte pour le copier."},
+ {q:"Les prix",k:"prix tarif modifier ajouter liste ecran vitre coque catalogue",a:"Onglet <b>🏷️ Prix</b> : modifiez un prix directement dans sa case (il s’enregistre seul), ou <b>+ Ajouter un prix</b> pour un nouveau modèle. Ces prix servent à proposer automatiquement le total dans « Nouvelle réparation » et s’affichent sur le site."},
+ {q:"Prix d’achat et marge",k:"achat marge benefice gagne profit cout grossiste",a:"<b>Vente</b> = ce que paie le client. <b>Achat</b> = ce que vous avez payé au grossiste. <b>Marge = vente − achat</b>. Vous pouvez corriger ces montants dans la carte du dossier. L’application vous prévient si l’achat dépasse la vente."},
+ {q:"La caisse",k:"caisse sortie argent solde depense journee mois",a:"Onglet <b>💰 Caisse</b> : vous voyez les ventes, achats, marge et <b>solde</b> du jour et du mois (solde = ventes − achats − sorties). Notez chaque dépense avec « Sortie de caisse » (transport, repas, pièces…)."},
+ {q:"Le rapport par e-mail",k:"rapport email mail envoyer journee mois 18h59 automatique",a:"Un rapport de la journée part automatiquement chaque soir à <b>18h59</b>. Pour l’envoyer tout de suite, touchez <b>Envoyer le rapport</b> (en haut) ; le rapport du mois se trouve en bas de l’onglet Caisse."},
+ {q:"Supprimer un dossier",k:"supprimer effacer delete enlever dossier",a:"Ouvrez la carte puis <b>Supprimer cette réparation</b> (en bas). C’est <b>définitif</b> et le propriétaire reçoit un e-mail d’alerte. Pour simplement ranger un dossier terminé, ne le supprimez pas : mettez-le en <b>Livrée</b>, il ira dans les archives."},
+ {q:"Le client n’a pas reçu l’e-mail",k:"email mail client recu prevenu notification probleme",a:"Vérifiez que le dossier contient bien une adresse e-mail (sinon la carte affiche « Pas d’e-mail »). Après un changement d’état, un message en bas de l’écran indique si l’e-mail est parti. Si « l’e-mail n’a pas pu partir », vérifiez la configuration Resend sur Vercel."},
+ {q:"Rechercher un dossier",k:"rechercher chercher trouver retrouver recherche client",a:"Dans l’onglet Atelier, tapez dans <b>Rechercher</b> : code, nom, téléphone ou modèle. Pour un dossier terminé, cherchez dans l’onglet <b>📦 Archives</b>."},
+ {q:"Origine : en ligne ou atelier",k:"origine ligne web atelier domicile commandee difference bleu vert",a:"<b>🌐 Commandée en ligne</b> (bordure bleue) : demande faite par le client sur le site, à l’atelier ou à domicile. <b>🏪 Enregistrée à l’atelier</b> (bordure verte) : dossier créé par vous avec « Nouvelle réparation »."},
+ {q:"Réparation à domicile",k:"domicile adresse carte localisation gps maps",a:"Une demande à domicile affiche l’adresse et le créneau. Ouvrez <b>Détails</b> puis <b>Ouvrir la carte</b> pour la localisation du client."}
+];
+const nz=t=>t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function findAns(q){const w=nz(q).split(/[^a-z0-9]+/).filter(x=>x.length>2);let best=null,sc=0;
+ for(const e of KB){const ks=nz(e.k+" "+e.q).split(/[^a-z0-9]+/);let n=0;
+  for(const x of w)for(const k of ks){if(k===x)n+=2;else if(x.length>=4&&k.length>=4&&(k.startsWith(x.slice(0,5))||x.startsWith(k.slice(0,5))))n+=1}
+  if(n>sc){sc=n;best=e}}
+ return sc>=2?best:null}
+function diag(){
+ const now=Date.now(),act=rows.filter(r=>!archived(r)),L=[];
+ const nm=r=>esc(r.code+(r.name?" · "+r.name:""));
+ const pret=act.filter(r=>r.status==="pret");
+ if(pret.length)L.push(`📞 <b>${pret.length}</b> téléphone(s) prêt(s) : appelez ${pret.slice(0,4).map(nm).join(", ")}${pret.length>4?"…":""}.`);
+ const old=pret.filter(r=>now-new Date(r.updated_at)>3*864e5);
+ if(old.length)L.push(`⏰ <b>${old.length}</b> prêt(s) depuis plus de 3 jours, non récupéré(s) : relancez le client (${old.slice(0,3).map(nm).join(", ")}).`);
+ const rec=act.filter(r=>r.status==="recu"&&now-new Date(r.created_at)>864e5);
+ if(rec.length)L.push(`🛠️ <b>${rec.length}</b> dossier(s) « Reçue » depuis plus de 24 h : passez-les en diagnostic (${rec.slice(0,3).map(nm).join(", ")}).`);
+ const pc=act.filter(r=>r.status==="piece");
+ if(pc.length)L.push(`📦 <b>${pc.length}</b> en attente de pièce : ${pc.slice(0,3).map(nm).join(", ")}.`);
+ const np=act.filter(r=>r.price==null);
+ if(np.length)L.push(`💲 <b>${np.length}</b> dossier(s) sans prix : ${np.slice(0,3).map(nm).join(", ")}.`);
+ const ne=act.filter(r=>!r.email);
+ if(ne.length)L.push(`✉️ <b>${ne.length}</b> client(s) sans e-mail : ils ne reçoivent pas de notification.`);
+ return L.length?"Voici ce que je remarque dans votre atelier :<ul>"+L.map(x=>"<li>"+x+"</li>").join("")+"</ul>":"✅ Tout est en ordre : aucun dossier en retard. Bon travail !"}
+function say(who,html){const d=document.createElement("div");d.className="m "+who;d.innerHTML=html;$("am").appendChild(d);$("am").scrollTop=$("am").scrollHeight}
+function ask(q){say("u",esc(q));
+ if(/analys|retard|faire maintenant|priorit|atelier va|resume|bilan/.test(nz(q))){say("b",diag());return}
+ const e=findAns(q);
+ say("b",e?"<b>"+esc(e.q)+"</b><br>"+e.a:"Je n’ai pas bien compris. Essayez avec d’autres mots (ex. « archives », « prix », « caisse », « nouvelle réparation ») ou touchez une des questions ci-dessous.")}
+$("aq").innerHTML='<button type="button" data-d="1">🔎 Analyser mon atelier</button>'+KB.slice(0,9).map((e,i)=>`<button type="button" data-i="${i}">${esc(e.q)}</button>`).join("");
+$("aq").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.d){say("u","Analyser mon atelier");say("b",diag())}else ask(KB[+b.dataset.i].q)};
+$("af").onsubmit=e=>{e.preventDefault();const v=$("ai").value.trim();if(!v)return;$("ai").value="";ask(v)};
+function openAsst(on){$("as").hidden=!on;$("fab").setAttribute("aria-expanded",on);if(on){if(!$("am").children.length)say("b","Bonjour 👋 Je suis l’assistant de l’atelier. Je peux vous expliquer comment utiliser chaque partie du site, ou <b>analyser vos dossiers</b> pour vous dire quoi faire en priorité.");$("ai").focus()}}
+$("fab").onclick=()=>openAsst($("as").hidden);$("ax").onclick=()=>openAsst(false);
 setInterval(()=>{const a=document.activeElement;if(!$("app").hidden&&!$("nd").open&&!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))load()},60000);
 /* session déjà ouverte ? */
 api("list").then(j=>{rows=j.rows;show(true);render()}).catch(()=>{});
