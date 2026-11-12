@@ -182,7 +182,8 @@ function card(r){
   <p><small>Mis à jour le ${esc(fmt(r.updated_at))}</small></p></details>
  <div class="row"><label>Prix client (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="price" value="${r.price??""}"></label>
   <label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="cost" value="${r.cost??""}">${r.price!=null&&r.cost!=null?`<small style="font-weight:400">Marge : ${F(r.price-r.cost)} F</small>`:""}</label>
-  <label>Note interne<textarea data-f="note">${esc(r.note||"")}</textarea></label></div></article>`}
+  <label>Note interne<textarea data-f="note">${esc(r.note||"")}</textarea></label></div>
+ <div style="margin-top:10px"><button type="button" class="mini d" data-del="1">Supprimer cette réparation</button></div></article>`}
 function render(){
  chips();const v=visible();
  $("list").innerHTML=v.length?v.map(card).join(""):'<p style="margin-top:20px;color:var(--muted)">Aucune réparation dans cette vue.</p>'}
@@ -196,9 +197,18 @@ $("list").addEventListener("change",async e=>{
  const id=Number(art.dataset.id),val=t.value;
  try{const j=await api("update",{id,[f]:val});
   const i=rows.findIndex(r=>r.id===id);if(i>-1)rows[i]=j.row;
-  toast(f==="status"?(j.mail==="sent"?"✓ Enregistré · e-mail envoyé au client":j.mail==="failed"?"Enregistré, mais l’e-mail n’a pas pu partir":"✓ Enregistré (pas d’e-mail client)"):"✓ Enregistré");
+  let msg=f==="status"?(j.mail==="sent"?"✓ Enregistré · e-mail envoyé au client":j.mail==="failed"?"Enregistré, mais l’e-mail n’a pas pu partir":"✓ Enregistré (pas d’e-mail client)"):"✓ Enregistré";
+  if(j.alert==="failed")msg+=" · alerte e-mail non envoyée";
+  toast(msg);
   if(f==="status"){art.className="c st-"+j.row.status;chips()}}
  catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");load()}}});
+$("list").addEventListener("click",async e=>{
+ const b=e.target.closest("button[data-del]");if(!b)return;
+ const art=b.closest("article"),id=Number(art.dataset.id),r=rows.find(x=>x.id===id);if(!r)return;
+ if(!confirm("Supprimer définitivement la réparation "+r.code+" ("+(r.name||"client")+") ?\nCette action est irréversible. Vous serez averti par e-mail."))return;
+ try{const j=await api("delete",{id});rows=rows.filter(x=>x.id!==id);render();
+  toast(j.alert==="failed"?"Supprimée · alerte e-mail non envoyée":"✓ Réparation supprimée · alerte envoyée")}
+ catch(x){if(x.message!=="auth")toast("Suppression impossible ("+x.message+")")}});
 $("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.k;render()};
 $("q").oninput=render;
 $("rf").onclick=load;
