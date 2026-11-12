@@ -43,6 +43,12 @@ async function db() {
       // anciens dossiers : à domicile => commandé en ligne ; avec détail des pièces => saisi à l'atelier
       await q`update repairs set source = 'en_ligne' where source is null and kind = 'domicile'`;
       await q`update repairs set source = 'atelier' where source is null and items is not null`;
+      await q`create table if not exists cash_out (
+        id serial primary key,
+        amount integer not null,
+        reason text not null,
+        created_at timestamptz not null default now()
+      )`;
       await q`create table if not exists prices (
         id serial primary key,
         piece text not null, brand text not null, label text not null,

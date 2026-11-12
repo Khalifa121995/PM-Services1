@@ -37,6 +37,9 @@ header h1{font-size:1.1rem;color:var(--navy);margin-right:auto}
 .top small{color:var(--muted)}
 .top select{width:auto;min-width:190px;margin-left:auto;font-weight:700}
 .rc{margin:6px 0;padding:10px 12px;background:var(--mist);border:2px dashed var(--navy);border-radius:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.rc small{color:var(--muted);flex:1;min-width:160px}.rc strong{font-size:1.5rem;letter-spacing:.06em;color:var(--navy);user-select:all}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.stats div{background:var(--mist);border-radius:10px;padding:8px 10px;color:var(--muted);font-size:.85rem}.stats b{display:block;color:var(--ink);font-size:1.05rem}
+.solde{margin:10px 0 4px;padding:10px 12px;border-radius:10px;background:var(--navy);color:#fff;font-size:1.1rem}.solde b{font-size:1.4rem}.solde.neg{background:#b00020}
+.co{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:6px}.co small{color:var(--muted);display:block}
 .src{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:700}
 .src.web{background:#e3f0ff;color:#0a4fbf;border:1px solid #9cc2f5}.src.at{background:#e6f6ec;color:#0a6a3a;border:1px solid #9bd5b4}
 .c.web{border-left:6px solid #1d4fbf}.c.at{border-left:6px solid #0a8a4a}
@@ -88,7 +91,7 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
   <button class="btn o" id="lo" type="button">Déconnexion</button>
  </div></header>
  <div class="w">
-  <div class="tabs"><button class="tab" id="t1" type="button" aria-pressed="true">Réparations</button><button class="tab" id="t2" type="button" aria-pressed="false">Prix</button></div>
+  <div class="tabs"><button class="tab" id="t1" type="button" aria-pressed="true">Réparations</button><button class="tab" id="t2" type="button" aria-pressed="false">Prix</button><button class="tab" id="t3" type="button" aria-pressed="false">Caisse</button></div>
   <p class="err" id="ae" role="alert"></p>
   <section id="v1">
    <div class="chips" id="chips"></div>
@@ -101,6 +104,17 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
     <label style="flex:1;min-width:200px">Rechercher un prix<input id="pq" placeholder="Modèle, marque, pièce…" autocomplete="off"></label>
     <button class="btn" id="pa" type="button">+ Ajouter un prix</button></div>
    <div id="plist"></div>
+  </section>
+  <section id="v3" hidden>
+   <div id="cs" style="margin-top:16px"></div>
+   <form class="c g" id="cf"><h3 style="color:var(--navy)">Sortie de caisse</h3>
+    <label>Montant (F)<input id="ca" type="number" min="1" step="500" inputmode="numeric" required></label>
+    <label>Motif<input id="cr" placeholder="Ex. Achat de pièces, transport, repas…" maxlength="120" required></label>
+    <p class="err" id="ce" role="alert"></p>
+    <button class="btn" type="submit">Enregistrer la sortie</button></form>
+   <h3 class="pg">Sorties d’aujourd’hui</h3><div id="clist"></div>
+   <details style="margin-top:14px"><summary>Sorties de tout le mois</summary><div id="cmon"></div></details>
+   <div style="margin-top:16px"><button class="btn o" id="rm" type="button">Envoyer le rapport du mois</button></div>
   </section>
   <p style="height:40px"></p>
  </div>
@@ -207,7 +221,6 @@ $("list").addEventListener("change",async e=>{
  try{const j=await api("update",{id,[f]:val});
   const i=rows.findIndex(r=>r.id===id);if(i>-1)rows[i]=j.row;
   let msg=f==="status"?(j.mail==="sent"?"✓ Enregistré · e-mail envoyé au client":j.mail==="failed"?"Enregistré, mais l’e-mail n’a pas pu partir":"✓ Enregistré (pas d’e-mail client)"):"✓ Enregistré";
-  if(j.alert==="failed")msg+=" · alerte e-mail non envoyée";
   toast(msg);
   if(f==="status"){art.className="c st-"+j.row.status+(j.row.source==="en_ligne"?" web":j.row.source==="atelier"?" at":"");chips()}}
  catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");load()}}});
@@ -215,14 +228,14 @@ $("list").addEventListener("click",async e=>{
  const cp=e.target.closest("button[data-copy]");if(cp){const c=cp.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast("✓ Code "+c+" copié"),()=>toast("Code : "+c));return}
  const b=e.target.closest("button[data-del]");if(!b)return;
  const art=b.closest("article"),id=Number(art.dataset.id),r=rows.find(x=>x.id===id);if(!r)return;
- if(!confirm("Supprimer définitivement la réparation "+r.code+" ("+(r.name||"client")+") ?\nCette action est irréversible. Vous serez averti par e-mail."))return;
+ if(!confirm("Supprimer définitivement la réparation "+r.code+" ("+(r.name||"client")+") ?\nCette action est irréversible."))return;
  try{const j=await api("delete",{id});rows=rows.filter(x=>x.id!==id);render();
-  toast(j.alert==="failed"?"Supprimée · alerte e-mail non envoyée":"✓ Réparation supprimée · alerte envoyée")}
+  toast("✓ Réparation supprimée")}
  catch(x){if(x.message!=="auth")toast("Suppression impossible ("+x.message+")")}});
 $("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.k;render()};
 $("q").oninput=render;
 $("srcs").onclick=e=>{const b=e.target.closest("button[data-s]");if(!b)return;src=b.dataset.s;document.querySelectorAll("#srcs .tab").forEach(x=>x.setAttribute("aria-pressed",x===b));render()};
-$("rf").onclick=load;
+$("rf").onclick=()=>tab===3?loadCash():load();
 $("lo").onclick=async()=>{try{await api("logout")}catch(e){}show(false)};
 $("lf").onsubmit=async e=>{e.preventDefault();$("le").textContent="";
  try{await api("login",{password:$("pw").value});$("pw").value="";show(true);load()}
@@ -255,8 +268,29 @@ $("nf").onsubmit=async e=>{e.preventDefault();
  catch(x){$("ne").textContent=x.message==="invalid"?"Téléphone et modèle obligatoires.":"Création impossible ("+x.message+")."}};
 /* onglets */
 let prices=[],tab=1;
-function setTab(n){tab=n;$("v1").hidden=n!==1;$("v2").hidden=n!==2;$("t1").setAttribute("aria-pressed",n===1);$("t2").setAttribute("aria-pressed",n===2);if(n===2)loadPrices()}
-$("t1").onclick=()=>setTab(1);$("t2").onclick=()=>setTab(2);
+function setTab(n){tab=n;[1,2,3].forEach(i=>{$("v"+i).hidden=n!==i;$("t"+i).setAttribute("aria-pressed",n===i)});if(n===2)loadPrices();if(n===3)loadCash()}
+$("t1").onclick=()=>setTab(1);$("t2").onclick=()=>setTab(2);$("t3").onclick=()=>setTab(3);
+/* caisse */
+let cash=null;
+async function loadCash(){
+ try{cash=await api("cash_summary");$("ae").textContent="";renderCash()}
+ catch(e){if(e.message!=="auth")$("ae").textContent="Chargement de la caisse impossible ("+e.message+")."}}
+function statsHtml(t,l,s,extra){return `<div class="c"${extra||""}><h3 style="color:var(--navy);margin-bottom:8px">${t}</h3><div class="stats">
+ <div>Ventes<b>${F(s.sales)} F</b></div><div>Achats<b>${F(s.cost)} F</b></div><div>Marge<b>${F(s.margin)} F</b></div><div>Sorties de caisse<b>− ${F(s.out)} F</b></div></div>
+ <p class="solde${s.solde<0?" neg":""}">${l} : <b>${F(s.solde)} F</b></p><small style="color:var(--muted)">${s.count} réparation(s) · solde = ventes − achats − sorties</small></div>`}
+function outsList(a){return a.length?a.slice().reverse().map(o=>`<div class="co" data-id="${o.id}"><div><b>${esc(o.reason)}</b><small>${esc(fmt(o.created_at))}</small></div><b>− ${F(o.amount)} F</b><button type="button" class="mini d" data-cdel="1">Suppr.</button></div>`).join(""):'<p style="margin-top:8px;color:var(--muted)">Aucune sortie.</p>'}
+function renderCash(){if(!cash)return;
+ $("cs").innerHTML=statsHtml("Aujourd’hui","Solde de la journée",cash.day)+statsHtml("Ce mois-ci","Solde du mois",cash.month,' style="margin-top:10px"');
+ $("clist").innerHTML=outsList(cash.day.outs);$("cmon").innerHTML=outsList(cash.month.outs)}
+$("cf").onsubmit=async e=>{e.preventDefault();$("ce").textContent="";
+ try{await api("cash_add",{amount:$("ca").value,reason:$("cr").value});$("cf").reset();toast("✓ Sortie enregistrée");loadCash()}
+ catch(x){if(x.message!=="auth")$("ce").textContent=x.message==="invalid"?"Indiquez un montant et un motif.":"Enregistrement impossible ("+x.message+")."}};
+$("v3").addEventListener("click",async e=>{
+ const b=e.target.closest("button[data-cdel]");if(!b)return;
+ if(!confirm("Supprimer cette sortie de caisse ?"))return;
+ try{await api("cash_delete",{id:Number(b.closest(".co").dataset.id)});toast("✓ Sortie supprimée");loadCash()}
+ catch(x){if(x.message!=="auth")toast("Suppression impossible ("+x.message+")")}});
+$("rm").onclick=async()=>{try{const j=await api("report_month");toast("✓ Rapport du mois envoyé ("+j.count+" réparation(s))")}catch(x){if(x.message!=="auth")toast("Rapport non envoyé ("+x.message+")")}};
 const F=n=>new Intl.NumberFormat("fr-FR").format(n);
 async function loadPrices(){
  try{prices=(await api("price_list")).rows;$("ae").textContent="";renderPrices()}

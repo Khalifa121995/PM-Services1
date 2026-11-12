@@ -1,5 +1,5 @@
 const { STATUSES, EMAIL_RE, db, createRepair, sendMail, same, token, isAdmin } = require("./_lib");
-const { sendReport } = require("./_rapport");
+const { sendReport, sendMonthReport, periodData } = require("./_rapport");
 
 const one = (s, n = 200) => String(s ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, n);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -30,6 +30,12 @@ function statusMail(r, host) {
 }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/* envoi garanti : une 2e tentative si la première échoue */
+async function sendTry(m) {
+  let r = await sendMail(m);
+  if (!r.ok) { await sleep(700); r = await sendMail(m); }
+  return r;
+}
 const fr = (n) => (n == null ? "—" : new Intl.NumberFormat("fr-FR").format(n) + " F");
 /* e-mail d'alerte au propriétaire (NOTIFY_TO) à chaque suppression ou modification d'une réparation */
 async function alertOwner(title, changes, r) {
@@ -51,7 +57,19 @@ async function alertOwner(title, changes, r) {
     ${changes.length ? `<ul>${changes.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
     <table style="border-collapse:collapse;width:100%">${info.map(([k, v]) => `<tr><td style="${td};background:#eef3fb;font-weight:bold;width:34%">${esc(k)}</td><td style="${td}">${esc(v)}</td></tr>`).join("")}</table></div>`;
   const text = `${title}\n${when}\n\n${changes.join("\n")}\n\n` + info.map(([k, v]) => `${k} : ${v}`).join("\n");
-  return (await sendMail({ to, subject: `${title} – ${r.code}`, html, text })).ok ? "sent" : "failed";
+  return (await sendTry({ to, subject: `${title} – ${r.code}`, html, text })).ok ? "sent" : "failed";
+}
+/* alerte propriétaire pour la caisse (sortie supprimée) */
+async function alertCash(title, o) {
+  const to = (process.env.NOTIFY_TO || "").split(",").map((x) => x.trim()).filter(Boolean);
+  if (!to.length) return "none";
+  const when = new Date().toLocaleString("fr-FR", { timeZone: "Africa/Abidjan" });
+  const made = new Date(o.created_at).toLocaleString("fr-FR", { timeZone: "Africa/Abidjan" });
+  const html = `<div style="font-family:Arial,sans-serif;color:#0a1b3d;max-width:560px">
+    <h2 style="color:#b00020;margin:0 0 4px">${esc(title)}</h2><p style="margin:0 0 12px;color:#4a6288">${esc(when)}</p>
+    <p><b>Motif :</b> ${esc(o.reason)}<br><b>Montant :</b> ${esc(fr(o.amount))}<br><b>Enregistrée le :</b> ${esc(made)}</p></div>`;
+  const text = `${title}\n${when}\n\nMotif : ${o.reason}\nMontant : ${fr(o.amount)}\nEnregistrée le : ${made}`;
+  return (await sendTry({ to, subject: `${title} – ${fr(o.amount)}`, html, text })).ok ? "sent" : "failed";
 }
 
 module.exports = async (req, res) => {
@@ -141,6 +159,31 @@ module.exports = async (req, res) => {
     }
     if (b.action === "report_now") {
       const r = await sendReport();
+      return res.status(r.ok ? 200 : 502).json({ ok: r.ok, count: r.count, error: r.ok ? undefined : "mail_" + r.status });
+    }
+    if (b.action === "cash_summary") {
+      const pub = (d) => ({ sales: d.sales, cost: d.cost, out: d.out, margin: d.margin, solde: d.solde, count: d.count, outs: d.outs });
+      const day = await periodData("day");
+      const month = await periodData("month");
+      return res.status(200).json({ ok: true, day: pub(day), month: pub(month) });
+    }
+    if (b.action === "cash_add") {
+      const amount = Math.round(Number(b.amount));
+      const reason = one(b.reason, 120);
+      if (!Number.isFinite(amount) || amount <= 0 || !reason) return res.status(400).json({ ok: false, error: "invalid" });
+      const row = (await q`insert into cash_out (amount, reason) values (${amount}, ${reason}) returning *`)[0];
+      return res.status(200).json({ ok: true, row });
+    }
+    if (b.action === "cash_delete") {
+      const id = Number(b.id);
+      const cur = (await q`select * from cash_out where id = ${id}`)[0];
+      if (!cur) return res.status(404).json({ ok: false, error: "notfound" });
+      await q`delete from cash_out where id = ${id}`;
+      const alert = await alertCash("Sortie de caisse SUPPRIMÉE", cur);
+      return res.status(200).json({ ok: true, alert });
+    }
+    if (b.action === "report_month") {
+      const r = await sendMonthReport();
       return res.status(r.ok ? 200 : 502).json({ ok: r.ok, count: r.count, error: r.ok ? undefined : "mail_" + r.status });
     }
     if (b.action === "price_list") {
