@@ -37,7 +37,7 @@ header h1{font-size:1.1rem;color:var(--navy);margin-right:auto}
 .top small{color:var(--muted)}
 .top select{width:auto;min-width:190px;margin-left:auto;font-weight:700}
 .st-recu{border-color:#c9a400}.st-diagnostic,.st-cours{border-color:var(--blue)}.st-piece{border-color:#d9731a}.st-pret{border-color:#0a8a4a}.st-livre{border-color:#8896ad}.st-annule{border-color:#b00020}
-.row{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:10px}
+.row{display:grid;grid-template-columns:1fr 1fr 2fr;gap:10px;margin-top:10px}
 .c a{color:var(--blue);font-weight:700}
 details{margin-top:6px;color:var(--muted)}
 summary{cursor:pointer;color:var(--navy);font-weight:700}
@@ -59,6 +59,10 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
 .mini.d{color:#b00020}
 @media(max-width:600px){.pr{grid-template-columns:1fr}}
 @media(max-width:600px){.row{grid-template-columns:1fr}.top select{width:100%;margin-left:0}}
+.pcs{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:grid;gap:8px}.pcs legend{font-size:.85rem;font-weight:700;color:var(--navy);padding:0 4px}
+.ck{display:flex;gap:8px;align-items:center}.ck input{width:auto;min-height:0;margin:0;accent-color:var(--navy)}
+.pp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.hint{grid-column:1/-1;color:var(--muted);font-weight:400}
+#ntot{background:var(--mist);border-radius:10px;padding:8px 10px}
 </style>
 </head>
 <body>
@@ -76,6 +80,7 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
   <h1>PM Services · Réparations</h1>
   <button class="btn" id="nb" type="button">+ Nouvelle réparation</button>
   <button class="btn o" id="rf" type="button">Actualiser</button>
+  <button class="btn o" id="rp" type="button">Envoyer le rapport</button>
   <button class="btn o" id="lo" type="button">Déconnexion</button>
  </div></header>
  <div class="w">
@@ -120,7 +125,13 @@ dialog::backdrop{background:rgb(6 24 63/50%)}
   <label>E-mail du client (facultatif)<input id="nem" type="email"></label>
   <label>Marque<input id="nbr" placeholder="Ex. Apple"></label>
   <label>Modèle<input id="nm" placeholder="Ex. iPhone 13" required></label>
-  <label>Pièce<input id="np" placeholder="Ex. Écran"></label>
+  <fieldset class="pcs"><legend>Réparations (cochez)</legend>
+   <div class="it" data-p="Écran"><label class="ck"><input type="checkbox"> Écran</label><div class="pp" hidden><label>Vente (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="sale"></label><label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="cost"></label><small class="hint"></small></div></div>
+   <div class="it" data-p="Vitre arrière"><label class="ck"><input type="checkbox"> Vitre arrière</label><div class="pp" hidden><label>Vente (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="sale"></label><label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="cost"></label><small class="hint"></small></div></div>
+   <div class="it" data-p="Coque complète"><label class="ck"><input type="checkbox"> Ensemble (coque complète)</label><div class="pp" hidden><label>Vente (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="sale"></label><label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="cost"></label><small class="hint"></small></div></div>
+   <div class="it" data-p="Autre"><label class="ck"><input type="checkbox"> Autre</label><div class="pp" hidden><label style="grid-column:1/-1">Précisez<input data-k="label" placeholder="Ex. Batterie, connecteur…"></label><label>Vente (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="sale"></label><label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="cost"></label></div></div>
+  </fieldset>
+  <p id="ntot"></p>
   <label>Panne<textarea id="ni"></textarea></label>
   <p class="err" id="ne" role="alert"></p>
   <div style="display:flex;gap:8px"><button class="btn" type="submit" style="flex:1">Enregistrer</button><button class="btn o" type="button" id="nc">Annuler</button></div>
@@ -167,8 +178,10 @@ function card(r){
   <p><b>Panne :</b> ${esc(r.issue||"—")}</p>
   ${dom?`<p><b>Adresse :</b> ${esc([r.address,r.city].filter(Boolean).join(", "))}${r.slot?" · "+esc(r.slot):""}</p>`:""}
   ${map?`<p><a href="${esc(map)}" target="_blank" rel="noopener">Ouvrir la carte</a></p>`:""}
+  ${itemsHtml(r)}
   <p><small>Mis à jour le ${esc(fmt(r.updated_at))}</small></p></details>
- <div class="row"><label>Prix (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="price" value="${r.price??""}"></label>
+ <div class="row"><label>Prix client (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="price" value="${r.price??""}"></label>
+  <label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="cost" value="${r.cost??""}">${r.price!=null&&r.cost!=null?`<small style="font-weight:400">Marge : ${F(r.price-r.cost)} F</small>`:""}</label>
   <label>Note interne<textarea data-f="note">${esc(r.note||"")}</textarea></label></div></article>`}
 function render(){
  chips();const v=visible();
@@ -193,10 +206,30 @@ $("lo").onclick=async()=>{try{await api("logout")}catch(e){}show(false)};
 $("lf").onsubmit=async e=>{e.preventDefault();$("le").textContent="";
  try{await api("login",{password:$("pw").value});$("pw").value="";show(true);load()}
  catch(x){$("le").textContent=MSG[x.message]||"Connexion impossible ("+x.message+")."}};
-$("nb").onclick=()=>{$("nf").reset();$("ne").textContent="";$("nd").showModal()};
+$("nb").onclick=()=>{$("nf").reset();$("ne").textContent="";$("nd").showModal();autoFill();
+ if(!prices.length)api("price_list").then(j=>{prices=j.rows;autoFill()}).catch(()=>{})};
+$("rp").onclick=async()=>{try{const j=await api("report_now");toast("✓ Rapport envoyé ("+j.count+" réparation(s))")}catch(x){if(x.message!=="auth")toast("Rapport non envoyé ("+x.message+")")}};
+function itemsHtml(r){let a=[];try{a=JSON.parse(r.items||"[]")}catch{}
+ return a.length?`<p><b>Réparations :</b> ${a.map(i=>esc(i.piece)+" – "+F(i.sale)+" F (achat "+F(i.cost)+" F)").join(" · ")}</p>`:""}
+function sug(piece){const m=$("nm").value.trim().toLowerCase();if(!m)return null;let best=null,sc=0;
+ for(const r of prices.filter(x=>x.piece===piece)){
+  const segs=r.label.toLowerCase().split("/").concat((r.models||"").toLowerCase().split(",")).map(s=>s.trim()).filter(Boolean);
+  for(const s of segs){const v=s===m?1000:(m.includes(s)?s.length:0);if(v>sc){sc=v;best=r}}}
+ return best}
+function autoFill(){let s=0,c=0;
+ document.querySelectorAll("#nd .it").forEach(el=>{const on=el.querySelector(".ck input").checked;el.querySelector(".pp").hidden=!on;if(!on)return;
+  const sale=el.querySelector("[data-k=sale]"),h=el.querySelector(".hint");
+  if(h){const r=el.dataset.p==="Autre"?null:sug(el.dataset.p);h.textContent=r?"Prix en base : "+F(r.price)+" F ("+r.label+")":"";
+   if(r&&(sale.value===""||sale.dataset.auto)){sale.value=r.price;sale.dataset.auto="1"}}
+  s+=+sale.value||0;c+=+el.querySelector("[data-k=cost]").value||0});
+ $("ntot").innerHTML=`Total client : <b>${F(s)} F</b> · Achat : ${F(c)} F · Marge : <b>${F(s-c)} F</b>`}
+function getItems(){return [...document.querySelectorAll("#nd .it")].filter(el=>el.querySelector(".ck input").checked).map(el=>({
+ piece:el.dataset.p==="Autre"?(el.querySelector("[data-k=label]").value.trim()||"Autre"):el.dataset.p,
+ sale:el.querySelector("[data-k=sale]").value,cost:el.querySelector("[data-k=cost]").value}))}
+$("nd").addEventListener("input",e=>{if(e.target.dataset.k==="sale")delete e.target.dataset.auto;autoFill()});
 $("nc").onclick=()=>$("nd").close();
 $("nf").onsubmit=async e=>{e.preventDefault();
- try{const j=await api("create",{name:$("nn").value,phone:$("nt").value,email:$("nem").value,brand:$("nbr").value,model:$("nm").value,piece:$("np").value,issue:$("ni").value});
+ try{const items=getItems();const j=await api("create",{name:$("nn").value,phone:$("nt").value,email:$("nem").value,brand:$("nbr").value,model:$("nm").value,items,issue:$("ni").value});
   $("nd").close();toast("✓ Dossier créé : "+j.code);filter="actives";load()}
  catch(x){$("ne").textContent=x.message==="invalid"?"Téléphone et modèle obligatoires.":"Création impossible ("+x.message+")."}};
 /* onglets */

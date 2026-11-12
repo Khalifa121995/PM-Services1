@@ -1,4 +1,5 @@
 const { STATUSES, EMAIL_RE, db, createRepair, sendMail, same, token, isAdmin } = require("./_lib");
+const { sendReport } = require("./_rapport");
 
 const one = (s, n = 200) => String(s ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, n);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -72,8 +73,12 @@ module.exports = async (req, res) => {
         b.price === undefined ? cur.price
         : b.price === "" || b.price === null ? null
         : Math.max(0, Math.round(Number(b.price)) || 0);
+      const cost =
+        b.cost === undefined ? cur.cost
+        : b.cost === "" || b.cost === null ? null
+        : Math.max(0, Math.round(Number(b.cost)) || 0);
       const note = b.note === undefined ? cur.note : String(b.note).slice(0, 1000);
-      const rows = await q`update repairs set status = ${status}, price = ${price}, note = ${note}, updated_at = now()
+      const rows = await q`update repairs set status = ${status}, price = ${price}, cost = ${cost}, note = ${note}, updated_at = now()
         where id = ${id} returning *`;
       const row = rows[0];
       let mail = "none";
@@ -85,11 +90,20 @@ module.exports = async (req, res) => {
     }
     if (b.action === "create") {
       const email = one(b.email, 120);
+      const n0 = (v) => Math.max(0, Math.round(Number(v)) || 0);
+      const items = (Array.isArray(b.items) ? b.items : []).slice(0, 10)
+        .map((i) => ({ piece: one(i.piece, 60), sale: n0(i.sale), cost: n0(i.cost) })).filter((i) => i.piece);
+      const sale = items.reduce((s, i) => s + i.sale, 0), cost = items.reduce((s, i) => s + i.cost, 0);
       const d = { kind: "atelier", name: one(b.name, 80), phone: one(b.phone, 30), email: EMAIL_RE.test(email) ? email : "", brand: one(b.brand, 40),
-        model: one(b.model, 80), piece: one(b.piece, 40), issue: one(b.issue, 800) };
+        model: one(b.model, 80), piece: items.map((i) => i.piece).join(" + ").slice(0, 200), issue: one(b.issue, 800),
+        price: items.length ? sale : null, cost: items.length ? cost : null, items: items.length ? JSON.stringify(items) : null };
       if (!d.phone || !d.model) return res.status(400).json({ ok: false, error: "invalid" });
       const code = await createRepair(d);
       return res.status(200).json({ ok: true, code });
+    }
+    if (b.action === "report_now") {
+      const r = await sendReport();
+      return res.status(r.ok ? 200 : 502).json({ ok: r.ok, count: r.count, error: r.ok ? undefined : "mail_" + r.status });
     }
     if (b.action === "price_list") {
       const rows = await q`select * from prices order by piece, brand, id`;

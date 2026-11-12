@@ -1,1 +1,1 @@
-{ "cleanUrls": true }
+{ "cleanUrls": true, "crons": [{ "path": "/api/rapport", "schedule": "59 18 * * *" }] }
