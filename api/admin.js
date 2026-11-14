@@ -72,6 +72,35 @@ async function alertCash(title, o) {
   return (await sendTry({ to, subject: `${title} – ${fr(o.amount)}`, html, text })).ok ? "sent" : "failed";
 }
 
+/* ---- ajout automatique des modèles inconnus dans la base des prix ---- */
+const STRIP = /^(?:(?:galaxy|samsung|tecno|infinix|itel|xiaomi|huawei|oppo|vivo|realme|honor|apple|google)\s+)+/;
+const nk = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim().replace(STRIP, "").replace(/ /g, "");
+function modelKeys(r) {
+  const seg = String(r.label).split("/").map((x) => x.trim()).filter(Boolean);
+  const pre = ((seg[0] || "").match(/^\D*/) || [""])[0];
+  const keys = seg.map((x) => nk(/^\d/.test(x) ? pre + x : x));
+  String(r.models || "").split(",").forEach((x) => { if (x.trim()) keys.push(nk(x)); });
+  return keys;
+}
+async function autoPrices(q, brand, model, items) {
+  const added = [], mk = nk(model);
+  if (!brand || !mk) return added;
+  const all = await q`select piece, brand, label, models from prices`;
+  const known = all.find((r) => r.brand.toLowerCase() === brand.toLowerCase());
+  const b = known ? known.brand : brand;
+  for (const it of items) {
+    if (!(it.sale > 0) || !it.piece || it.piece.toLowerCase() === "autre") continue;
+    const covered = all.some((r) => r.piece.toLowerCase() === it.piece.toLowerCase() &&
+      (r.brand.toLowerCase() === b.toLowerCase() || r.brand === "Autres Android") && modelKeys(r).includes(mk));
+    if (covered) continue;
+    const ins = await q`insert into prices (piece, brand, label, quality, price, models)
+      values (${it.piece}, ${b}, ${model}, null, ${it.sale}, null) on conflict do nothing returning id`;
+    if (ins.length) { added.push(it.piece); all.push({ piece: it.piece, brand: b, label: model, models: null }); }
+  }
+  return added;
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -147,7 +176,9 @@ module.exports = async (req, res) => {
         price: items.length ? sale : null, cost: items.length ? cost : null, items: items.length ? JSON.stringify(items) : null };
       if (!d.phone || !d.model) return res.status(400).json({ ok: false, error: "invalid" });
       const code = await createRepair(d);
-      return res.status(200).json({ ok: true, code });
+      let added = [];
+      try { added = await autoPrices(q, d.brand, d.model, items); } catch (e) { console.error("auto prix", e && e.message); }
+      return res.status(200).json({ ok: true, code, added });
     }
     if (b.action === "delete") {
       const id = Number(b.id);

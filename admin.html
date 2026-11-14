@@ -117,12 +117,41 @@ header .btn.o{background:rgb(255 255 255/14%);color:#fff;border-color:rgb(255 25
 #aq button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 10px;font-size:.78rem;font-weight:700;color:var(--navy);cursor:pointer}
 #af{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--line)}#af input{min-height:42px}#af button{min-height:42px;padding:0 14px}
 #srcs .tab{min-height:38px;font-size:.78rem;padding:2px 4px}
+
+/* ===== v3 : design sans emoji ===== */
+.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;flex:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,box-shadow .12s}.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgb(10 42 107/25%)}
+header .w{min-height:68px}header h1{gap:12px}header h1 span{font-weight:800;letter-spacing:.02em}
+.lg{height:42px;width:auto;border-radius:12px;background:#fff;padding:3px 6px;display:block}
+.lgl{display:block;width:210px;max-width:70%;margin:0 auto 14px;border-radius:12px}
+.box{border-radius:22px;box-shadow:0 18px 50px rgb(10 42 107/16%);padding:28px}.box h1{text-align:center}
+.tabs.main{box-shadow:0 6px 20px rgb(10 42 107/8%);border-radius:18px}.tabs.main .tab{gap:4px}.tabs.main .tab .i{width:1.35em;height:1.35em}
+.kpi{position:relative;padding:12px 52px 12px 14px;border-radius:16px;transition:transform .12s,box-shadow .12s}.kpi:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgb(10 42 107/12%)}
+.ki{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:var(--mist);color:var(--navy)}
+.kpi.warn .ki{background:#fff1e0;color:#d9731a}.kpi.ok .ki{background:#e6f6ec;color:#0a8a4a}
+.chip{border-width:1px;padding:7px 14px}
+.c{--sc:#8896ad;border-radius:18px;padding:16px}.c.web,.c.at{border-left:5px solid var(--sc)}
+.st-recu{--sc:#c9a400}.st-diagnostic,.st-cours{--sc:#1d4fbf}.st-piece{--sc:#d9731a}.st-pret{--sc:#0a8a4a}.st-livre{--sc:#8896ad}.st-annule{--sc:#b00020}
+.top b{font-family:ui-monospace,Consolas,monospace;background:var(--mist);padding:3px 10px;border-radius:8px;letter-spacing:.04em}
+.src{display:inline-flex;align-items:center;gap:6px}.arch{display:inline-flex;align-items:center;gap:6px}
+.dev{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--navy);margin-top:4px}
+.c small .i{margin-right:4px}
+dialog{border-radius:22px;max-height:94vh;box-shadow:0 24px 60px rgb(6 24 63/35%)}
+.sec{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:6px}
+.note.info{background:#eaf2ff;border-color:#b9d0f5;color:#0a2a6b;margin-top:8px}
+.bt{border-radius:14px;transition:transform .12s}.bt:hover{transform:translateY(-1px)}
+#ntot{background:linear-gradient(135deg,#eef3fb,#dfe9fb);border-radius:12px;padding:10px 12px}
+.fab{display:inline-flex;align-items:center;gap:8px}#as .ah .i{width:1.5em;height:1.5em}
+.empty,#list>p,#alist>p{text-align:center;padding:26px 10px;color:var(--muted)}
+@media(max-width:600px){header .btn .tx{display:none}header .btn{padding:0 12px}.lg{height:36px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol><symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11h14V8M10 12h4"/></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8zM7.5 7.5h.01"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM3 7V6a2 2 0 0 1 2-2h12M16 14h2"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9M10 20v-5h4v5"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 16h6"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-device" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol></svg>
 <main id="login">
  <form class="box" id="lf">
-  <h1>Espace atelier PM Services</h1>
+  <img class="lgl" src="/logo.jpg" alt="PM Services"><h1>Espace atelier</h1>
   <label>Mot de passe<input type="password" id="pw" autocomplete="current-password" required></label>
   <p class="err" id="le" role="alert"></p>
   <button class="btn" type="submit" style="width:100%;margin-top:6px">Se connecter</button>
@@ -131,24 +160,24 @@ header .btn.o{background:rgb(255 255 255/14%);color:#fff;border-color:rgb(255 25
 
 <div id="app" hidden>
  <header><div class="w">
-  <h1><i>🔧</i>PM Services · Atelier</h1>
-  <button class="btn" id="nb" type="button">+ Nouvelle réparation</button>
-  <button class="btn o" id="rf" type="button">Actualiser</button>
-  <button class="btn o" id="rp" type="button">Envoyer le rapport</button>
-  <button class="btn o" id="lo" type="button">Déconnexion</button>
+  <h1><img class="lg" src="/logo.jpg" alt="PM Services"><span>Atelier</span></h1>
+  <button class="btn" id="nb" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span class="tx">Nouvelle réparation</span></button>
+  <button class="btn o" id="rf" type="button"><svg class="i" aria-hidden="true"><use href="#i-refresh"/></svg><span class="tx">Actualiser</span></button>
+  <button class="btn o" id="rp" type="button"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><span class="tx">Rapport</span></button>
+  <button class="btn o" id="lo" type="button"><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg><span class="tx">Quitter</span></button>
  </div></header>
  <div class="w">
-  <div class="tabs main"><button class="tab" id="t1" type="button" aria-pressed="true">🛠️ Atelier<small id="c1"></small></button><button class="tab" id="t4" type="button" aria-pressed="false">📦 Archives<small id="c4"></small></button><button class="tab" id="t2" type="button" aria-pressed="false">🏷️ Prix</button><button class="tab" id="t3" type="button" aria-pressed="false">💰 Caisse</button></div>
+  <div class="tabs main"><button class="tab" id="t1" type="button" aria-pressed="true"><svg class="i" aria-hidden="true"><use href="#i-wrench"/></svg> Atelier<small id="c1"></small></button><button class="tab" id="t4" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg> Archives<small id="c4"></small></button><button class="tab" id="t2" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-tag"/></svg> Prix</button><button class="tab" id="t3" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-wallet"/></svg> Caisse</button></div>
   <p class="err" id="ae" role="alert"></p>
   <section id="v1">
    <div class="kpis" id="kpis"></div>
    <div class="chips" id="chips"></div>
-   <div class="tabs" id="srcs" style="margin-top:0;margin-bottom:10px"><button class="tab" type="button" data-s="" aria-pressed="true">Toutes origines</button><button class="tab" type="button" data-s="en_ligne" aria-pressed="false">🌐 Commandées en ligne</button><button class="tab" type="button" data-s="atelier" aria-pressed="false">🏪 Enregistrées à l’atelier</button></div>
+   <div class="tabs" id="srcs" style="margin-top:0;margin-bottom:10px"><button class="tab" type="button" data-s="" aria-pressed="true">Toutes origines</button><button class="tab" type="button" data-s="en_ligne" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg> Commandées en ligne</button><button class="tab" type="button" data-s="atelier" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-store"/></svg> Enregistrées à l’atelier</button></div>
    <label>Rechercher<input id="q" placeholder="Code, nom, téléphone, modèle…" autocomplete="off"></label>
    <div id="list" aria-live="polite"></div>
   </section>
     <section id="v4" hidden>
-   <p class="note">📦 Ici se trouvent toutes les réparations <b>terminées</b> (Livrée) ou <b>annulées</b>. Elles ne gênent plus la liste de l’atelier. Pour en rouvrir une, changez simplement son état.</p>
+   <p class="note"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg> Ici se trouvent toutes les réparations <b>terminées</b> (Livrée) ou <b>annulées</b>. Elles ne gênent plus la liste de l’atelier. Pour en rouvrir une, changez simplement son état.</p>
    <div class="bar">
     <label>Rechercher dans les archives<input id="aqs" placeholder="Code, nom, téléphone, modèle…" autocomplete="off"></label>
     <label style="max-width:190px;flex:0 0 190px">Période<select id="ap"><option value="all">Tout</option><option value="7">7 derniers jours</option><option value="month">Ce mois-ci</option></select></label>
@@ -196,16 +225,18 @@ header .btn.o{background:rgb(255 255 255/14%);color:#fff;border-color:rgb(255 25
 <dialog id="nd">
  <form class="g" id="nf">
   <h2 style="color:var(--navy)">Nouvelle réparation</h2>
+  <p class="sec">Client</p>
   <label>Nom du client<input id="nn" autocomplete="off"></label>
   <label>Téléphone<input id="nt" inputmode="tel" required></label>
   <label>E-mail du client (facultatif)<input id="nem" type="email"></label>
+  <p class="sec">Appareil</p>
   <div><label style="margin-bottom:6px">1 · Choisissez la marque</label>
    <div class="brs" id="nbrs"></div>
    <input type="hidden" id="nbr">
    <label id="nbol" hidden style="margin-top:8px">Nom de la marque<input id="nbo" placeholder="Ex. Nokia, Lenovo…"></label></div>
   <div><label for="nm" style="margin-bottom:4px">2 · Modèle (tapez ou touchez dans la liste)</label>
    <input id="nm" placeholder="Choisissez d’abord la marque" autocomplete="off" required>
-   <div class="sg" id="nsg"></div></div>
+   <div class="sg" id="nsg"></div><p id="nhint" class="note info" hidden></p></div>
   <fieldset class="pcs"><legend>Réparations (cochez)</legend>
    <div class="it" data-p="Écran"><label class="ck"><input type="checkbox"> Écran</label><div class="pp" hidden><label>Vente (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="sale"></label><label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="cost"></label><small class="hint"></small></div></div>
    <div class="it" data-p="Vitre arrière"><label class="ck"><input type="checkbox"> Vitre arrière</label><div class="pp" hidden><label>Vente (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="sale"></label><label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-k="cost"></label><small class="hint"></small></div></div>
@@ -218,9 +249,9 @@ header .btn.o{background:rgb(255 255 255/14%);color:#fff;border-color:rgb(255 25
   <div style="display:flex;gap:8px"><button class="btn" type="submit" style="flex:1">Enregistrer</button><button class="btn o" type="button" id="nc">Annuler</button></div>
  </form>
 </dialog>
-<button class="fab" id="fab" type="button" hidden aria-expanded="false" aria-controls="as">🤖 Aide</button>
+<button class="fab" id="fab" type="button" hidden aria-expanded="false" aria-controls="as"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg> Aide</button>
 <aside id="as" hidden aria-label="Assistant atelier">
- <div class="ah"><span style="font-size:1.4rem">🤖</span><b>Assistant PM Services</b><button type="button" id="ax" aria-label="Fermer">×</button></div>
+ <div class="ah"><span style="font-size:1.4rem"><svg class="i" aria-hidden="true"><use href="#i-bot"/></svg></span><b>Assistant PM Services</b><button type="button" id="ax" aria-label="Fermer"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
  <div id="am" aria-live="polite"></div>
  <div id="aq"></div>
  <form id="af"><input id="ai" placeholder="Posez votre question…" autocomplete="off"><button class="btn" type="submit">OK</button></form>
@@ -230,6 +261,7 @@ header .btn.o{background:rgb(255 255 255/14%);color:#fff;border-color:rgb(255 25
 <script>
 const ST={recu:"Reçue",diagnostic:"En diagnostic",piece:"En attente de pièce",cours:"En réparation",pret:"Prête à récupérer",livre:"Livrée",annule:"Annulée"};
 const $=id=>document.getElementById(id);
+const ic=n=>`<svg class="i" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let rows=[],filter="actives",src="";
 const archived=r=>r.status==="livre"||r.status==="annule";
@@ -252,10 +284,10 @@ function chips(){
  const list=[["actives","En cours",base.length],...ACT.map(k=>[k,ST[k],n(k)])];
  $("chips").innerHTML=list.map(([k,l,c])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${filter===k}">${esc(l)}<b>${c}</b></button>`).join("");
  const all=rows.filter(r=>!archived(r)),nb=k=>all.filter(r=>r.status===k).length;
- $("kpis").innerHTML=`<button type="button" class="kpi" data-k="actives"><b>${all.length}</b><span>En cours</span></button>
-  <button type="button" class="kpi warn" data-k="recu"><b>${nb("recu")}</b><span>À prendre en charge</span></button>
-  <button type="button" class="kpi ok" data-k="pret"><b>${nb("pret")}</b><span>Prêtes à récupérer</span></button>
-  <button type="button" class="kpi" data-k="piece"><b>${nb("piece")}</b><span>En attente de pièce</span></button>`;
+ $("kpis").innerHTML=`<button type="button" class="kpi" data-k="actives"><i class="ki">${ic("wrench")}</i><b>${all.length}</b><span>En cours</span></button>
+  <button type="button" class="kpi warn" data-k="recu"><i class="ki">${ic("clock")}</i><b>${nb("recu")}</b><span>À prendre en charge</span></button>
+  <button type="button" class="kpi ok" data-k="pret"><i class="ki">${ic("check")}</i><b>${nb("pret")}</b><span>Prêtes à récupérer</span></button>
+  <button type="button" class="kpi" data-k="piece"><i class="ki">${ic("box")}</i><b>${nb("piece")}</b><span>En attente de pièce</span></button>`;
  $("c1").textContent=all.length+" en cours";$("c4").textContent=(rows.length-all.length)+" dossiers"}
 function visible(){
  const q=$("q").value.trim().toLowerCase();
@@ -274,13 +306,13 @@ function card(r){
  const map=r.lat!=null?`https://www.google.com/maps?q=${r.lat},${r.lng}`:(r.address?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([r.address,r.city].filter(Boolean).join(", "))}`:"");
  const dom=r.kind==="domicile";
  const web=r.source==="en_ligne",at=r.source==="atelier";
- const badge=web?'<span class="src web">🌐 Commandée en ligne</span>':at?'<span class="src at">🏪 Enregistrée à l’atelier</span>':"";
+ const badge=web?'<span class="src web">'+ic("globe")+'Commandée en ligne</span>':at?'<span class="src at">'+ic("store")+'Enregistrée à l’atelier</span>':"";
  return `<article class="c st-${esc(r.status)} ${web?"web":at?"at":""}" data-id="${r.id}">
- <div class="top"><b>${esc(r.code)}</b>${badge}<small>${esc(fmt(r.created_at))}${web?" · "+(dom?"À domicile":"Dépôt à l’atelier"):""}</small>${archived(r)?`<span class="arch">📦 ${r.status==="livre"?"Livrée":"Annulée"} le ${esc(fmt(r.updated_at))}</span>`:""}
+ <div class="top"><b>${esc(r.code)}</b>${badge}<small>${esc(fmt(r.created_at))}${web?" · "+(dom?"À domicile":"Dépôt à l’atelier"):""}</small>${archived(r)?`<span class="arch">${ic("box")}${r.status==="livre"?"Livrée":"Annulée"} le ${esc(fmt(r.updated_at))}</span>`:""}
   <select data-f="status" aria-label="État de la réparation">${Object.keys(ST).map(k=>`<option value="${k}"${k===r.status?" selected":""}>${esc(ST[k])}</option>`).join("")}</select></div>
  <div>${esc(r.name||"Client")} · <a href="tel:${esc(String(r.phone).replace(/[^\d+]/g,""))}">${esc(r.phone)}</a></div>
- ${r.email?`<div><small>✉ ${esc(r.email)} (prévenu à chaque changement d’état)</small></div>`:`<div><small>Pas d’e-mail : le client ne sera pas prévenu</small></div>`}
- <div>${esc([r.brand,r.model].filter(Boolean).join(" "))}${r.piece?" – "+esc(r.piece):""}</div>
+ ${r.email?`<div><small>${ic("mail")}${esc(r.email)} (prévenu à chaque changement d’état)</small></div>`:`<div><small>Pas d’e-mail : le client ne sera pas prévenu</small></div>`}
+ <div class="dev">${ic("device")}${esc([r.brand,r.model].filter(Boolean).join(" "))}${r.piece?" – "+esc(r.piece):""}</div>
  <details><summary>Détails</summary>
   <div class="rc"><small>Code de la réparation à écrire sur le reçu du client</small><strong>${esc(r.code)}</strong><button type="button" class="mini" data-copy="${esc(r.code)}">Copier</button></div>
   <p><b>Panne :</b> ${esc(r.issue||"—")}</p>
@@ -294,7 +326,7 @@ function card(r){
  <div style="margin-top:10px"><button type="button" class="mini d" data-del="1">Supprimer cette réparation</button></div></article>`}
 function render(){
  chips();const v=visible();
- $("list").innerHTML=v.length?v.map(card).join(""):'<p style="margin-top:20px;color:var(--muted)">🎉 Aucune réparation dans cette vue. Les dossiers livrés sont dans l’onglet Archives.</p>';
+ $("list").innerHTML=v.length?v.map(card).join(""):'<p style="margin-top:20px;color:var(--muted)">'+ic("check")+' Aucune réparation dans cette vue. Les dossiers livrés sont dans l’onglet Archives.</p>';
  renderArch()}
 
 async function load(){
@@ -306,25 +338,25 @@ const onChange=async e=>{
  const id=Number(art.dataset.id),val=t.value,cur=rows.find(r=>r.id===id);
  if(f==="status"&&cur){
   if(val==="livre"){
-   const warn=cur.price==null?"\n⚠ Aucun prix n’est enregistré pour ce dossier.":"";
+   const warn=cur.price==null?"\nAttention : aucun prix n’est enregistré pour ce dossier.":"";
    if(!confirm("Confirmer la remise du téléphone au client ("+cur.code+") ?\nLe dossier sera déplacé dans les ARCHIVES."+warn)){t.value=cur.status;return}}
   else if(val==="annule"&&!confirm("Annuler la réparation "+cur.code+" ?\nLe dossier ira dans les archives.")){t.value=cur.status;return}
   else if(val==="pret"&&cur.price==null&&!confirm("Aucun prix n’est enregistré pour "+cur.code+".\nMarquer quand même comme prête ?")){t.value=cur.status;return}}
  try{const j=await api("update",{id,[f]:val});
   const i=rows.findIndex(r=>r.id===id),was=i>-1?archived(rows[i]):false;if(i>-1)rows[i]=j.row;
-  let msg=f==="status"?(j.mail==="sent"?"✓ Enregistré · e-mail envoyé au client":j.mail==="failed"?"Enregistré, mais l’e-mail n’a pas pu partir":"✓ Enregistré (pas d’e-mail client)"):"✓ Enregistré";
-  if(f==="status"&&archived(j.row)!==was){msg=(archived(j.row)?"📦 Dossier archivé · ":"↩ Dossier rouvert · ")+msg.replace("✓ ","");render()}
+  let msg=f==="status"?(j.mail==="sent"?"Enregistré · e-mail envoyé au client":j.mail==="failed"?"Enregistré, mais l’e-mail n’a pas pu partir":"Enregistré (pas d’e-mail client)"):"Enregistré";
+  if(f==="status"&&archived(j.row)!==was){msg=(archived(j.row)?"Dossier archivé · ":"Dossier rouvert · ")+msg.replace("","");render()}
   else if(f==="status"){art.className="c st-"+j.row.status+(j.row.source==="en_ligne"?" web":j.row.source==="atelier"?" at":"");chips()}
   toast(msg)}
  catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");load()}}};
 $("list").addEventListener("change",onChange);$("alist").addEventListener("change",onChange);
 const onClick=async e=>{
- const cp=e.target.closest("button[data-copy]");if(cp){const c=cp.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast("✓ Code "+c+" copié"),()=>toast("Code : "+c));return}
+ const cp=e.target.closest("button[data-copy]");if(cp){const c=cp.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast("Code "+c+" copié"),()=>toast("Code : "+c));return}
  const b=e.target.closest("button[data-del]");if(!b)return;
  const art=b.closest("article"),id=Number(art.dataset.id),r=rows.find(x=>x.id===id);if(!r)return;
  if(!confirm("Supprimer définitivement la réparation "+r.code+" ("+(r.name||"client")+") ?\nCette action est irréversible."))return;
  try{const j=await api("delete",{id});rows=rows.filter(x=>x.id!==id);render();
-  toast("✓ Réparation supprimée")}
+  toast("Réparation supprimée")}
  catch(x){if(x.message!=="auth")toast("Suppression impossible ("+x.message+")")}};
 $("list").addEventListener("click",onClick);$("alist").addEventListener("click",onClick);
 $("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.k;render()};
@@ -338,7 +370,7 @@ $("lf").onsubmit=async e=>{e.preventDefault();$("le").textContent="";
  catch(x){$("le").textContent=MSG[x.message]||"Connexion impossible ("+x.message+")."}};
 $("nb").onclick=()=>{$("nf").reset();$("ne").textContent="";initBrands();$("nd").showModal();autoFill();
  if(!prices.length)api("price_list").then(j=>{prices=j.rows;autoFill()}).catch(()=>{})};
-$("rp").onclick=async()=>{try{const j=await api("report_now");toast("✓ Rapport envoyé ("+j.count+" réparation(s))")}catch(x){if(x.message!=="auth")toast("Rapport non envoyé ("+x.message+")")}};
+$("rp").onclick=async()=>{try{const j=await api("report_now");toast("Rapport envoyé ("+j.count+" réparation(s))")}catch(x){if(x.message!=="auth")toast("Rapport non envoyé ("+x.message+")")}};
 function itemsHtml(r){let a=[];try{a=JSON.parse(r.items||"[]")}catch{}
  return a.length?`<p><b>Réparations :</b> ${a.map(i=>esc(i.piece)+" – "+F(i.sale)+" F (achat "+F(i.cost)+" F)").join(" · ")}</p>`:""}
 function sug(piece){const m=$("nm").value.trim().toLowerCase();if(!m)return null;let best=null,sc=0;
@@ -352,7 +384,16 @@ function autoFill(){let s=0,c=0;
   if(h){const r=el.dataset.p==="Autre"?null:sug(el.dataset.p);h.textContent=r?"Prix en base : "+F(r.price)+" F ("+r.label+")":"";
    if(r&&(sale.value===""||sale.dataset.auto)){sale.value=r.price;sale.dataset.auto="1"}}
   s+=+sale.value||0;c+=+el.querySelector("[data-k=cost]").value||0});
- $("ntot").innerHTML=`Total client : <b>${F(s)} F</b> · Achat : ${F(c)} F · Marge : <b>${F(s-c)} F</b>`}
+ $("ntot").innerHTML=`Total client : <b>${F(s)} F</b> · Achat : ${F(c)} F · Marge : <b>${F(s-c)} F</b>`;hint()}
+const STRIP=/^(?:(?:galaxy|samsung|tecno|infinix|itel|xiaomi|huawei|oppo|vivo|realme|honor|apple|google)\s+)+/;
+const nk=s=>String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim().replace(STRIP,"").replace(/ /g,"");
+function modelKeys(r){const seg=String(r.label).split("/").map(x=>x.trim()).filter(Boolean),pre=((seg[0]||"").match(/^\D*/)||[""])[0];
+ const k=seg.map(x=>nk(/^\d/.test(x)?pre+x:x));String(r.models||"").split(",").forEach(x=>{if(x.trim())k.push(nk(x))});return k}
+function hint(){const h=$("nhint"),m=$("nm").value.trim();
+ if(!m||!$("nbr").value){h.hidden=true;return}
+ const b=brandVal().toLowerCase(),k=nk(m);
+ if(prices.some(r=>(r.brand.toLowerCase()===b||r.brand==="Autres Android")&&modelKeys(r).includes(k))){h.hidden=true;return}
+ h.textContent=getItems().some(i=>+i.sale>0)?"Nouveau modèle : il sera ajouté automatiquement à la base des prix avec les prix saisis.":"Ce modèle n’est pas dans la base des prix. Saisissez un prix de vente pour l’y enregistrer automatiquement.";h.hidden=false}
 function getItems(){return [...document.querySelectorAll("#nd .it")].filter(el=>el.querySelector(".ck input").checked).map(el=>({
  piece:el.dataset.p==="Autre"?(el.querySelector("[data-k=label]").value.trim()||"Autre"):el.dataset.p,
  sale:el.querySelector("[data-k=sale]").value,cost:el.querySelector("[data-k=cost]").value}))}
@@ -367,7 +408,7 @@ $("nf").onsubmit=async e=>{e.preventDefault();
  const sale=items.reduce((a,i)=>a+(+i.sale||0),0),cost=items.reduce((a,i)=>a+(+i.cost||0),0);
  if(items.length&&cost>sale&&!confirm("Attention : l’achat ("+F(cost)+" F) dépasse la vente ("+F(sale)+" F). Vous perdez "+F(cost-sale)+" F.\nEnregistrer quand même ?"))return;
  try{const j=await api("create",{name:$("nn").value,phone,email:$("nem").value,brand,model,items,issue:$("ni").value});
-  $("nd").close();toast("✓ Dossier créé : "+j.code);filter="actives";setTab(1);load()}
+  $("nd").close();const ad=j.added||[];toast("Dossier créé : "+j.code+(ad.length?" · ajouté à la base des prix ("+ad.join(", ")+")":""));if(ad.length)api("price_list").then(x=>{prices=x.rows}).catch(()=>{});filter="actives";setTab(1);load()}
  catch(x){$("ne").textContent=x.message==="invalid"?"Téléphone et modèle obligatoires.":"Création impossible ("+x.message+")."}};
 /* marque -> modèle */
 const CAT={
@@ -424,14 +465,14 @@ function renderCash(){if(!cash)return;
  $("cs").innerHTML=statsHtml("Aujourd’hui","Solde de la journée",cash.day)+statsHtml("Ce mois-ci","Solde du mois",cash.month,' style="margin-top:10px"');
  $("clist").innerHTML=outsList(cash.day.outs);$("cmon").innerHTML=outsList(cash.month.outs)}
 $("cf").onsubmit=async e=>{e.preventDefault();$("ce").textContent="";
- try{await api("cash_add",{amount:$("ca").value,reason:$("cr").value});$("cf").reset();toast("✓ Sortie enregistrée");loadCash()}
+ try{await api("cash_add",{amount:$("ca").value,reason:$("cr").value});$("cf").reset();toast("Sortie enregistrée");loadCash()}
  catch(x){if(x.message!=="auth")$("ce").textContent=x.message==="invalid"?"Indiquez un montant et un motif.":"Enregistrement impossible ("+x.message+")."}};
 $("v3").addEventListener("click",async e=>{
  const b=e.target.closest("button[data-cdel]");if(!b)return;
  if(!confirm("Supprimer cette sortie de caisse ?"))return;
- try{await api("cash_delete",{id:Number(b.closest(".co").dataset.id)});toast("✓ Sortie supprimée");loadCash()}
+ try{await api("cash_delete",{id:Number(b.closest(".co").dataset.id)});toast("Sortie supprimée");loadCash()}
  catch(x){if(x.message!=="auth")toast("Suppression impossible ("+x.message+")")}});
-$("rm").onclick=async()=>{try{const j=await api("report_month");toast("✓ Rapport du mois envoyé ("+j.count+" réparation(s))")}catch(x){if(x.message!=="auth")toast("Rapport non envoyé ("+x.message+")")}};
+$("rm").onclick=async()=>{try{const j=await api("report_month");toast("Rapport du mois envoyé ("+j.count+" réparation(s))")}catch(x){if(x.message!=="auth")toast("Rapport non envoyé ("+x.message+")")}};
 const F=n=>new Intl.NumberFormat("fr-FR").format(n);
 async function loadPrices(){
  try{prices=(await api("price_list")).rows;$("ae").textContent="";renderPrices()}
@@ -452,13 +493,13 @@ $("pq").oninput=renderPrices;
 $("plist").addEventListener("change",async e=>{
  const t=e.target;if(t.dataset.p!=="price")return;
  const r=prices.find(x=>x.id===Number(t.closest(".pr").dataset.id));if(!r)return;
- try{const j=await api("price_save",Object.assign({},r,{price:t.value}));Object.assign(r,j.row);toast("✓ Prix mis à jour : "+F(j.row.price)+" F")}
+ try{const j=await api("price_save",Object.assign({},r,{price:t.value}));Object.assign(r,j.row);toast("Prix mis à jour : "+F(j.row.price)+" F")}
  catch(x){if(x.message!=="auth"){toast("Échec de l’enregistrement");loadPrices()}}});
 $("plist").addEventListener("click",async e=>{
  const b=e.target.closest("button[data-a]");if(!b)return;
  const r=prices.find(x=>x.id===Number(b.closest(".pr").dataset.id));if(!r)return;
  if(b.dataset.a==="edit"){openPrice(r)}
- else if(confirm("Supprimer « "+r.label+" » ?")){try{await api("price_delete",{id:r.id});prices=prices.filter(x=>x!==r);renderPrices();toast("✓ Prix supprimé")}catch(x){if(x.message!=="auth")toast("Suppression impossible")}}});
+ else if(confirm("Supprimer « "+r.label+" » ?")){try{await api("price_delete",{id:r.id});prices=prices.filter(x=>x!==r);renderPrices();toast("Prix supprimé")}catch(x){if(x.message!=="auth")toast("Suppression impossible")}}});
 function openPrice(r){
  $("pdt").textContent=r?"Modifier le prix":"Ajouter un prix";$("pe").textContent="";
  $("pid").value=r?r.id:"";$("ppc").value=r?r.piece:"Écran";$("pbr").value=r?r.brand:"";$("plb").value=r?r.label:"";
@@ -466,24 +507,24 @@ function openPrice(r){
 $("pa").onclick=()=>openPrice(null);$("pc").onclick=()=>$("pd").close();
 $("pf").onsubmit=async e=>{e.preventDefault();
  try{await api("price_save",{id:$("pid").value,piece:$("ppc").value,brand:$("pbr").value,label:$("plb").value,quality:$("pql").value,price:$("ppr").value,models:$("pmo").value});
-  $("pd").close();toast("✓ Prix enregistré");loadPrices()}
+  $("pd").close();toast("Prix enregistré");loadPrices()}
  catch(x){$("pe").textContent=x.message==="exists"?"Ce prix existe déjà (même pièce, marque, modèle et qualité).":x.message==="invalid"?"Remplissez pièce, marque, modèle et prix.":"Enregistrement impossible ("+x.message+")."}};
 
 /* ===== assistant ===== */
 const KB=[
  {q:"Créer une réparation",k:"nouvelle creer ajouter enregistrer dossier client deposer reparation",a:"<ol><li>Touchez <b>+ Nouvelle réparation</b> en haut.</li><li>Écrivez le nom et le téléphone du client (e-mail facultatif : il sera prévenu à chaque changement d’état).</li><li>Touchez la <b>marque</b>, puis le <b>modèle</b> dans la liste (ou tapez-le).</li><li>Cochez ce qu’il faut réparer : écran, vitre arrière, ensemble… Le prix de vente apparaît tout seul s’il est dans l’onglet Prix. Ajoutez le prix d’achat de la pièce.</li><li>Touchez <b>Enregistrer</b> : un code <b>PM-xxxxxx</b> est créé, à écrire sur le reçu du client.</li></ol>"},
  {q:"Changer l’état",k:"etat statut changer modifier avancer diagnostic piece reparation prete",a:"Sur la carte du dossier, ouvrez la liste en haut à droite et choisissez le nouvel état : <b>Reçue → En diagnostic → En attente de pièce → En réparation → Prête à récupérer → Livrée</b>. Si le client a un e-mail, il est prévenu automatiquement."},
- {q:"Où va une réparation livrée ?",k:"livree livre archive archives terminee finie ranger encombre disparait",a:"Quand vous choisissez <b>Livrée</b>, le dossier est <b>archivé</b> : il quitte la liste de l’atelier et va dans l’onglet <b>📦 Archives</b>. Vous y retrouvez tout par recherche (code, nom, téléphone, modèle) ou par période. Une réparation <b>annulée</b> est archivée aussi."},
- {q:"Rouvrir un dossier archivé",k:"rouvrir restaurer remettre retour archive erreur annuler livraison",a:"Allez dans <b>📦 Archives</b>, retrouvez le dossier, puis changez son état (par exemple <b>Prête à récupérer</b> ou <b>En réparation</b>). Il revient aussitôt dans l’atelier."},
+ {q:"Où va une réparation livrée ?",k:"livree livre archive archives terminee finie ranger encombre disparait",a:"Quand vous choisissez <b>Livrée</b>, le dossier est <b>archivé</b> : il quitte la liste de l’atelier et va dans l’onglet <b>Archives</b>. Vous y retrouvez tout par recherche (code, nom, téléphone, modèle) ou par période. Une réparation <b>annulée</b> est archivée aussi."},
+ {q:"Rouvrir un dossier archivé",k:"rouvrir restaurer remettre retour archive erreur annuler livraison",a:"Allez dans <b>Archives</b>, retrouvez le dossier, puis changez son état (par exemple <b>Prête à récupérer</b> ou <b>En réparation</b>). Il revient aussitôt dans l’atelier."},
  {q:"Le code PM-xxxxxx",k:"code pm suivi client reçu numero suivre",a:"Chaque réparation a un code <b>PM-xxxxxx</b>. Le client le saisit avec son numéro de téléphone sur le site (rubrique suivi) pour voir l’état de son téléphone. Ouvrez <b>Détails</b> sur la carte pour le copier."},
- {q:"Les prix",k:"prix tarif modifier ajouter liste ecran vitre coque catalogue",a:"Onglet <b>🏷️ Prix</b> : modifiez un prix directement dans sa case (il s’enregistre seul), ou <b>+ Ajouter un prix</b> pour un nouveau modèle. Ces prix servent à proposer automatiquement le total dans « Nouvelle réparation » et s’affichent sur le site."},
+ {q:"Les prix",k:"prix tarif modifier ajouter liste ecran vitre coque catalogue",a:"Onglet <b>Prix</b> : modifiez un prix directement dans sa case (il s’enregistre seul), ou <b>+ Ajouter un prix</b> pour un nouveau modèle. Ces prix servent à proposer automatiquement le total dans « Nouvelle réparation » et s’affichent sur le site."},
  {q:"Prix d’achat et marge",k:"achat marge benefice gagne profit cout grossiste",a:"<b>Vente</b> = ce que paie le client. <b>Achat</b> = ce que vous avez payé au grossiste. <b>Marge = vente − achat</b>. Vous pouvez corriger ces montants dans la carte du dossier. L’application vous prévient si l’achat dépasse la vente."},
- {q:"La caisse",k:"caisse sortie argent solde depense journee mois",a:"Onglet <b>💰 Caisse</b> : vous voyez les ventes, achats, marge et <b>solde</b> du jour et du mois (solde = ventes − achats − sorties). Notez chaque dépense avec « Sortie de caisse » (transport, repas, pièces…)."},
+ {q:"La caisse",k:"caisse sortie argent solde depense journee mois",a:"Onglet <b>Caisse</b> : vous voyez les ventes, achats, marge et <b>solde</b> du jour et du mois (solde = ventes − achats − sorties). Notez chaque dépense avec « Sortie de caisse » (transport, repas, pièces…)."},
  {q:"Le rapport par e-mail",k:"rapport email mail envoyer journee mois 18h59 automatique",a:"Un rapport de la journée part automatiquement chaque soir à <b>18h59</b>. Pour l’envoyer tout de suite, touchez <b>Envoyer le rapport</b> (en haut) ; le rapport du mois se trouve en bas de l’onglet Caisse."},
  {q:"Supprimer un dossier",k:"supprimer effacer delete enlever dossier",a:"Ouvrez la carte puis <b>Supprimer cette réparation</b> (en bas). C’est <b>définitif</b> et le propriétaire reçoit un e-mail d’alerte. Pour simplement ranger un dossier terminé, ne le supprimez pas : mettez-le en <b>Livrée</b>, il ira dans les archives."},
  {q:"Le client n’a pas reçu l’e-mail",k:"email mail client recu prevenu notification probleme",a:"Vérifiez que le dossier contient bien une adresse e-mail (sinon la carte affiche « Pas d’e-mail »). Après un changement d’état, un message en bas de l’écran indique si l’e-mail est parti. Si « l’e-mail n’a pas pu partir », vérifiez la configuration Resend sur Vercel."},
- {q:"Rechercher un dossier",k:"rechercher chercher trouver retrouver recherche client",a:"Dans l’onglet Atelier, tapez dans <b>Rechercher</b> : code, nom, téléphone ou modèle. Pour un dossier terminé, cherchez dans l’onglet <b>📦 Archives</b>."},
- {q:"Origine : en ligne ou atelier",k:"origine ligne web atelier domicile commandee difference bleu vert",a:"<b>🌐 Commandée en ligne</b> (bordure bleue) : demande faite par le client sur le site, à l’atelier ou à domicile. <b>🏪 Enregistrée à l’atelier</b> (bordure verte) : dossier créé par vous avec « Nouvelle réparation »."},
+ {q:"Rechercher un dossier",k:"rechercher chercher trouver retrouver recherche client",a:"Dans l’onglet Atelier, tapez dans <b>Rechercher</b> : code, nom, téléphone ou modèle. Pour un dossier terminé, cherchez dans l’onglet <b>Archives</b>."},
+ {q:"Origine : en ligne ou atelier",k:"origine ligne web atelier domicile commandee difference bleu vert",a:"<b>Commandée en ligne</b> (bordure bleue) : demande faite par le client sur le site, à l’atelier ou à domicile. <b>Enregistrée à l’atelier</b> (bordure verte) : dossier créé par vous avec « Nouvelle réparation »."},
  {q:"Réparation à domicile",k:"domicile adresse carte localisation gps maps",a:"Une demande à domicile affiche l’adresse et le créneau. Ouvrez <b>Détails</b> puis <b>Ouvrir la carte</b> pour la localisation du client."}
 ];
 const nz=t=>t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
@@ -496,27 +537,27 @@ function diag(){
  const now=Date.now(),act=rows.filter(r=>!archived(r)),L=[];
  const nm=r=>esc(r.code+(r.name?" · "+r.name:""));
  const pret=act.filter(r=>r.status==="pret");
- if(pret.length)L.push(`📞 <b>${pret.length}</b> téléphone(s) prêt(s) : appelez ${pret.slice(0,4).map(nm).join(", ")}${pret.length>4?"…":""}.`);
+ if(pret.length)L.push(`${ic("phone")} <b>${pret.length}</b> téléphone(s) prêt(s) : appelez ${pret.slice(0,4).map(nm).join(", ")}${pret.length>4?"…":""}.`);
  const old=pret.filter(r=>now-new Date(r.updated_at)>3*864e5);
- if(old.length)L.push(`⏰ <b>${old.length}</b> prêt(s) depuis plus de 3 jours, non récupéré(s) : relancez le client (${old.slice(0,3).map(nm).join(", ")}).`);
+ if(old.length)L.push(`${ic("clock")} <b>${old.length}</b> prêt(s) depuis plus de 3 jours, non récupéré(s) : relancez le client (${old.slice(0,3).map(nm).join(", ")}).`);
  const rec=act.filter(r=>r.status==="recu"&&now-new Date(r.created_at)>864e5);
- if(rec.length)L.push(`🛠️ <b>${rec.length}</b> dossier(s) « Reçue » depuis plus de 24 h : passez-les en diagnostic (${rec.slice(0,3).map(nm).join(", ")}).`);
+ if(rec.length)L.push(`${ic("wrench")} <b>${rec.length}</b> dossier(s) « Reçue » depuis plus de 24 h : passez-les en diagnostic (${rec.slice(0,3).map(nm).join(", ")}).`);
  const pc=act.filter(r=>r.status==="piece");
- if(pc.length)L.push(`📦 <b>${pc.length}</b> en attente de pièce : ${pc.slice(0,3).map(nm).join(", ")}.`);
+ if(pc.length)L.push(`${ic("box")} <b>${pc.length}</b> en attente de pièce : ${pc.slice(0,3).map(nm).join(", ")}.`);
  const np=act.filter(r=>r.price==null);
- if(np.length)L.push(`💲 <b>${np.length}</b> dossier(s) sans prix : ${np.slice(0,3).map(nm).join(", ")}.`);
+ if(np.length)L.push(`${ic("tag")} <b>${np.length}</b> dossier(s) sans prix : ${np.slice(0,3).map(nm).join(", ")}.`);
  const ne=act.filter(r=>!r.email);
- if(ne.length)L.push(`✉️ <b>${ne.length}</b> client(s) sans e-mail : ils ne reçoivent pas de notification.`);
- return L.length?"Voici ce que je remarque dans votre atelier :<ul>"+L.map(x=>"<li>"+x+"</li>").join("")+"</ul>":"✅ Tout est en ordre : aucun dossier en retard. Bon travail !"}
+ if(ne.length)L.push(`${ic("mail")} <b>${ne.length}</b> client(s) sans e-mail : ils ne reçoivent pas de notification.`);
+ return L.length?"Voici ce que je remarque dans votre atelier :<ul>"+L.map(x=>"<li>"+x+"</li>").join("")+"</ul>":ic("check")+" Tout est en ordre : aucun dossier en retard. Bon travail !"}
 function say(who,html){const d=document.createElement("div");d.className="m "+who;d.innerHTML=html;$("am").appendChild(d);$("am").scrollTop=$("am").scrollHeight}
 function ask(q){say("u",esc(q));
  if(/analys|retard|faire maintenant|priorit|atelier va|resume|bilan/.test(nz(q))){say("b",diag());return}
  const e=findAns(q);
  say("b",e?"<b>"+esc(e.q)+"</b><br>"+e.a:"Je n’ai pas bien compris. Essayez avec d’autres mots (ex. « archives », « prix », « caisse », « nouvelle réparation ») ou touchez une des questions ci-dessous.")}
-$("aq").innerHTML='<button type="button" data-d="1">🔎 Analyser mon atelier</button>'+KB.slice(0,9).map((e,i)=>`<button type="button" data-i="${i}">${esc(e.q)}</button>`).join("");
+$("aq").innerHTML='<button type="button" data-d="1">'+ic("search")+' Analyser mon atelier</button>'+KB.slice(0,9).map((e,i)=>`<button type="button" data-i="${i}">${esc(e.q)}</button>`).join("");
 $("aq").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.d){say("u","Analyser mon atelier");say("b",diag())}else ask(KB[+b.dataset.i].q)};
 $("af").onsubmit=e=>{e.preventDefault();const v=$("ai").value.trim();if(!v)return;$("ai").value="";ask(v)};
-function openAsst(on){$("as").hidden=!on;$("fab").setAttribute("aria-expanded",on);if(on){if(!$("am").children.length)say("b","Bonjour 👋 Je suis l’assistant de l’atelier. Je peux vous expliquer comment utiliser chaque partie du site, ou <b>analyser vos dossiers</b> pour vous dire quoi faire en priorité.");$("ai").focus()}}
+function openAsst(on){$("as").hidden=!on;$("fab").setAttribute("aria-expanded",on);if(on){if(!$("am").children.length)say("b","Bonjour. Je suis l’assistant de l’atelier. Je peux vous expliquer comment utiliser chaque partie du site, ou <b>analyser vos dossiers</b> pour vous dire quoi faire en priorité.");$("ai").focus()}}
 $("fab").onclick=()=>openAsst($("as").hidden);$("ax").onclick=()=>openAsst(false);
 setInterval(()=>{const a=document.activeElement;if(!$("app").hidden&&!$("nd").open&&!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))load()},60000);
 /* session déjà ouverte ? */
