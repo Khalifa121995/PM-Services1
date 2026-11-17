@@ -9,21 +9,22 @@ const dayKey = (d) => new Date(d).toLocaleDateString("en-CA", { timeZone: TZ });
 const recipients = () => (process.env.NOTIFY_TO || "").split(",").map((x) => x.trim()).filter(Boolean);
 
 /* Données d'une période : "day" = aujourd'hui, "month" = mois en cours (heure d'Abidjan).
-   Jour : réparations créées ou modifiées aujourd'hui. Mois : réparations créées ce mois.
+   Jour : réparations créées aujourd'hui (le compteur repart à 0 à minuit, heure d'Abidjan). Mois : réparations créées ce mois.
    Solde = Ventes − Achats − Sorties de caisse (réparations annulées exclues). */
-async function periodData(period) {
+async function periodData(period, date) {
   const q = await db();
+  const D = /^\d{4}-\d{2}-\d{2}$/.test(date || "") ? date : null; // date précise (AAAA-MM-JJ) ou aujourd'hui
   let rows, outs;
   if (period === "day") {
     rows = await q`select * from repairs
-      where (updated_at at time zone 'Africa/Abidjan')::date = (now() at time zone 'Africa/Abidjan')::date order by created_at`;
+      where (created_at at time zone 'Africa/Abidjan')::date = coalesce(${D}::date, (now() at time zone 'Africa/Abidjan')::date) order by created_at`;
     outs = await q`select * from cash_out
-      where (created_at at time zone 'Africa/Abidjan')::date = (now() at time zone 'Africa/Abidjan')::date order by created_at`;
+      where (created_at at time zone 'Africa/Abidjan')::date = coalesce(${D}::date, (now() at time zone 'Africa/Abidjan')::date) order by created_at`;
   } else {
     rows = await q`select * from repairs
-      where date_trunc('month', created_at at time zone 'Africa/Abidjan') = date_trunc('month', now() at time zone 'Africa/Abidjan') order by created_at`;
+      where date_trunc('month', created_at at time zone 'Africa/Abidjan') = date_trunc('month', coalesce(${D}::timestamp, now() at time zone 'Africa/Abidjan')) order by created_at`;
     outs = await q`select * from cash_out
-      where date_trunc('month', created_at at time zone 'Africa/Abidjan') = date_trunc('month', now() at time zone 'Africa/Abidjan') order by created_at`;
+      where date_trunc('month', created_at at time zone 'Africa/Abidjan') = date_trunc('month', coalesce(${D}::timestamp, now() at time zone 'Africa/Abidjan')) order by created_at`;
   }
   const live = rows.filter((r) => r.status !== "annule");
   const sales = live.reduce((s, r) => s + (r.price || 0), 0);

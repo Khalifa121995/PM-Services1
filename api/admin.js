@@ -193,10 +193,12 @@ module.exports = async (req, res) => {
       return res.status(r.ok ? 200 : 502).json({ ok: r.ok, count: r.count, error: r.ok ? undefined : "mail_" + r.status });
     }
     if (b.action === "cash_summary") {
-      const pub = (d) => ({ sales: d.sales, cost: d.cost, out: d.out, margin: d.margin, solde: d.solde, count: d.count, outs: d.outs });
-      const day = await periodData("day");
-      const month = await periodData("month");
-      return res.status(200).json({ ok: true, day: pub(day), month: pub(month) });
+      const pub = (d) => ({ sales: d.sales, cost: d.cost, out: d.out, margin: d.margin, solde: d.solde, count: d.count, outs: d.outs,
+        rows: d.rows.map((r) => ({ code: r.code, name: r.name, brand: r.brand, model: r.model, piece: r.piece, price: r.price, cost: r.cost, status: r.status, created_at: r.created_at })) });
+      const date = /^\d{4}-\d{2}-\d{2}$/.test(String(b.date || "")) ? String(b.date) : null;
+      const day = await periodData("day", date);
+      const month = await periodData("month", date);
+      return res.status(200).json({ ok: true, date, day: pub(day), month: pub(month) });
     }
     if (b.action === "cash_add") {
       const amount = Math.round(Number(b.amount));
