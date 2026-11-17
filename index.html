@@ -49,6 +49,15 @@ nav.m{margin-left:auto;display:flex;gap:4px}
 .dots{position:absolute;left:0;right:0;bottom:84px;display:flex;justify-content:center;gap:8px}
 .dots button{width:12px;height:12px;border-radius:50%;border:2px solid #fff;background:transparent;cursor:pointer;padding:0}
 .dots button[aria-current=true]{background:#fff}
+
+/* bannières giga promo */
+.sl .w{display:flex;align-items:center;gap:24px;justify-content:space-between}
+.sl .tx{flex:1;min-width:0}
+.sl .tag{display:inline-block;background:#ffd400;color:#0a1b3d;font:800 .85rem Outfit,sans-serif;letter-spacing:.06em;border-radius:999px;padding:6px 14px;margin-bottom:12px}
+.sl .man{flex:none;width:min(300px,34vw);height:auto;filter:drop-shadow(0 10px 18px rgb(0 0 0/30%))}
+.sl .gp{font-size:clamp(2rem,5.4vw,3.4rem)}
+.sl .gp span{color:#ffd400}
+@media(max-width:700px){.sl .w{flex-direction:column-reverse;text-align:center;gap:6px}.sl .man{width:170px}.sl{padding:28px 0 90px}.sl p{margin:10px auto 16px}}
 .find{position:relative;margin:-44px auto 0;z-index:2;background:#fff;border-radius:16px;box-shadow:0 12px 28px rgb(10 42 107/16%);padding:14px;display:flex;gap:10px;max-width:760px}
 .find input{flex:1;min-width:0;min-height:48px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font:1.05rem "Source Sans 3",sans-serif}
 /* sections */
@@ -149,6 +158,24 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
 <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
 </svg>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="man" viewBox="0 0 320 340">
+ <ellipse cx="160" cy="318" rx="120" ry="14" fill="#000" opacity=".18"/>
+ <path d="M70 330c0-70 40-112 90-112s90 42 90 112z" fill="#ff5a1f"/>
+ <path d="M130 222l30 40 30-40z" fill="#fff"/>
+ <rect x="143" y="190" width="34" height="38" rx="12" fill="#c68642"/>
+ <ellipse cx="160" cy="140" rx="52" ry="58" fill="#c68642"/>
+ <path d="M108 128c-4-48 28-70 58-68 34 2 50 28 46 66-10-24-30-34-52-34s-42 12-52 36z" fill="#1a1a1a"/>
+ <circle cx="141" cy="142" r="5" fill="#1a1a1a"/><circle cx="179" cy="142" r="5" fill="#1a1a1a"/>
+ <path d="M138 168c14 16 30 16 44 0" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <path d="M246 250c24-10 38-40 34-80" stroke="#ff5a1f" stroke-width="30" fill="none" stroke-linecap="round"/>
+ <g transform="rotate(8 270 130)"><rect x="236" y="62" width="68" height="120" rx="12" fill="#0a1b3d" stroke="#fff" stroke-width="4"/>
+ <rect x="244" y="74" width="52" height="96" rx="6" fill="#1d4fbf"/>
+ <text x="270" y="116" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="20" fill="#fff">-20%</text>
+ <text x="270" y="138" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="11" fill="#ffd400">ÉCRANS</text></g>
+ <circle cx="282" cy="186" r="15" fill="#c68642"/>
+</symbol></defs></svg>
+
 <header>
  <div class="w bar">
   <a class="logo" href="#accueil" aria-label="PM Services, accueil"><img src="/logo.jpg" alt="PM Services – Réparation, vente, accessoires"></a>
@@ -168,9 +195,9 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
 <main>
 <div class="view" id="accueil">
  <div class="car" role="region" aria-roledescription="carrousel" aria-label="Présentation">
-  <div class="sl on"><div class="w"><h1>Réparation de téléphones partout en Côte d’Ivoire</h1><p>Écran, batterie, connecteur de charge, caméra. Atelier ou domicile.</p><a class="btn l" href="#reserver">Réserver une réparation</a></div></div>
-  <div class="sl"><div class="w"><h2>Giga promo : -20 % sur les écrans</h2><p>Montage gratuit, anti-choc et écouteurs offerts pour tout remplacement d’écran. Choisissez votre modèle : le prix réduit s’affiche.</p><a class="btn l" href="#prix">Voir les prix</a></div></div>
-  <div class="sl"><div class="w"><h2>On récupère votre téléphone chez vous</h2><p>Aller-retour à domicile pour 1 000 F. Suivez votre dossier avec votre code.</p><a class="btn l" href="#domicile">Demander une récupération</a></div></div>
+  <div class="sl on"><div class="w"><div class="tx"><span class="tag">-20 % SUR LES ÉCRANS</span><h1 class="gp">GIGA PROMO <span>chez PM Services</span></h1><p>Réparation de téléphones partout en Côte d’Ivoire. Écran, batterie, connecteur de charge, caméra.</p><a class="btn l" href="#reserver">Réserver une réparation</a></div><svg class="man" role="img" aria-label="Un homme tient son téléphone : -20 % sur les écrans"><use href="#man"/></svg></div></div>
+  <div class="sl"><div class="w"><div class="tx"><span class="tag">-20 % SUR LES ÉCRANS</span><h2 class="gp">GIGA PROMO <span>chez PM Services</span></h2><p>Montage gratuit, anti-choc et écouteurs offerts pour tout remplacement d’écran. Choisissez votre modèle : le prix réduit s’affiche.</p><a class="btn l" href="#prix">Voir les prix</a></div><svg class="man" role="img" aria-label="Un homme tient son téléphone : -20 % sur les écrans"><use href="#man"/></svg></div></div>
+  <div class="sl"><div class="w"><div class="tx"><span class="tag">-20 % SUR LES ÉCRANS</span><h2 class="gp">GIGA PROMO <span>chez PM Services</span></h2><p>Aller-retour à domicile pour 1 000 F. Suivez votre dossier avec votre code.</p><a class="btn l" href="#domicile">Demander une récupération</a></div><svg class="man" role="img" aria-label="Un homme tient son téléphone : -20 % sur les écrans"><use href="#man"/></svg></div></div>
   <div class="dots" id="dots"></div>
  </div>
  <div class="w"><form class="find" id="hs" role="search"><label class="sr" for="hq" style="position:absolute;left:-9999px">Votre modèle</label><input id="hq" placeholder="Votre modèle, par exemple iPhone 13" autocomplete="off"><button class="btn" type="submit"><svg class="i"><use href="#find"/></svg>Voir le prix</button></form></div>
