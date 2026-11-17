@@ -178,7 +178,18 @@ module.exports = async (req, res) => {
       const code = await createRepair(d);
       let added = [];
       try { added = await autoPrices(q, d.brand, d.model, items); } catch (e) { console.error("auto prix", e && e.message); }
-      return res.status(200).json({ ok: true, code, added });
+      const used = [];
+      try {
+        const ids = [...new Set((Array.isArray(b.use_stock) ? b.use_stock : []).map(Number).filter(Number.isInteger))].slice(0, 10);
+        for (const sid of ids) {
+          const r = (await q`update stock set qty = qty - 1, updated_at = now() where id = ${sid} and qty > 0 returning *`)[0];
+          if (r) {
+            await q`insert into stock_moves (stock_id, delta, label, note) values (${r.id}, -1, ${r.piece + " " + r.brand + " " + r.model}, ${"Réparation " + code})`;
+            used.push({ id: r.id, qty: r.qty });
+          }
+        }
+      } catch (e) { console.error("stock use", e && e.message); }
+      return res.status(200).json({ ok: true, code, added, stock_used: used });
     }
     if (b.action === "delete") {
       const id = Number(b.id);
@@ -245,6 +256,36 @@ module.exports = async (req, res) => {
     }
     if (b.action === "price_delete") {
       await q`delete from prices where id = ${Number(b.id)}`;
+      return res.status(200).json({ ok: true });
+    }
+    if (b.action === "stock_list") {
+      const rows = await q`select * from stock order by piece, brand, model`;
+      const moves = await q`select * from stock_moves order by id desc limit 40`;
+      return res.status(200).json({ ok: true, rows, moves });
+    }
+    if (b.action === "stock_move") {
+      const delta = Math.round(Number(b.delta));
+      if (!Number.isFinite(delta) || delta === 0 || Math.abs(delta) > 999) return res.status(400).json({ ok: false, error: "invalid" });
+      const note = one(b.note, 120) || (delta > 0 ? "Entrée" : "Sortie");
+      let row;
+      if (b.id) {
+        const id = Number(b.id);
+        row = (await q`update stock set qty = qty + ${delta}, updated_at = now() where id = ${id} and qty + ${delta} >= 0 returning *`)[0];
+        if (!row) {
+          const ex = (await q`select id from stock where id = ${id}`)[0];
+          return res.status(ex ? 409 : 404).json({ ok: false, error: ex ? "insufficient" : "notfound" });
+        }
+      } else {
+        const piece = one(b.piece, 40), brand = one(b.brand, 40), model = one(b.model, 80);
+        if (!piece || !brand || !model || delta < 0) return res.status(400).json({ ok: false, error: "invalid" });
+        row = (await q`insert into stock (piece, brand, model, qty) values (${piece}, ${brand}, ${model}, ${delta})
+          on conflict (piece, lower(brand), lower(model)) do update set qty = stock.qty + excluded.qty, updated_at = now() returning *`)[0];
+      }
+      const move = (await q`insert into stock_moves (stock_id, delta, label, note) values (${row.id}, ${delta}, ${row.piece + " " + row.brand + " " + row.model}, ${note}) returning *`)[0];
+      return res.status(200).json({ ok: true, row, move });
+    }
+    if (b.action === "stock_delete") {
+      await q`delete from stock where id = ${Number(b.id)}`;
       return res.status(200).json({ ok: true });
     }
     return res.status(400).json({ ok: false, error: "action" });

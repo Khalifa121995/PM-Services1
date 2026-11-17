@@ -56,6 +56,18 @@ async function db() {
         updated_at timestamptz not null default now()
       )`;
       await q`create unique index if not exists prices_u on prices (piece, brand, label, (coalesce(quality, '')))`;
+      await q`create table if not exists stock (
+        id serial primary key,
+        piece text not null, brand text not null, model text not null,
+        qty integer not null default 0,
+        updated_at timestamptz not null default now()
+      )`;
+      await q`create unique index if not exists stock_u on stock (piece, lower(brand), lower(model))`;
+      await q`create table if not exists stock_moves (
+        id serial primary key,
+        stock_id integer, delta integer not null, label text not null, note text,
+        created_at timestamptz not null default now()
+      )`;
       if (!had) {
         // première installation : on charge la liste de prix de départ
         await q.transaction(
