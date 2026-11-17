@@ -74,6 +74,11 @@ textarea{min-height:90px}
 .res li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line);list-style:none}
 .res li:last-of-type{border:0}
 .res b.p{font-family:Outfit,sans-serif;color:var(--navy)}
+.res .pv{text-align:right;white-space:nowrap}.res s.old{color:var(--muted);font-size:.9rem;margin-right:4px}
+.res em.pr{font-style:normal;background:#d6001c;color:#fff;font-weight:800;font-size:.75rem;border-radius:999px;padding:2px 8px;margin-left:4px;animation:pbeat 1.6s ease-in-out infinite}
+@keyframes pbeat{50%{transform:scale(1.08)}}
+.pbn{background:linear-gradient(90deg,#d6001c,#ff5a1f);color:#fff;font-weight:800;border-radius:12px;padding:10px 14px;margin:10px 0;text-align:center}
+@media(prefers-reduced-motion:reduce){.res em.pr{animation:none}}
 .err{color:#b00020;font-weight:600;margin-top:10px}
 .ok{color:#0a6b3a;font-weight:600;margin-top:10px}
 [hidden]{display:none!important}
@@ -164,7 +169,7 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
 <div class="view" id="accueil">
  <div class="car" role="region" aria-roledescription="carrousel" aria-label="Présentation">
   <div class="sl on"><div class="w"><h1>Réparation de téléphones partout en Côte d’Ivoire</h1><p>Écran, batterie, connecteur de charge, caméra. Atelier ou domicile.</p><a class="btn l" href="#reserver">Réserver une réparation</a></div></div>
-  <div class="sl"><div class="w"><h2>Prix imbattables, montage gratuit</h2><p>Anti-choc et écouteurs offerts pour tout remplacement d’écran. Choisissez votre modèle : le prix s’affiche.</p><a class="btn l" href="#prix">Voir les prix</a></div></div>
+  <div class="sl"><div class="w"><h2>Giga promo : -20 % sur les écrans</h2><p>Montage gratuit, anti-choc et écouteurs offerts pour tout remplacement d’écran. Choisissez votre modèle : le prix réduit s’affiche.</p><a class="btn l" href="#prix">Voir les prix</a></div></div>
   <div class="sl"><div class="w"><h2>On récupère votre téléphone chez vous</h2><p>Aller-retour à domicile pour 1 000 F. Suivez votre dossier avec votre code.</p><a class="btn l" href="#domicile">Demander une récupération</a></div></div>
   <div class="dots" id="dots"></div>
  </div>
@@ -188,6 +193,7 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
 
  <section class="sec view" id="prix" data-t="Vérifier le prix"><div class="w">
   <h2>Prix des pièces</h2><p class="sub">Écran, vitre arrière, coque complète : choisissez la pièce, la marque et le modèle. Si le prix n’est pas affiché, faites une demande de réparation : nous vous rappelons avec le prix.</p>
+  <p class="pbn" id="pbn" hidden></p>
   <div class="panel"><div class="f">
    <label>Pièce<select id="pp"></select></label>
    <label>Marque<select id="pb"></select></label>
@@ -319,7 +325,7 @@ const nm=r=>r.brand==="Autres Android"?"Android – "+r.label:r.label.toLowerCas
 function quoteHtml(q,label,href,pc){
  const btn=t=>href?'<p style="margin-top:10px"><a class="btn" href="'+href+'"><svg class="i"><use href="#cal"/></svg>'+t+'</a></p>':"";
  if(!q.length)return '<div class="res"><p><b>Prix sur demande.</b> '+label+'</p>'+btn("Faire une demande de réparation")+'</div>';
- return '<div class="res"><ul>'+q.map(r=>"<li><span>"+esc(nm(r))+(r.quality?" – "+esc(r.quality):"")+'</span><b class="p">'+F(r.price)+"</b></li>").join("")+'</ul>'+(pc==="Écran"?'<p style="margin-top:8px;color:var(--muted);font-size:.92rem">Montage gratuit. Anti-choc et écouteurs offerts pour tout remplacement d’écran.</p>':"")+btn("Réserver cette réparation")+'</div>';
+ return '<div class="res"><ul>'+q.map(r=>"<li><span>"+esc(nm(r))+(r.quality?" – "+esc(r.quality):"")+'</span><span class="pv">'+(r.old?'<s class="old">'+F(r.old)+"</s> ":"")+'<b class="p">'+F(r.price)+"</b>"+(r.promo?' <em class="pr">-'+r.promo+" %</em>":"")+"</span></li>").join("")+'</ul>'+(pc==="Écran"?'<p style="margin-top:8px;color:var(--muted);font-size:.92rem">Montage gratuit. Anti-choc et écouteurs offerts pour tout remplacement d’écran.</p>':"")+btn("Réserver cette réparation")+'</div>';
 }
 function notify(type,data,form){
  return fetch("/api/demande",{method:"POST",headers:{"Content-Type":"application/json"},
@@ -407,7 +413,7 @@ codeForm("gf","garantie","gc","gt","ge","gok","✓ Demande envoyée. Nous vérif
 $("fb").href=wa("Bonjour PM Services, c’est urgent : je voudrais parler à un technicien.");
 /* prix depuis la base de données */
 opts($("pp"),PC);opts($("pb"),BR);pModels();
-fetch("/api/prix").then(r=>r.json()).then(j=>{if(!j.ok)throw 0;PR=j.rows;fill()}).catch(()=>{PRERR=true;pShow()});
+fetch("/api/prix").then(r=>r.json()).then(j=>{if(!j.ok)throw 0;PR=j.rows;const pm=PR.find(r=>r.promo);if(pm){$("pbn").textContent="GIGA PROMO : -"+pm.promo+" % sur tous les écrans. Les prix ci-dessous sont déjà réduits.";$("pbn").hidden=false}fill()}).catch(()=>{PRERR=true;pShow()});
 /* pages : une seule à l’écran, choisie par le lien cliqué */
 const VIEWS=[...document.querySelectorAll(".view")];
 VIEWS.forEach(v=>{if(v.id!=="accueil"){const b=document.createElement("a");b.className="back";b.href="#accueil";b.textContent="← Accueil";const w=v.querySelector(".w");w.insertBefore(b,w.firstChild)}});
