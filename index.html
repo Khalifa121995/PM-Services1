@@ -447,7 +447,7 @@ addEventListener("hashchange",route);route();
 $("bg").onclick=()=>{const o=$("nav").classList.toggle("open");$("bg").setAttribute("aria-expanded",o)};
 $("nav").addEventListener("click",e=>{if(e.target.tagName==="A")$("nav").classList.remove("open")});
 /* carrousel : fondu, flèches, balayage tactile, pause au survol */
-const CAR=document.querySelector(".car"),S=[...document.querySelectorAll(".sl")];let k=0,tm,dwell=false;
+const CAR=document.querySelector(".car");let S=[...document.querySelectorAll(".sl")],k=0,tm,dwell=false;
 S.forEach((_,j)=>{const b=document.createElement("button");b.type="button";b.setAttribute("aria-label","Bannière "+(j+1)+" sur "+S.length);b.onclick=()=>{go(j);auto()};$("dots").appendChild(b)});
 function go(j){k=(j+S.length)%S.length;S.forEach((s,x)=>{s.classList.toggle("on",x===k);s.setAttribute("aria-hidden",x===k?"false":"true");s.tabIndex=x===k?0:-1});
  [...$("dots").children].forEach((b,x)=>{b.removeAttribute("aria-current");void b.offsetWidth;if(x===k)b.setAttribute("aria-current","true")})}
@@ -467,6 +467,19 @@ CAR.addEventListener("touchend",e=>{if(tx===null)return;const dx=e.changedTouche
 CAR.addEventListener("click",e=>{if(moved){e.preventDefault();moved=false}},true);
 document.addEventListener("visibilitychange",()=>{if(document.hidden)clearTimeout(tm);else{go(k);auto()}});
 if(matchMedia("(prefers-reduced-motion:reduce)").matches)CAR.classList.add("still");
+/* bannières gérées depuis l'espace admin (sinon on garde les 3 bannières d'origine) */
+function setSlides(rows){
+ CAR.querySelectorAll(".sl").forEach(x=>x.remove());
+ const ref=$("cp"),h=t=>String(t||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ rows.forEach((r,i)=>{const src="/api/banniere?id="+r.id+"&v="+r.v,link=/^(#[a-z0-9-]+|https:\/\/\S+)$/.test(r.link||"")?r.link:"";
+  const el=document.createElement(link?"a":"div");el.className="sl"+(i?"":" on");if(link){el.href=link;if(link[0]!=="#"){el.target="_blank";el.rel="noopener"}}
+  el.style.setProperty("--i","url("+src+")");if(r.alt)el.setAttribute("aria-label",r.alt);
+  el.innerHTML='<img src="'+src+'" alt="'+h(r.alt)+'"'+(i?' decoding="async"':"")+'>';CAR.insertBefore(el,ref)});
+ S=[...CAR.querySelectorAll(".sl")];$("dots").innerHTML="";
+ S.forEach((_,j)=>{const b=document.createElement("button");b.type="button";b.setAttribute("aria-label","Bannière "+(j+1)+" sur "+S.length);b.onclick=()=>{go(j);auto()};$("dots").appendChild(b)});
+ const many=S.length>1;$("cp").hidden=!many;$("cx").hidden=!many;$("dots").hidden=!many;
+ go(0);auto()}
+fetch("/api/bannieres").then(r=>r.json()).then(j=>{if(j.ok&&j.rows&&j.rows.length)setSlides(j.rows)}).catch(()=>{});
 go(0);auto();
 </script>
 </body>

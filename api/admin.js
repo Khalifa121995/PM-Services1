@@ -182,6 +182,7 @@ module.exports = async (req, res) => {
       price_list: ["prices", "create"], price_save: ["prices"], price_delete: ["prices"],
       stock_list: ["stock", "create"], stock_move: ["stock"], stock_delete: ["stock"],
       update: ["update", "edit_price", "cost"],
+      banner_list: ["banners"], banner_save: ["banners"], banner_delete: ["banners"], banner_order: ["banners"],
     };
     const SUPER_ONLY = ["staff_list", "staff_save", "staff_password", "staff_delete", "staff_log"];
     if (SUPER_ONLY.includes(b.action) && !isSuper) return deny();
@@ -375,6 +376,48 @@ module.exports = async (req, res) => {
       await logAct("Pièce supprimée du stock", `id ${Number(b.id)}`);
       return res.status(200).json({ ok: true });
     }
+    /* ---------- bannières publicitaires ---------- */
+    const okLink = (v) => { v = String(v || "").trim(); return /^#[a-z0-9-]{1,30}$/.test(v) || /^https:\/\/[^\s]{4,300}$/.test(v) ? v : ""; };
+    const okDate = (v) => (/^\d{4}-\d{2}-\d{2}$/.test(String(v || "")) ? String(v) : null);
+    if (b.action === "banner_list") {
+      const rows = await q`select id, alt, link, mime, active, pos, starts, ends, updated_at from banners order by pos, id`;
+      return res.status(200).json({ ok: true, rows });
+    }
+    if (b.action === "banner_save") {
+      const alt = one(b.alt, 200), link = okLink(b.link), active = b.active !== false, starts = okDate(b.starts), ends = okDate(b.ends);
+      let mime = null, data = null;
+      if (b.image) {
+        const m = /^data:(image\/(?:webp|jpeg|png));base64,([A-Za-z0-9+/=]+)$/.exec(String(b.image));
+        if (!m || m[2].length > 2200000) return res.status(400).json({ ok: false, error: "image" });
+        mime = m[1]; data = m[2];
+      }
+      if (b.id) {
+        const id = Number(b.id);
+        const r = data
+          ? await q`update banners set alt = ${alt}, link = ${link}, active = ${active}, starts = ${starts}, ends = ${ends}, mime = ${mime}, data = ${data}, updated_at = now() where id = ${id} returning id`
+          : await q`update banners set alt = ${alt}, link = ${link}, active = ${active}, starts = ${starts}, ends = ${ends}, updated_at = now() where id = ${id} returning id`;
+        if (!r[0]) return res.status(404).json({ ok: false, error: "notfound" });
+        await logAct("Bannière modifiée", alt || `n° ${id}`);
+        return res.status(200).json({ ok: true, id });
+      }
+      if (!data) return res.status(400).json({ ok: false, error: "image" });
+      const pos = Number((await q`select coalesce(max(pos), 0) + 1 as p from banners`)[0].p);
+      const r = (await q`insert into banners (alt, link, mime, data, active, pos, starts, ends) values (${alt}, ${link}, ${mime}, ${data}, ${active}, ${pos}, ${starts}, ${ends}) returning id`)[0];
+      await logAct("Bannière ajoutée", alt || `n° ${r.id}`);
+      return res.status(200).json({ ok: true, id: r.id });
+    }
+    if (b.action === "banner_order") {
+      const ids = (Array.isArray(b.ids) ? b.ids : []).map(Number).filter(Number.isInteger).slice(0, 50);
+      for (let i = 0; i < ids.length; i++) await q`update banners set pos = ${i + 1} where id = ${ids[i]}`;
+      return res.status(200).json({ ok: true });
+    }
+    if (b.action === "banner_delete") {
+      const r = (await q`delete from banners where id = ${Number(b.id)} returning alt, id`)[0];
+      if (!r) return res.status(404).json({ ok: false, error: "notfound" });
+      await logAct("Bannière supprimée", r.alt || `n° ${r.id}`);
+      return res.status(200).json({ ok: true });
+    }
+
     /* ---------- gestion de l'équipe (super admin seulement) ---------- */
     if (b.action === "staff_list") {
       const rows = await q`select id, username, name, perms, active, last_login, created_at from staff order by active desc, name`;

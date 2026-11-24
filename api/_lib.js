@@ -86,6 +86,17 @@ async function db() {
         action text not null, detail text,
         created_at timestamptz not null default now()
       )`;
+      await q`create table if not exists banners (
+        id serial primary key,
+        alt text not null default '',
+        link text not null default '',
+        mime text not null,
+        data text not null,
+        active boolean not null default true,
+        pos integer not null default 0,
+        starts date, ends date,
+        updated_at timestamptz not null default now()
+      )`;
       if (!had) {
         // première installation : on charge la liste de prix de départ
         await q.transaction(
@@ -131,6 +142,7 @@ const PERMS = {
   stock: "Gérer le stock de l’atelier",
   cash: "Accéder à la caisse (solde, sorties d’argent)",
   reports: "Envoyer les rapports par e-mail",
+  banners: "Gérer les bannières publicitaires du site",
 };
 const PERM_KEYS = Object.keys(PERMS);
 const cleanPerms = (a) => PERM_KEYS.filter((k) => Array.isArray(a) && a.includes(k));

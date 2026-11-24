@@ -172,11 +172,16 @@ dialog{border-radius:22px;max-height:94vh;box-shadow:0 24px 60px rgb(6 24 63/35%
 .tpw{display:flex;gap:8px}.tpw .btn{white-space:nowrap}
 .logr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-top:6px;font-size:.9rem}.logr small{color:var(--muted)}.logr b{color:var(--navy)}
 .off{opacity:.62}
+.bn{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:start}
+.bn img{width:150px;height:84px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:var(--mist)}
+.bn .bf{display:grid;gap:8px}.bn .r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bprev{max-width:100%;max-height:150px;border-radius:10px;border:1px solid var(--line);display:block;margin-top:8px}
+@media(max-width:600px){.bn{grid-template-columns:1fr}.bn img{width:100%;height:auto;max-height:160px}.bn .r2{grid-template-columns:1fr}}
 .cred{font-family:ui-monospace,Consolas,monospace;font-size:1.05rem;color:var(--navy);user-select:all}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol><symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol><symbol id="i-stock" viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11h14V8M10 12h4"/></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8zM7.5 7.5h.01"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM3 7V6a2 2 0 0 1 2-2h12M16 14h2"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9M10 20v-5h4v5"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 16h6"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-device" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8"/></symbol><symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol><symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol><symbol id="i-stock" viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11h14V8M10 12h4"/></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8zM7.5 7.5h.01"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM3 7V6a2 2 0 0 1 2-2h12M16 14h2"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9M10 20v-5h4v5"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 16h6"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-device" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8"/></symbol><symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></symbol><symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></symbol></svg>
 <main id="login">
  <form class="box" id="lf">
   <img class="lgl" src="/logo.jpg" alt="PM Services"><h1>Espace atelier</h1>
@@ -199,7 +204,7 @@ dialog{border-radius:22px;max-height:94vh;box-shadow:0 24px 60px rgb(6 24 63/35%
   <button class="btn o" id="lo" type="button"><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg><span class="tx">Quitter</span></button>
  </div></header>
  <div class="w">
-  <div class="tabs main"><button class="tab" id="t1" type="button" aria-pressed="true"><svg class="i" aria-hidden="true"><use href="#i-wrench"/></svg> Atelier<small id="c1"></small></button><button class="tab" id="t4" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg> Archives<small id="c4"></small></button><button class="tab" id="t2" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-tag"/></svg> Prix</button><button class="tab" id="t3" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-wallet"/></svg> Caisse</button><button class="tab" id="t5" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-stock"/></svg> Stock<small id="c5"></small></button><button class="tab" id="t6" type="button" aria-pressed="false" hidden><svg class="i" aria-hidden="true"><use href="#i-users"/></svg> Équipe</button></div>
+  <div class="tabs main"><button class="tab" id="t1" type="button" aria-pressed="true"><svg class="i" aria-hidden="true"><use href="#i-wrench"/></svg> Atelier<small id="c1"></small></button><button class="tab" id="t4" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg> Archives<small id="c4"></small></button><button class="tab" id="t2" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-tag"/></svg> Prix</button><button class="tab" id="t3" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-wallet"/></svg> Caisse</button><button class="tab" id="t5" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-stock"/></svg> Stock<small id="c5"></small></button><button class="tab" id="t6" type="button" aria-pressed="false" hidden><svg class="i" aria-hidden="true"><use href="#i-users"/></svg> Équipe</button><button class="tab" id="t7" type="button" aria-pressed="false" hidden><svg class="i" aria-hidden="true"><use href="#i-image"/></svg> Bannières</button></div>
   <p class="err" id="ae" role="alert"></p>
   <section id="v1">
    <div class="kpis" id="kpis"></div>
@@ -265,6 +270,22 @@ dialog{border-radius:22px;max-height:94vh;box-shadow:0 24px 60px rgb(6 24 63/35%
     <button class="btn" type="submit">Créer le compte</button></form>
    <h3 class="pg">Comptes du staff</h3><div id="tlist"></div>
    <h3 class="pg">Journal d’activité</h3><div id="tlog"></div>
+  </section>
+  <section id="v7" hidden>
+   <p class="note info">Ce sont les bannières qui défilent en haut de la page d’accueil du site. Ajoutez une image, choisissez où elle mène, et elle apparaît en ligne en quelques secondes. Format conseillé : large (environ 1800 × 600). L’image est réduite automatiquement.</p>
+   <form class="c g" id="bf" style="margin-top:16px"><h3 style="color:var(--navy)" id="bft">Ajouter une bannière</h3>
+    <input type="hidden" id="bid">
+    <label>Image<input id="bimg" type="file" accept="image/*"></label>
+    <img id="bpv" class="bprev" alt="" hidden>
+    <label>Texte de l’image (pour les malvoyants et Google)<input id="balt" maxlength="200" placeholder="Ex. Giga promo : -20 % sur toutes nos réparations"></label>
+    <label>Au clic, mener vers<select id="blk"><option value="">Nulle part (image seule)</option><option value="#prix">Prix des pièces</option><option value="#reserver">Demander une réparation</option><option value="#domicile">Réparation à domicile</option><option value="#suivi">Suivre ma réparation</option><option value="#contact">Contact</option><option value="#autre">Autre lien (https://…)</option></select></label>
+    <label id="bolw" hidden>Lien complet<input id="bol" placeholder="https://…"></label>
+    <div class="r2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><label>Afficher à partir du (facultatif)<input id="bst" type="date"></label><label>Jusqu’au (facultatif)<input id="ben" type="date"></label></div>
+    <label class="ck"><input type="checkbox" id="bac" checked> Bannière active (visible sur le site)</label>
+    <p class="err" id="be" role="alert"></p>
+    <div style="display:flex;gap:8px"><button class="btn" type="submit" style="flex:1" id="bsv">Ajouter la bannière</button><button class="btn o" type="button" id="bcx" hidden>Annuler</button></div></form>
+   <div id="bimp" class="note" hidden style="margin-top:12px">Aucune bannière enregistrée : le site affiche ses 3 bannières d’origine. <button class="mini" type="button" id="bim">Importer ces 3 bannières pour les gérer ici</button></div>
+   <h3 class="pg">Bannières du site</h3><div id="blist"></div>
   </section>
   <p style="height:40px"></p>
  </div>
@@ -439,7 +460,7 @@ $("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.d
 $("q").oninput=render;$("aqs").oninput=renderArch;$("ap").onchange=renderArch;
 $("kpis").onclick=e=>{const b=e.target.closest(".kpi");if(!b)return;filter=b.dataset.k;render()};
 $("srcs").onclick=e=>{const b=e.target.closest("button[data-s]");if(!b)return;src=b.dataset.s;document.querySelectorAll("#srcs .tab").forEach(x=>x.setAttribute("aria-pressed",x===b));render()};
-$("rf").onclick=()=>tab===6?loadTeam():tab===5?loadStock():tab===3?loadCash():tab===2?loadPrices():load();
+$("rf").onclick=()=>tab===7?loadBanners():tab===6?loadTeam():tab===5?loadStock():tab===3?loadCash():tab===2?loadPrices():load();
 $("lo").onclick=async()=>{try{await api("logout")}catch(e){}ME=null;show(false)};
 $("lf").onsubmit=async e=>{e.preventDefault();$("le").textContent="";
  try{const j=await api("login",{username:$("un").value.trim(),password:$("pw").value});$("pw").value="";ME=j.me;applyPerms();show(true);load()}
@@ -527,8 +548,8 @@ $("nsg").onclick=e=>{const b=e.target.closest("button[data-m]");if(!b)return;$("
 $("nm").addEventListener("input",showModels);
 /* onglets */
 let prices=[],tab=1;
-function setTab(n){tab=n;[1,2,3,4,5,6].forEach(i=>{$("v"+i).hidden=n!==i;$("t"+i).setAttribute("aria-pressed",n===i)});if(n===2)loadPrices();if(n===3)loadCash();if(n===5)loadStock();if(n===6)loadTeam()}
-$("t1").onclick=()=>setTab(1);$("t2").onclick=()=>setTab(2);$("t3").onclick=()=>setTab(3);$("t4").onclick=()=>setTab(4);$("t5").onclick=()=>setTab(5);$("t6").onclick=()=>setTab(6);
+function setTab(n){tab=n;[1,2,3,4,5,6,7].forEach(i=>{$("v"+i).hidden=n!==i;$("t"+i).setAttribute("aria-pressed",n===i)});if(n===2)loadPrices();if(n===3)loadCash();if(n===5)loadStock();if(n===6)loadTeam();if(n===7)loadBanners()}
+$("t1").onclick=()=>setTab(1);$("t2").onclick=()=>setTab(2);$("t3").onclick=()=>setTab(3);$("t4").onclick=()=>setTab(4);$("t5").onclick=()=>setTab(5);$("t6").onclick=()=>setTab(6);$("t7").onclick=()=>setTab(7);
 /* stock atelier */
 let stock=[],stockMoves=[];
 const SP=["Écran","Vitre arrière","Coque complète"];
@@ -711,7 +732,7 @@ const can=p=>!!ME&&(ME.role==="super"||ME.perms.includes(p));
 function applyPerms(){
  const sup=ME.role==="super";
  $("who").textContent=ME.name+(sup?" · super admin":"");
- $("t6").hidden=!sup;$("t4").hidden=!can("archives");$("t2").hidden=!can("prices");$("t3").hidden=!can("cash");$("t5").hidden=!can("stock");
+ $("t6").hidden=!sup;$("t7").hidden=!can("banners");$("t4").hidden=!can("archives");$("t2").hidden=!can("prices");$("t3").hidden=!can("cash");$("t5").hidden=!can("stock");
  $("nb").hidden=!can("create");$("rp").hidden=!can("reports");$("rm").hidden=!can("reports");$("cpw").hidden=sup;
  document.querySelectorAll("#nd [data-k=cost]").forEach(i=>{const l=i.closest("label");if(l)l.hidden=!can("cost")});
  const n=[...document.querySelectorAll(".tabs.main .tab")].filter(t=>!t.hidden).length;
@@ -767,6 +788,61 @@ $("tlist").onclick=async e=>{const b=e.target.closest("button[data-a]");if(!b)re
   else if(b.dataset.a==="del"){if(!confirm("Supprimer définitivement le compte de "+u.name+" ?\n(Pour une absence temporaire, préférez décocher « Compte actif ».)"))return;
    await api("staff_delete",{id});toast("Compte supprimé");loadTeam()}
  }catch(x){if(x.message!=="auth"&&x.message!=="forbidden")toast("Échec ("+x.message+")")}};
+
+/* ===== bannières du site ===== */
+let bans=[];
+const LINKS=["","#prix","#reserver","#domicile","#suivi","#contact"];
+const linkName=l=>({"":"Aucun lien","#prix":"Prix des pièces","#reserver":"Demander une réparation","#domicile":"Réparation à domicile","#suivi":"Suivre ma réparation","#contact":"Contact"}[l]||l);
+const bsrc=b=>"/api/banniere?id="+b.id+"&v="+new Date(b.updated_at).getTime();
+/* réduit l'image (largeur max 1800 px) et la convertit en WebP/JPEG léger */
+function shrink(file){return new Promise((ok,ko)=>{const u=URL.createObjectURL(file),im=new Image();
+ im.onload=()=>{const w=Math.min(1800,im.naturalWidth),h=Math.round(im.naturalHeight*w/im.naturalWidth),c=document.createElement("canvas");c.width=w;c.height=h;
+  c.getContext("2d").drawImage(im,0,0,w,h);URL.revokeObjectURL(u);
+  let q=.86,d=c.toDataURL("image/webp",q);if(!d.startsWith("data:image/webp"))d=c.toDataURL("image/jpeg",q);
+  while(d.length>1500000&&q>.4){q-=.1;d=c.toDataURL(d.startsWith("data:image/webp")?"image/webp":"image/jpeg",q)}
+  d.length>1700000?ko(new Error("image")):ok(d)};
+ im.onerror=()=>{URL.revokeObjectURL(u);ko(new Error("image"))};im.src=u})}
+function bLink(){const v=$("blk").value;return v==="#autre"?$("bol").value.trim():v}
+function bReset(){$("bf").reset();$("bid").value="";$("bpv").hidden=true;$("bolw").hidden=true;$("bft").textContent="Ajouter une bannière";$("bsv").textContent="Ajouter la bannière";$("bcx").hidden=true;$("be").textContent=""}
+$("blk").onchange=()=>{$("bolw").hidden=$("blk").value!=="#autre"};
+$("bimg").onchange=async()=>{const f=$("bimg").files[0];if(!f){$("bpv").hidden=true;return}
+ try{$("bpv").src=await shrink(f);$("bpv").hidden=false;$("be").textContent=""}catch{$("be").textContent="Image illisible ou trop lourde.";$("bimg").value=""}};
+$("bcx").onclick=bReset;
+$("bf").onsubmit=async e=>{e.preventDefault();$("be").textContent="";
+ const id=$("bid").value,img=(!$("bpv").hidden&&$("bpv").src.startsWith("data:"))?$("bpv").src:"";
+ if(!id&&!img){$("be").textContent="Choisissez une image.";return}
+ if($("blk").value==="#autre"&&!/^https:\/\/\S{4,}$/.test($("bol").value.trim())){$("be").textContent="Le lien doit commencer par https://";return}
+ $("bsv").disabled=true;
+ try{await api("banner_save",{id:id||undefined,image:img||undefined,alt:$("balt").value,link:bLink(),starts:$("bst").value,ends:$("ben").value,active:$("bac").checked});
+  toast(id?"Bannière modifiée":"Bannière ajoutée");bReset();loadBanners()}
+ catch(x){if(x.message!=="auth"&&x.message!=="forbidden")$("be").textContent=x.message==="image"?"Image refusée (trop lourde ou format non géré).":"Échec ("+x.message+")"}
+ $("bsv").disabled=false};
+function renderBanners(){
+ $("bimp").hidden=bans.length>0;
+ $("blist").innerHTML=bans.length?bans.map((b,i)=>`<article class="c${b.active?"":" off"}" data-id="${b.id}"><div class="bn"><img src="${bsrc(b)}" alt="">
+  <div class="bf"><div><b>${esc(b.alt||"Sans texte")}</b><br><small style="color:var(--muted)">Mène vers : ${esc(linkName(b.link))}${b.starts?" · dès le "+esc(String(b.starts).slice(0,10)):""}${b.ends?" · jusqu’au "+esc(String(b.ends).slice(0,10)):""} · ${b.active?"active":"masquée"}</small></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="mini" data-b="up"${i?"":" disabled"}>↑ Monter</button><button type="button" class="mini" data-b="down"${i<bans.length-1?"":" disabled"}>↓ Descendre</button><button type="button" class="mini" data-b="tog">${b.active?"Masquer":"Activer"}</button><button type="button" class="mini" data-b="edit">Modifier</button><button type="button" class="mini d" data-b="del">Supprimer</button></div></div></div></article>`).join(""):""}
+async function loadBanners(){
+ try{bans=(await api("banner_list")).rows;$("ae").textContent="";renderBanners()}
+ catch(e){if(e.message!=="auth"&&e.message!=="forbidden")$("ae").textContent="Chargement impossible ("+e.message+")."}}
+$("blist").onclick=async e=>{const t=e.target.closest("button[data-b]");if(!t)return;
+ const art=t.closest("article"),id=Number(art.dataset.id),i=bans.findIndex(x=>x.id===id),b=bans[i];if(!b)return;
+ try{
+  if(t.dataset.b==="up"||t.dataset.b==="down"){const ids=bans.map(x=>x.id),j=t.dataset.b==="up"?i-1:i+1;[ids[i],ids[j]]=[ids[j],ids[i]];await api("banner_order",{ids});loadBanners()}
+  else if(t.dataset.b==="tog"){await api("banner_save",{id,alt:b.alt,link:b.link,starts:b.starts?String(b.starts).slice(0,10):"",ends:b.ends?String(b.ends).slice(0,10):"",active:!b.active});toast(b.active?"Bannière masquée":"Bannière activée");loadBanners()}
+  else if(t.dataset.b==="del"){if(!confirm("Supprimer cette bannière définitivement ?"))return;await api("banner_delete",{id});toast("Bannière supprimée");loadBanners()}
+  else if(t.dataset.b==="edit"){bReset();$("bid").value=id;$("balt").value=b.alt;const k=LINKS.includes(b.link)?b.link:"#autre";$("blk").value=k;$("bolw").hidden=k!=="#autre";if(k==="#autre")$("bol").value=b.link;
+   $("bst").value=b.starts?String(b.starts).slice(0,10):"";$("ben").value=b.ends?String(b.ends).slice(0,10):"";$("bac").checked=b.active;
+   $("bft").textContent="Modifier la bannière";$("bsv").textContent="Enregistrer les changements";$("bcx").hidden=false;$("bpv").src=bsrc(b);$("bpv").hidden=false;$("bpv").dataset.cur="1";
+   $("bf").scrollIntoView({behavior:"smooth",block:"start"})}
+ }catch(x){if(x.message!=="auth"&&x.message!=="forbidden")toast("Échec ("+x.message+")")}};
+/* importer les 3 bannières d'origine */
+$("bim").onclick=async()=>{$("bim").disabled=true;
+ const L=[["/banniere-1.webp","Giga promo PM Services : -20 % sur toutes nos réparations","#prix"],["/banniere-2.webp","Batterie endommagée ? Nous la remplaçons rapidement","#reserver"],["/banniere-3.webp","iPhone qui redémarre en boucle ? Nous le réparons rapidement","#reserver"]];
+ try{for(const [u,alt,link] of L){const blob=await (await fetch(u)).blob();const img=await shrink(blob);await api("banner_save",{image:img,alt,link,active:true})}
+  toast("Bannières importées");loadBanners()}
+ catch(x){toast("Import impossible ("+x.message+")")}
+ $("bim").disabled=false};
 
 /* session déjà ouverte ? */
 api("me").then(j=>{ME=j.me;applyPerms();show(true);return load()}).catch(()=>{});
