@@ -190,6 +190,22 @@ dialog{border-radius:22px;max-height:94vh;box-shadow:0 24px 60px rgb(6 24 63/35%
   <label>Mot de passe<input type="password" id="pw" autocomplete="current-password" required></label>
   <p class="err" id="le" role="alert"></p>
   <button class="btn" type="submit" style="width:100%;margin-top:6px">Se connecter</button>
+  <p style="text-align:center;margin-top:12px"><button type="button" class="mini" id="fg" style="border:0;text-decoration:underline">Mot de passe oublié ?</button></p>
+ </form>
+ <form class="box" id="ff" hidden>
+  <img class="lgl" src="/logo.jpg" alt="PM Services"><h1>Mot de passe oublié</h1>
+  <div id="ff1">
+   <label>Votre identifiant<input id="fu" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+   <p style="color:var(--muted);font-size:.88rem;margin-top:8px">Nous envoyons un code à 6 chiffres à l’adresse e-mail enregistrée sur votre compte. Pas d’e-mail enregistré ? Demandez au propriétaire de vous créer un nouveau mot de passe.</p>
+  </div>
+  <div id="ff2" hidden>
+   <p class="note info" style="margin-bottom:10px">Si ce compte a une adresse e-mail, un code vient d’être envoyé. Il est valable 15 minutes.</p>
+   <label>Code reçu par e-mail<input id="fc" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></label>
+   <label style="margin-top:8px">Nouveau mot de passe (6 caractères minimum)<input type="password" id="fp" minlength="6" autocomplete="new-password"></label>
+  </div>
+  <p class="err" id="fe" role="alert"></p>
+  <button class="btn" type="submit" id="fs" style="width:100%;margin-top:6px">Envoyer le code</button>
+  <p style="text-align:center;margin-top:12px"><button type="button" class="mini" id="fb" style="border:0;text-decoration:underline">Retour à la connexion</button></p>
  </form>
 </main>
 
@@ -264,6 +280,7 @@ dialog{border-radius:22px;max-height:94vh;box-shadow:0 24px 60px rgb(6 24 63/35%
    <form class="c g" id="tf" style="margin-top:16px"><h3 style="color:var(--navy)">Ajouter un membre du staff</h3>
     <label>Nom<input id="tn" maxlength="60" required autocomplete="off" placeholder="Ex. Awa Koné"></label>
     <label>Identifiant de connexion<input id="tu" required autocomplete="off" autocapitalize="none" pattern="[a-zA-Z0-9._-]{3,30}" placeholder="Ex. awa.kone (3 à 30 lettres ou chiffres)"></label>
+    <label>E-mail (pour « mot de passe oublié », facultatif)<input id="tem" type="email" maxlength="120" autocomplete="off" placeholder="awa@exemple.com"></label>
     <label>Mot de passe (6 caractères minimum)<span class="tpw"><input id="tp" type="text" required minlength="6" maxlength="100" autocomplete="new-password"><button class="btn o" type="button" id="tg">Générer</button></span></label>
     <div><p class="sec">Autorisations</p><div class="tpre" id="tpre"></div><div class="tperms" id="tperms"></div></div>
     <p class="err" id="te" role="alert"></p>
@@ -362,7 +379,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 let rows=[],filter="actives",src="";
 const archived=r=>r.status==="livre"||r.status==="annule";
 const ACT=["recu","diagnostic","piece","cours","pret"];
-const MSG={password:"Identifiant ou mot de passe incorrect.",locked:"Trop d’essais. Réessayez dans 10 minutes.",disabled:"Ce compte est désactivé. Voyez le propriétaire.",forbidden:"Vous n’avez pas l’autorisation pour cette action.",username:"Identifiant invalide (3 à 30 lettres, chiffres, point, tiret).",exists:"Cet identifiant existe déjà.",weak:"Mot de passe trop court (6 caractères minimum).",config:"Le serveur n’est pas configuré (DATABASE_URL ou ADMIN_PASSWORD manquant sur Vercel).",db:"Erreur de base de données."};
+const MSG={code:"Code incorrect ou expiré. Demandez un nouveau code.",email:"Adresse e-mail invalide.",password:"Identifiant ou mot de passe incorrect.",locked:"Trop d’essais. Réessayez dans 10 minutes.",disabled:"Ce compte est désactivé. Voyez le propriétaire.",forbidden:"Vous n’avez pas l’autorisation pour cette action.",username:"Identifiant invalide (3 à 30 lettres, chiffres, point, tiret).",exists:"Cet identifiant existe déjà.",weak:"Mot de passe trop court (6 caractères minimum).",config:"Le serveur n’est pas configuré (DATABASE_URL ou ADMIN_PASSWORD manquant sur Vercel).",db:"Erreur de base de données."};
 
 async function api(action,data){
  const r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({action},data))});
@@ -739,6 +756,18 @@ function applyPerms(){
  document.querySelector(".tabs.main").style.gridTemplateColumns="repeat("+n+",1fr)";
  if(tab!==1&&$("t"+tab).hidden)setTab(1);
  if(rows.length)render()}
+/* mot de passe oublié */
+let fstep=1;
+function fgShow(on){$("lf").hidden=on;$("ff").hidden=!on;if(on){fstep=1;$("ff1").hidden=false;$("ff2").hidden=true;$("fs").textContent="Envoyer le code";$("fe").textContent="";$("fu").value=$("un").value.trim();$("fu").focus()}}
+$("fg").onclick=()=>fgShow(true);$("fb").onclick=()=>fgShow(false);
+$("ff").onsubmit=async e=>{e.preventDefault();$("fe").textContent="";$("fs").disabled=true;
+ try{
+  if(fstep===1){const u=$("fu").value.trim();if(!u||u.toLowerCase()==="admin"){$("fe").textContent=u?"Le propriétaire change son mot de passe dans Vercel (variable ADMIN_PASSWORD).":"Entrez votre identifiant.";return}
+   await api("forgot",{username:u});fstep=2;$("ff1").hidden=true;$("ff2").hidden=false;$("fs").textContent="Changer mon mot de passe";$("fc").focus()}
+  else{await api("reset",{username:$("fu").value.trim(),code:$("fc").value.trim(),new_password:$("fp").value});
+   $("un").value=$("fu").value.trim();$("fc").value="";$("fp").value="";fgShow(false);$("le").textContent="";toast("Mot de passe changé : connectez-vous")}
+ }catch(x){$("fe").textContent=MSG[x.message]||"Échec ("+x.message+")"}
+ finally{$("fs").disabled=false}};
 /* mon mot de passe (staff) */
 $("cpw").onclick=()=>{$("pwf").reset();$("poe").textContent="";$("pwd").showModal()};
 $("poc").onclick=()=>$("pwd").close();
@@ -760,6 +789,7 @@ function renderTeam(){
  $("tlist").innerHTML=team.length?team.map(u=>`<article class="c${u.active?"":" off"}" data-id="${u.id}">
   <div class="top"><b style="font-family:inherit;background:none;padding:0">${esc(u.name)}</b><small>Identifiant : <b style="font-family:ui-monospace,Consolas,monospace">${esc(u.username)}</b> · ${u.last_login?"dernière connexion le "+esc(fmt(u.last_login)):"jamais connecté"}</small></div>
   <label>Nom<input data-t="name" value="${esc(u.name)}" maxlength="60"></label>
+  <label style="margin-top:8px">E-mail (mot de passe oublié)<input data-t="email" type="email" maxlength="120" value="${esc(u.email||"")}" placeholder="Aucun e-mail enregistré"></label>
   <label class="ck" style="margin-top:8px"><input type="checkbox" data-t="active"${u.active?" checked":""}> Compte actif (peut se connecter)</label>
   <p class="sec" style="margin-top:10px">Autorisations</p><div class="tpre">${presets()}</div>
   <div class="tperms" data-t="perms">${pbox(u.perms)}</div>
@@ -774,14 +804,14 @@ document.addEventListener("click",e=>{const b=e.target.closest("button[data-pre]
 $("tg").onclick=()=>{$("tp").value=genPw()};
 $("tf").onsubmit=async e=>{e.preventDefault();$("te").textContent="";
  const perms=[...$("tperms").querySelectorAll("input:checked")].map(i=>i.value),username=$("tu").value.trim().toLowerCase(),password=$("tp").value;
- try{await api("staff_save",{name:$("tn").value,username,password,perms,active:true});
+ try{await api("staff_save",{name:$("tn").value,email:$("tem").value,username,password,perms,active:true});
   showNote(`<b>Compte créé.</b> Donnez ces informations à la personne (le mot de passe ne pourra plus être affiché ensuite) :<br>Identifiant : <span class="cred">${esc(username)}</span> · Mot de passe : <span class="cred">${esc(password)}</span><br><small>Elle pourra ensuite le changer avec le bouton « Mot de passe ».</small>`);
   $("tf").reset();$("tperms").innerHTML=pbox([]);loadTeam()}
  catch(x){$("te").textContent=MSG[x.message]||"Création impossible ("+x.message+")."}};
 $("tlist").onclick=async e=>{const b=e.target.closest("button[data-a]");if(!b)return;
  const art=b.closest("article"),id=Number(art.dataset.id),u=team.find(x=>x.id===id);if(!u)return;
  try{
-  if(b.dataset.a==="save"){await api("staff_save",{id,name:art.querySelector("[data-t=name]").value,active:art.querySelector("[data-t=active]").checked,perms:[...art.querySelectorAll(".tperms input:checked")].map(i=>i.value)});toast("Compte enregistré");loadTeam()}
+  if(b.dataset.a==="save"){await api("staff_save",{id,name:art.querySelector("[data-t=name]").value,email:art.querySelector("[data-t=email]").value,active:art.querySelector("[data-t=active]").checked,perms:[...art.querySelectorAll(".tperms input:checked")].map(i=>i.value)});toast("Compte enregistré");loadTeam()}
   else if(b.dataset.a==="pw"){if(!confirm("Créer un nouveau mot de passe pour "+u.name+" ?\nL’ancien ne fonctionnera plus."))return;
    const password=genPw();await api("staff_password",{id,password});
    showNote(`<b>Nouveau mot de passe pour ${esc(u.name)}</b> :<br>Identifiant : <span class="cred">${esc(u.username)}</span> · Mot de passe : <span class="cred">${esc(password)}</span>`);toast("Mot de passe réinitialisé")}

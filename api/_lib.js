@@ -80,6 +80,10 @@ async function db() {
         last_login timestamptz,
         created_at timestamptz not null default now()
       )`;
+      await q`alter table staff add column if not exists email text`;
+      await q`alter table staff add column if not exists reset_hash text`;
+      await q`alter table staff add column if not exists reset_exp timestamptz`;
+      await q`alter table staff add column if not exists reset_tries integer not null default 0`;
       await q`create table if not exists staff_log (
         id serial primary key,
         actor_id integer, actor_name text not null,

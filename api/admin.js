@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const { STATUSES, EMAIL_RE, PERMS, PERM_KEYS, cleanPerms, parsePerms, hashPw, checkPw, DUMMY_HASH, getSession, db, createRepair, sendMail, same, token } = require("./_lib");
 const { sendReport, sendMonthReport, periodData } = require("./_rapport");
 
@@ -119,6 +120,46 @@ module.exports = async (req, res) => {
   const cookie = (v, age) => `pm_admin=${v}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${age}`;
   const meOf = (u) => ({ role: u.role, name: u.name, username: u.username, perms: u.perms, labels: PERMS });
 
+  /* ---- mot de passe oublié (staff) : code à 6 chiffres envoyé par e-mail, valable 15 min ---- */
+  if (b.action === "forgot") {
+    const uname = String(b.username || "").trim().toLowerCase();
+    try {
+      const q = await db();
+      const u = uname && uname !== "admin" ? (await q`select * from staff where username = ${uname}`)[0] : null;
+      const recent = u && u.reset_exp && new Date(u.reset_exp).getTime() > Date.now() + 14 * 60000; /* un seul envoi par minute */
+      if (u && u.active && u.email && !recent) {
+        const code = String(crypto.randomInt(100000, 1000000));
+        await q`update staff set reset_hash = ${hashPw(code)}, reset_exp = now() + interval '15 minutes', reset_tries = 0 where id = ${u.id}`;
+        const text = `Bonjour ${u.name},\n\nVotre code pour créer un nouveau mot de passe PM Services : ${code}\nIl est valable 15 minutes.\n\nSi vous n'avez rien demandé, ignorez ce message : votre mot de passe actuel reste valable.`;
+        const html = `<div style="font-family:Arial,sans-serif;color:#0a1b3d;max-width:480px"><h2 style="color:#0a2a6b">Nouveau mot de passe</h2><p>Bonjour ${esc(u.name)},</p><p>Votre code :</p><p style="font-size:28px;letter-spacing:6px;font-weight:bold;color:#0a2a6b">${code}</p><p>Il est valable 15 minutes.</p><p style="color:#4a6288">Si vous n'avez rien demandé, ignorez ce message : votre mot de passe actuel reste valable.</p></div>`;
+        await sendMail({ to: u.email, subject: "PM Services – Code pour votre mot de passe", html, text });
+      }
+    } catch (e) { console.error("forgot error", e && e.message); }
+    await sleep(700);
+    return res.status(200).json({ ok: true }); /* même réponse dans tous les cas : on ne révèle pas si le compte existe */
+  }
+  if (b.action === "reset") {
+    const uname = String(b.username || "").trim().toLowerCase();
+    const np = String(b.new_password || "");
+    if (np.length < 6 || np.length > 100) return res.status(400).json({ ok: false, error: "weak" });
+    try {
+      const q = await db();
+      const u = uname && uname !== "admin" ? (await q`select * from staff where username = ${uname}`)[0] : null;
+      const live = u && u.reset_hash && u.reset_exp && new Date(u.reset_exp) > new Date() && (u.reset_tries || 0) < 5;
+      if (!live) { await sleep(900); return res.status(400).json({ ok: false, error: "code" }); }
+      if (!checkPw(String(b.code || "").trim(), u.reset_hash)) {
+        await q`update staff set reset_tries = reset_tries + 1 where id = ${u.id}`;
+        await sleep(900);
+        return res.status(400).json({ ok: false, error: "code" });
+      }
+      await q`update staff set pass_hash = ${hashPw(np)}, reset_hash = null, reset_exp = null, reset_tries = 0, fails = 0, locked_until = null where id = ${u.id}`;
+      await q`insert into staff_log (actor_id, actor_name, action, detail) values (${u.id}, ${u.name}, 'Mot de passe réinitialisé par e-mail', null)`;
+      return res.status(200).json({ ok: true });
+    } catch (e) {
+      console.error("reset error", e && e.message);
+      return res.status(500).json({ ok: false, error: "db" });
+    }
+  }
   if (b.action === "login") {
     const uname = String(b.username || "").trim().toLowerCase();
     const pw = typeof b.password === "string" ? b.password : "";
@@ -420,15 +461,18 @@ module.exports = async (req, res) => {
 
     /* ---------- gestion de l'équipe (super admin seulement) ---------- */
     if (b.action === "staff_list") {
-      const rows = await q`select id, username, name, perms, active, last_login, created_at from staff order by active desc, name`;
+      const rows = await q`select id, username, name, email, perms, active, last_login, created_at from staff order by active desc, name`;
       return res.status(200).json({ ok: true, labels: PERMS, rows: rows.map((u) => ({ ...u, perms: parsePerms(u.perms) })) });
     }
     if (b.action === "staff_save") {
       const name = one(b.name, 60), perms = JSON.stringify(cleanPerms(b.perms)), active = b.active !== false;
+      const em = one(b.email, 120).toLowerCase();
+      if (em && !EMAIL_RE.test(em)) return res.status(400).json({ ok: false, error: "email" });
+      const email = em || null;
       if (!name) return res.status(400).json({ ok: false, error: "invalid" });
       if (b.id) {
         const id = Number(b.id);
-        const r = (await q`update staff set name = ${name}, perms = ${perms}, active = ${active} where id = ${id} returning id, username`)[0];
+        const r = (await q`update staff set name = ${name}, perms = ${perms}, active = ${active}, email = ${email} where id = ${id} returning id, username`)[0];
         if (!r) return res.status(404).json({ ok: false, error: "notfound" });
         await logAct("Compte staff modifié", `${r.username} : ${active ? "actif" : "désactivé"}, ${cleanPerms(b.perms).length} autorisation(s)`);
         return res.status(200).json({ ok: true });
@@ -438,7 +482,7 @@ module.exports = async (req, res) => {
       if (!/^[a-z0-9._-]{3,30}$/.test(username) || username === "admin") return res.status(400).json({ ok: false, error: "username" });
       if (pw.length < 6 || pw.length > 100) return res.status(400).json({ ok: false, error: "weak" });
       try {
-        await q`insert into staff (username, name, pass_hash, perms, active) values (${username}, ${name}, ${hashPw(pw)}, ${perms}, ${active})`;
+        await q`insert into staff (username, name, pass_hash, perms, active, email) values (${username}, ${name}, ${hashPw(pw)}, ${perms}, ${active}, ${email})`;
       } catch (e) {
         if (e && e.code === "23505") return res.status(409).json({ ok: false, error: "exists" });
         throw e;
