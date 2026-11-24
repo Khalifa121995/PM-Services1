@@ -40,15 +40,28 @@ nav.m{margin-left:auto;display:flex;gap:4px}
 /* carrousel */
 .car{position:relative;overflow:hidden;color:#fff;background:var(--navy)}
 .car{padding-bottom:36px;background:var(--deep)}
-.sl{display:none;position:relative;overflow:hidden;height:clamp(230px,33vw,470px);align-items:center;justify-content:center;background:var(--deep)}
-.sl.on{display:flex}
+.sl{position:absolute;inset:0;bottom:36px;display:flex;overflow:hidden;align-items:center;justify-content:center;background:var(--deep);opacity:0;visibility:hidden;transition:opacity .8s ease,visibility 0s .8s}
+.sl.on{opacity:1;visibility:visible;z-index:1;transition:opacity .8s ease}
 .sl::before{content:"";position:absolute;inset:-30px;background:var(--i) center/cover;filter:blur(26px) brightness(.85);transform:scale(1.1)}
-.sl img{position:relative;display:block;height:100%;width:auto;max-width:100%;object-fit:contain}
+.sl img{position:relative;display:block;height:100%;width:auto;max-width:100%;object-fit:contain;transform:scale(1);transition:transform 7s ease-out}
+.sl.on img{transform:scale(1.035)}
+.car{height:calc(clamp(230px,33vw,470px) + 36px);touch-action:pan-y}
 .vh{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-@media(max-width:700px){.sl{height:max(62vw,230px)}}
-.dots{position:absolute;left:50%;transform:translateX(-50%);bottom:11px;display:flex;gap:8px}
-.dots button{width:12px;height:12px;border-radius:50%;border:2px solid #fff;background:transparent;cursor:pointer;padding:0}
-.dots button[aria-current=true]{background:#fff}
+@media(max-width:700px){.car{height:calc(max(62vw,230px) + 36px)}}
+.dots{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;display:flex;gap:8px;z-index:3;align-items:center}
+.dots button{position:relative;width:12px;height:12px;border-radius:999px;border:2px solid #fff;background:transparent;cursor:pointer;padding:0;overflow:hidden;transition:width .3s}
+.dots button[aria-current=true]{width:42px}
+.dots button::after{content:"";position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:left}
+.dots button[aria-current=true]::after{animation:prog 6s linear forwards}
+.car.pause .dots button[aria-current=true]::after{animation-play-state:paused}
+.car.still .dots button[aria-current=true]::after{animation:none;transform:scaleX(1)}
+@keyframes prog{to{transform:scaleX(1)}}
+.cn{position:absolute;top:calc(50% - 18px);transform:translateY(-50%);z-index:3;width:44px;height:44px;border-radius:50%;border:0;background:rgb(6 24 63/55%);color:#fff;display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .25s,background .2s}
+.cn:hover{background:rgb(6 24 63/85%)}.cn:focus-visible{opacity:1;outline:3px solid #fff}
+.car:hover .cn,.car.touch .cn{opacity:1}
+.cn.p{left:12px}.cn.n{right:12px}.cn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:700px){.cn{width:38px;height:38px;opacity:.85}.cn.p{left:6px}.cn.n{right:6px}}
+@media(prefers-reduced-motion:reduce){.sl,.sl.on{transition:none}.sl img,.sl.on img{transition:none;transform:none}.dots button[aria-current=true]::after{animation:none;transform:scaleX(1)}}
 
 .find{position:relative;margin:18px auto 0;z-index:2;background:#fff;border-radius:16px;box-shadow:0 12px 28px rgb(10 42 107/16%);padding:14px;display:flex;gap:10px;max-width:760px}
 .find input{flex:1;min-width:0;min-height:48px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font:1.05rem "Source Sans 3",sans-serif}
@@ -172,8 +185,10 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
  <div class="car" role="region" aria-roledescription="carrousel" aria-label="Présentation">
   <h1 class="vh">PM Services : réparation de téléphones partout en Côte d’Ivoire</h1>
   <a class="sl on" href="#prix" style="--i:url(/banniere-1.webp)" aria-label="Giga promo -20 % sur toutes nos réparations : voir les prix"><img src="/banniere-1.webp" width="1800" height="602" alt="Giga promo PM Services : -20 % sur toutes nos réparations. Appelez le +225 0501903535"></a>
-  <a class="sl" href="#reserver" style="--i:url(/banniere-2.webp)" aria-label="Batterie endommagée ? Nous la remplaçons rapidement : réserver"><img src="/banniere-2.webp" width="1400" height="700" alt="Batterie endommagée ? Ne vous inquiétez pas, nous la remplaçons rapidement" loading="lazy"></a>
-  <a class="sl" href="#reserver" style="--i:url(/banniere-3.webp)" aria-label="iPhone qui redémarre en boucle ? Nous le réparons rapidement : réserver"><img src="/banniere-3.webp" width="813" height="539" alt="iPhone qui redémarre en boucle ? Ne vous inquiétez pas, nous le réparons rapidement" loading="lazy"></a>
+  <a class="sl" href="#reserver" style="--i:url(/banniere-2.webp)" aria-label="Batterie endommagée ? Nous la remplaçons rapidement : réserver"><img src="/banniere-2.webp" width="1400" height="700" alt="Batterie endommagée ? Ne vous inquiétez pas, nous la remplaçons rapidement" decoding="async"></a>
+  <a class="sl" href="#reserver" style="--i:url(/banniere-3.webp)" aria-label="iPhone qui redémarre en boucle ? Nous le réparons rapidement : réserver"><img src="/banniere-3.webp" width="813" height="539" alt="iPhone qui redémarre en boucle ? Ne vous inquiétez pas, nous le réparons rapidement" decoding="async"></a>
+  <button class="cn p" id="cp" type="button" aria-label="Bannière précédente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="cn n" id="cx" type="button" aria-label="Bannière suivante"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   <div class="dots" id="dots"></div>
  </div>
  <div class="w"><form class="find" id="hs" role="search"><label class="sr" for="hq" style="position:absolute;left:-9999px">Votre modèle</label><input id="hq" placeholder="Votre modèle, par exemple iPhone 13" autocomplete="off"><button class="btn" type="submit"><svg class="i"><use href="#find"/></svg>Voir le prix</button></form></div>
@@ -431,11 +446,27 @@ addEventListener("hashchange",route);route();
 /* menu mobile */
 $("bg").onclick=()=>{const o=$("nav").classList.toggle("open");$("bg").setAttribute("aria-expanded",o)};
 $("nav").addEventListener("click",e=>{if(e.target.tagName==="A")$("nav").classList.remove("open")});
-/* carrousel */
-const S=[...document.querySelectorAll(".sl")];let k=0,tm;
-S.forEach((_,j)=>{const b=document.createElement("button");b.setAttribute("aria-label","Diapositive "+(j+1));b.onclick=()=>{go(j);auto()};$("dots").appendChild(b)});
-function go(j){k=j;S.forEach((s,x)=>s.classList.toggle("on",x===k));[...$("dots").children].forEach((b,x)=>b.setAttribute("aria-current",x===k))}
-function auto(){clearInterval(tm);if(!matchMedia("(prefers-reduced-motion:reduce)").matches)tm=setInterval(()=>go((k+1)%S.length),6000)}
+/* carrousel : fondu, flèches, balayage tactile, pause au survol */
+const CAR=document.querySelector(".car"),S=[...document.querySelectorAll(".sl")];let k=0,tm,dwell=false;
+S.forEach((_,j)=>{const b=document.createElement("button");b.type="button";b.setAttribute("aria-label","Bannière "+(j+1)+" sur "+S.length);b.onclick=()=>{go(j);auto()};$("dots").appendChild(b)});
+function go(j){k=(j+S.length)%S.length;S.forEach((s,x)=>{s.classList.toggle("on",x===k);s.setAttribute("aria-hidden",x===k?"false":"true");s.tabIndex=x===k?0:-1});
+ [...$("dots").children].forEach((b,x)=>{b.removeAttribute("aria-current");void b.offsetWidth;if(x===k)b.setAttribute("aria-current","true")})}
+function auto(){clearTimeout(tm);if(matchMedia("(prefers-reduced-motion:reduce)").matches||dwell||document.hidden)return;
+ tm=setTimeout(()=>{go(k+1);auto()},6000)}
+function hold(on){dwell=on;CAR.classList.toggle("pause",on);if(on){clearTimeout(tm)}else{go(k);auto()}}
+$("cp").onclick=()=>{go(k-1);auto()};$("cx").onclick=()=>{go(k+1);auto()};
+CAR.addEventListener("mouseenter",()=>{if(!matchMedia("(hover:none)").matches)hold(true)});
+CAR.addEventListener("mouseleave",()=>{if(dwell)hold(false)});
+CAR.addEventListener("focusin",()=>{dwell=true;CAR.classList.add("pause");clearTimeout(tm)});
+CAR.addEventListener("focusout",()=>{dwell=false;CAR.classList.remove("pause");auto()});
+CAR.addEventListener("keydown",e=>{if(e.key==="ArrowLeft"){go(k-1);auto()}else if(e.key==="ArrowRight"){go(k+1);auto()}});
+let tx=null,ty=0,moved=false;
+CAR.addEventListener("touchstart",e=>{CAR.classList.add("touch");tx=e.touches[0].clientX;ty=e.touches[0].clientY;moved=false;clearTimeout(tm)},{passive:true});
+CAR.addEventListener("touchend",e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;tx=null;
+ if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.4){moved=true;go(dx<0?k+1:k-1)}auto()},{passive:true});
+CAR.addEventListener("click",e=>{if(moved){e.preventDefault();moved=false}},true);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)clearTimeout(tm);else{go(k);auto()}});
+if(matchMedia("(prefers-reduced-motion:reduce)").matches)CAR.classList.add("still");
 go(0);auto();
 </script>
 </body>

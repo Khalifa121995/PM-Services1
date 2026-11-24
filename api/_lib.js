@@ -68,6 +68,24 @@ async function db() {
         stock_id integer, delta integer not null, label text not null, note text,
         created_at timestamptz not null default now()
       )`;
+      await q`create table if not exists staff (
+        id serial primary key,
+        username text unique not null,
+        name text not null,
+        pass_hash text not null,
+        perms text not null default '[]',
+        active boolean not null default true,
+        fails integer not null default 0,
+        locked_until timestamptz,
+        last_login timestamptz,
+        created_at timestamptz not null default now()
+      )`;
+      await q`create table if not exists staff_log (
+        id serial primary key,
+        actor_id integer, actor_name text not null,
+        action text not null, detail text,
+        created_at timestamptz not null default now()
+      )`;
       if (!had) {
         // première installation : on charge la liste de prix de départ
         await q.transaction(
@@ -101,23 +119,74 @@ async function createRepair(d) {
   throw new Error("code_conflict");
 }
 
-/* session admin : cookie signé, valable 12 h */
+/* ---- permissions des comptes staff (le super admin les accorde une par une) ---- */
+const PERMS = {
+  create: "Enregistrer une nouvelle réparation",
+  update: "Changer l’état d’une réparation et écrire des notes",
+  edit_price: "Modifier le prix client d’une réparation",
+  cost: "Voir et modifier les prix d’achat et les marges",
+  archives: "Voir les archives (réparations livrées ou annulées)",
+  delete: "Supprimer une réparation",
+  prices: "Voir et modifier la liste des prix",
+  stock: "Gérer le stock de l’atelier",
+  cash: "Accéder à la caisse (solde, sorties d’argent)",
+  reports: "Envoyer les rapports par e-mail",
+};
+const PERM_KEYS = Object.keys(PERMS);
+const cleanPerms = (a) => PERM_KEYS.filter((k) => Array.isArray(a) && a.includes(k));
+const parsePerms = (t) => {
+  try { return cleanPerms(JSON.parse(t || "[]")); } catch { return []; }
+};
+
+/* ---- mots de passe du staff : scrypt + sel ---- */
+const hashPw = (pw) => {
+  const salt = crypto.randomBytes(16).toString("hex");
+  return "scrypt$" + salt + "$" + crypto.scryptSync(String(pw), salt, 32).toString("hex");
+};
+const checkPw = (pw, stored) => {
+  const [alg, salt, hex] = String(stored || "").split("$");
+  if (alg !== "scrypt" || !salt || !hex) return false;
+  const a = crypto.scryptSync(String(pw), salt, 32);
+  const b = Buffer.from(hex, "hex");
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+};
+const DUMMY_HASH = hashPw("dummy-pour-egaliser-le-temps");
+
+/* ---- session : cookie signé, valable 12 h.
+   Super admin = mot de passe ADMIN_PASSWORD (Vercel). Staff = compte en base ; ses droits sont relus en base à chaque requête. ---- */
 const key = () =>
   crypto.createHash("sha256").update("pm|" + (process.env.ADMIN_PASSWORD || "") + "|" + (process.env.DATABASE_URL || "")).digest();
 const mac = (v) => crypto.createHmac("sha256", key()).update(v).digest("hex");
 const h256 = (s) => crypto.createHash("sha256").update(String(s)).digest();
 const same = (a, b) => crypto.timingSafeEqual(h256(a), h256(b));
-const token = () => {
-  const exp = String(Date.now() + 12 * 3600 * 1000);
-  return exp + "." + mac(exp);
+const token = (role = "super", id = 0) => {
+  const body = Buffer.from(JSON.stringify({ r: role, id, exp: Date.now() + 12 * 3600 * 1000 })).toString("base64url");
+  return "v2." + body + "." + mac(body);
 };
-const isAdmin = (req) => {
-  if (!process.env.ADMIN_PASSWORD) return false;
+const readCookie = (req) => {
   const m = /(?:^|;\s*)pm_admin=([^;]+)/.exec(req.headers.cookie || "");
-  if (!m) return false;
-  const [exp, sig] = m[1].split(".");
-  return !!sig && Number(exp) > Date.now() && same(sig, mac(exp));
+  if (!m) return null;
+  const [v, body, sig] = m[1].split(".");
+  if (v !== "v2" || !body || !sig || !same(sig, mac(body))) return null;
+  try {
+    const d = JSON.parse(Buffer.from(body, "base64url").toString());
+    return d && Number(d.exp) > Date.now() ? d : null;
+  } catch { return null; }
 };
+/* retourne { role: "super"|"staff", id, name, username, perms } ou null */
+async function getSession(req, q) {
+  if (!process.env.ADMIN_PASSWORD) return null;
+  const c = readCookie(req);
+  if (!c) return null;
+  if (c.r === "super") return { role: "super", id: 0, name: "Super admin", username: "admin", perms: PERM_KEYS.slice() };
+  if (c.r === "staff") {
+    const u = (await q`select id, username, name, perms, active from staff where id = ${Number(c.id)}`)[0];
+    if (!u || !u.active) return null;
+    return { role: "staff", id: u.id, name: u.name, username: u.username, perms: parsePerms(u.perms) };
+  }
+  return null;
+}
+const isAdmin = (req) => !!readCookie(req);
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -146,4 +215,4 @@ async function sendMail({ to, subject, html, text }) {
   }
 }
 
-module.exports = { STATUSES, EMAIL_RE, db, createRepair, sendMail, same, token, isAdmin };
+module.exports = { STATUSES, EMAIL_RE, PERMS, PERM_KEYS, cleanPerms, parsePerms, hashPw, checkPw, DUMMY_HASH, getSession, db, createRepair, sendMail, same, token, isAdmin };

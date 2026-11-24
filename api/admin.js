@@ -1,4 +1,4 @@
-const { STATUSES, EMAIL_RE, db, createRepair, sendMail, same, token, isAdmin } = require("./_lib");
+const { STATUSES, EMAIL_RE, PERMS, PERM_KEYS, cleanPerms, parsePerms, hashPw, checkPw, DUMMY_HASH, getSession, db, createRepair, sendMail, same, token } = require("./_lib");
 const { sendReport, sendMonthReport, periodData } = require("./_rapport");
 
 const one = (s, n = 200) => String(s ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, n);
@@ -38,7 +38,8 @@ async function sendTry(m) {
 }
 const fr = (n) => (n == null ? "—" : new Intl.NumberFormat("fr-FR").format(n) + " F");
 /* e-mail d'alerte au propriétaire (NOTIFY_TO) à chaque suppression ou modification d'une réparation */
-async function alertOwner(title, changes, r) {
+async function alertOwner(title, changes, r, who) {
+  if (who && who.role === "staff") changes = [...changes, `Effectué par : ${who.name} (compte ${who.username})`];
   const to = (process.env.NOTIFY_TO || "").split(",").map((x) => x.trim()).filter(Boolean);
   if (!to.length) return "none";
   const when = new Date().toLocaleString("fr-FR", { timeZone: "Africa/Abidjan" });
@@ -115,40 +116,115 @@ module.exports = async (req, res) => {
     return res.status(500).json({ ok: false, error: "config" });
   }
 
+  const cookie = (v, age) => `pm_admin=${v}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${age}`;
+  const meOf = (u) => ({ role: u.role, name: u.name, username: u.username, perms: u.perms, labels: PERMS });
+
   if (b.action === "login") {
-    if (typeof b.password === "string" && same(b.password, process.env.ADMIN_PASSWORD)) {
-      res.setHeader("Set-Cookie", `pm_admin=${token()}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=43200`);
-      return res.status(200).json({ ok: true });
+    const uname = String(b.username || "").trim().toLowerCase();
+    const pw = typeof b.password === "string" ? b.password : "";
+    /* super admin : identifiant vide ou "admin" + mot de passe défini sur Vercel */
+    if (!uname || uname === "admin") {
+      if (pw && same(pw, process.env.ADMIN_PASSWORD)) {
+        res.setHeader("Set-Cookie", cookie(token("super", 0), 43200));
+        return res.status(200).json({ ok: true, me: meOf({ role: "super", name: "Super admin", username: "admin", perms: PERM_KEYS }) });
+      }
+      await sleep(900);
+      return res.status(401).json({ ok: false, error: "password" });
     }
-    await sleep(900);
-    return res.status(401).json({ ok: false, error: "password" });
+    /* compte staff */
+    try {
+      const q = await db();
+      const u = (await q`select * from staff where username = ${uname}`)[0];
+      if (u && u.locked_until && new Date(u.locked_until) > new Date()) {
+        await sleep(600);
+        return res.status(429).json({ ok: false, error: "locked" });
+      }
+      const good = checkPw(pw, u ? u.pass_hash : DUMMY_HASH) && !!u;
+      if (!good) {
+        if (u) {
+          const f = (u.fails || 0) + 1;
+          if (f >= 5) await q`update staff set fails = 0, locked_until = now() + interval '10 minutes' where id = ${u.id}`;
+          else await q`update staff set fails = ${f} where id = ${u.id}`;
+        }
+        await sleep(900);
+        return res.status(401).json({ ok: false, error: "password" });
+      }
+      if (!u.active) return res.status(403).json({ ok: false, error: "disabled" });
+      await q`update staff set fails = 0, locked_until = null, last_login = now() where id = ${u.id}`;
+      await q`insert into staff_log (actor_id, actor_name, action, detail) values (${u.id}, ${u.name}, 'Connexion', null)`;
+      res.setHeader("Set-Cookie", cookie(token("staff", u.id), 43200));
+      return res.status(200).json({ ok: true, me: meOf({ role: "staff", name: u.name, username: u.username, perms: parsePerms(u.perms) }) });
+    } catch (e) {
+      console.error("login error", e && e.message);
+      return res.status(500).json({ ok: false, error: "db" });
+    }
   }
   if (b.action === "logout") {
-    res.setHeader("Set-Cookie", "pm_admin=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0");
+    res.setHeader("Set-Cookie", cookie("", 0));
     return res.status(200).json({ ok: true });
   }
-  if (!isAdmin(req)) return res.status(401).json({ ok: false, error: "auth" });
 
   try {
     const q = await db();
+    const me = await getSession(req, q);
+    if (!me) return res.status(401).json({ ok: false, error: "auth" });
+    const isSuper = me.role === "super";
+    const can = (...p) => isSuper || p.some((k) => me.perms.includes(k));
+    const deny = () => res.status(403).json({ ok: false, error: "forbidden" });
+    const logAct = async (action, detail) => {
+      try { await q`insert into staff_log (actor_id, actor_name, action, detail) values (${me.id || null}, ${me.name}, ${action}, ${detail || null})`; }
+      catch (e) { console.error("journal", e && e.message); }
+    };
+    /* qui a le droit de faire quoi */
+    const NEED = {
+      create: ["create"], delete: ["delete"], report_now: ["reports"], report_month: ["reports"],
+      cash_summary: ["cash"], cash_add: ["cash"], cash_delete: ["cash"],
+      price_list: ["prices", "create"], price_save: ["prices"], price_delete: ["prices"],
+      stock_list: ["stock", "create"], stock_move: ["stock"], stock_delete: ["stock"],
+      update: ["update", "edit_price", "cost"],
+    };
+    const SUPER_ONLY = ["staff_list", "staff_save", "staff_password", "staff_delete", "staff_log"];
+    if (SUPER_ONLY.includes(b.action) && !isSuper) return deny();
+    if (NEED[b.action] && !can(...NEED[b.action])) return deny();
+    /* le staff sans la permission « cost » ne voit jamais les prix d'achat */
+    const clean = (r) => {
+      if (can("cost")) return r;
+      let items = r.items;
+      try { const a = JSON.parse(r.items || "null"); if (Array.isArray(a)) items = JSON.stringify(a.map((i) => ({ ...i, cost: null }))); } catch {}
+      return { ...r, cost: null, items };
+    };
+
+    if (b.action === "me") return res.status(200).json({ ok: true, me: meOf(me) });
+    if (b.action === "change_password") {
+      if (isSuper) return res.status(400).json({ ok: false, error: "super" });
+      const np = String(b.new_password || "");
+      if (np.length < 6 || np.length > 100) return res.status(400).json({ ok: false, error: "weak" });
+      const u = (await q`select pass_hash from staff where id = ${me.id}`)[0];
+      if (!u || !checkPw(String(b.old_password || ""), u.pass_hash)) { await sleep(900); return res.status(401).json({ ok: false, error: "password" }); }
+      await q`update staff set pass_hash = ${hashPw(np)} where id = ${me.id}`;
+      await logAct("Mot de passe changé", null);
+      return res.status(200).json({ ok: true });
+    }
     if (b.action === "list") {
-      const rows = await q`select * from repairs order by created_at desc limit 2000`;
-      return res.status(200).json({ ok: true, rows });
+      let rows = await q`select * from repairs order by created_at desc limit 2000`;
+      if (!can("archives")) rows = rows.filter((r) => r.status !== "livre" && r.status !== "annule");
+      return res.status(200).json({ ok: true, rows: rows.map(clean) });
     }
     if (b.action === "update") {
       const id = Number(b.id);
       const cur = (await q`select * from repairs where id = ${id}`)[0];
       if (!cur) return res.status(404).json({ ok: false, error: "notfound" });
-      const status = b.status !== undefined && STATUSES[b.status] ? b.status : cur.status;
+      if (!can("archives") && (cur.status === "livre" || cur.status === "annule")) return deny();
+      const status = can("update") && b.status !== undefined && STATUSES[b.status] ? b.status : cur.status;
       const price =
-        b.price === undefined ? cur.price
+        !can("edit_price") || b.price === undefined ? cur.price
         : b.price === "" || b.price === null ? null
         : Math.max(0, Math.round(Number(b.price)) || 0);
       const cost =
-        b.cost === undefined ? cur.cost
+        !can("cost") || b.cost === undefined ? cur.cost
         : b.cost === "" || b.cost === null ? null
         : Math.max(0, Math.round(Number(b.cost)) || 0);
-      const note = b.note === undefined ? cur.note : String(b.note).slice(0, 1000);
+      const note = !can("update") || b.note === undefined ? cur.note : String(b.note).slice(0, 1000);
       const rows = await q`update repairs set status = ${status}, price = ${price}, cost = ${cost}, note = ${note}, updated_at = now()
         where id = ${id} returning *`;
       const row = rows[0];
@@ -162,18 +238,19 @@ module.exports = async (req, res) => {
       if (row.price !== cur.price) changes.push(`Prix client : ${fr(cur.price)} → ${fr(row.price)}`);
       if (row.cost !== cur.cost) changes.push(`Achat : ${fr(cur.cost)} → ${fr(row.cost)}`);
       if ((row.note || "") !== (cur.note || "")) changes.push(`Note interne : « ${cur.note || ""} » → « ${row.note || ""} »`);
-      const alert = changes.length ? await alertOwner("Réparation modifiée", changes, row) : "none";
-      return res.status(200).json({ ok: true, row, mail, alert });
+      const alert = changes.length ? await alertOwner("Réparation modifiée", changes, row, me) : "none";
+      if (changes.length) await logAct("Réparation modifiée", `${row.code} : ${changes.join(" ; ")}`.slice(0, 400));
+      return res.status(200).json({ ok: true, row: clean(row), mail, alert });
     }
     if (b.action === "create") {
       const email = one(b.email, 120);
       const n0 = (v) => Math.max(0, Math.round(Number(v)) || 0);
       const items = (Array.isArray(b.items) ? b.items : []).slice(0, 10)
-        .map((i) => ({ piece: one(i.piece, 60), sale: n0(i.sale), cost: n0(i.cost) })).filter((i) => i.piece);
+        .map((i) => ({ piece: one(i.piece, 60), sale: n0(i.sale), cost: can("cost") ? n0(i.cost) : 0 })).filter((i) => i.piece);
       const sale = items.reduce((s, i) => s + i.sale, 0), cost = items.reduce((s, i) => s + i.cost, 0);
       const d = { kind: "atelier", source: "atelier", name: one(b.name, 80), phone: one(b.phone, 30), email: EMAIL_RE.test(email) ? email : "", brand: one(b.brand, 40),
         model: one(b.model, 80), piece: items.map((i) => i.piece).join(" + ").slice(0, 200), issue: one(b.issue, 800),
-        price: items.length ? sale : null, cost: items.length ? cost : null, items: items.length ? JSON.stringify(items) : null };
+        price: items.length ? sale : null, cost: items.length && can("cost") ? cost : null, items: items.length ? JSON.stringify(items) : null };
       if (!d.phone || !d.model) return res.status(400).json({ ok: false, error: "invalid" });
       const code = await createRepair(d);
       let added = [];
@@ -189,6 +266,7 @@ module.exports = async (req, res) => {
           }
         }
       } catch (e) { console.error("stock use", e && e.message); }
+      await logAct("Nouvelle réparation", `${code} · ${d.brand} ${d.model}`.slice(0, 200));
       return res.status(200).json({ ok: true, code, added, stock_used: used });
     }
     if (b.action === "delete") {
@@ -196,11 +274,13 @@ module.exports = async (req, res) => {
       const cur = (await q`select * from repairs where id = ${id}`)[0];
       if (!cur) return res.status(404).json({ ok: false, error: "notfound" });
       await q`delete from repairs where id = ${id}`;
-      const alert = await alertOwner("Réparation SUPPRIMÉE", ["Cette réparation a été supprimée de l'espace atelier."], cur);
+      const alert = await alertOwner("Réparation SUPPRIMÉE", ["Cette réparation a été supprimée de l'espace atelier."], cur, me);
+      await logAct("Réparation supprimée", `${cur.code} · ${cur.name || "client"}`);
       return res.status(200).json({ ok: true, alert });
     }
     if (b.action === "report_now") {
       const r = await sendReport();
+      await logAct("Rapport du jour envoyé", null);
       return res.status(r.ok ? 200 : 502).json({ ok: r.ok, count: r.count, error: r.ok ? undefined : "mail_" + r.status });
     }
     if (b.action === "cash_summary") {
@@ -216,6 +296,7 @@ module.exports = async (req, res) => {
       const reason = one(b.reason, 120);
       if (!Number.isFinite(amount) || amount <= 0 || !reason) return res.status(400).json({ ok: false, error: "invalid" });
       const row = (await q`insert into cash_out (amount, reason) values (${amount}, ${reason}) returning *`)[0];
+      await logAct("Sortie de caisse", `${amount} F · ${reason}`);
       return res.status(200).json({ ok: true, row });
     }
     if (b.action === "cash_delete") {
@@ -224,10 +305,12 @@ module.exports = async (req, res) => {
       if (!cur) return res.status(404).json({ ok: false, error: "notfound" });
       await q`delete from cash_out where id = ${id}`;
       const alert = await alertCash("Sortie de caisse SUPPRIMÉE", cur);
+      await logAct("Sortie de caisse supprimée", `${cur.amount} F · ${cur.reason}`);
       return res.status(200).json({ ok: true, alert });
     }
     if (b.action === "report_month") {
       const r = await sendMonthReport();
+      await logAct("Rapport du mois envoyé", null);
       return res.status(r.ok ? 200 : 502).json({ ok: r.ok, count: r.count, error: r.ok ? undefined : "mail_" + r.status });
     }
     if (b.action === "price_list") {
@@ -248,6 +331,7 @@ module.exports = async (req, res) => {
           : await q`insert into prices (piece, brand, label, quality, price, models)
               values (${p.piece}, ${p.brand}, ${p.label}, ${p.quality}, ${p.price}, ${p.models}) returning *`;
         if (!rows[0]) return res.status(404).json({ ok: false, error: "notfound" });
+        await logAct("Prix enregistré", `${p.piece} ${p.label} : ${p.price} F`);
         return res.status(200).json({ ok: true, row: rows[0] });
       } catch (e) {
         if (e && e.code === "23505") return res.status(409).json({ ok: false, error: "exists" });
@@ -256,6 +340,7 @@ module.exports = async (req, res) => {
     }
     if (b.action === "price_delete") {
       await q`delete from prices where id = ${Number(b.id)}`;
+      await logAct("Prix supprimé", `id ${Number(b.id)}`);
       return res.status(200).json({ ok: true });
     }
     if (b.action === "stock_list") {
@@ -282,11 +367,59 @@ module.exports = async (req, res) => {
           on conflict (piece, lower(brand), lower(model)) do update set qty = stock.qty + excluded.qty, updated_at = now() returning *`)[0];
       }
       const move = (await q`insert into stock_moves (stock_id, delta, label, note) values (${row.id}, ${delta}, ${row.piece + " " + row.brand + " " + row.model}, ${note}) returning *`)[0];
+      await logAct(delta > 0 ? "Entrée en stock" : "Sortie de stock", `${move.label} (${delta > 0 ? "+" : ""}${delta})`);
       return res.status(200).json({ ok: true, row, move });
     }
     if (b.action === "stock_delete") {
       await q`delete from stock where id = ${Number(b.id)}`;
+      await logAct("Pièce supprimée du stock", `id ${Number(b.id)}`);
       return res.status(200).json({ ok: true });
+    }
+    /* ---------- gestion de l'équipe (super admin seulement) ---------- */
+    if (b.action === "staff_list") {
+      const rows = await q`select id, username, name, perms, active, last_login, created_at from staff order by active desc, name`;
+      return res.status(200).json({ ok: true, labels: PERMS, rows: rows.map((u) => ({ ...u, perms: parsePerms(u.perms) })) });
+    }
+    if (b.action === "staff_save") {
+      const name = one(b.name, 60), perms = JSON.stringify(cleanPerms(b.perms)), active = b.active !== false;
+      if (!name) return res.status(400).json({ ok: false, error: "invalid" });
+      if (b.id) {
+        const id = Number(b.id);
+        const r = (await q`update staff set name = ${name}, perms = ${perms}, active = ${active} where id = ${id} returning id, username`)[0];
+        if (!r) return res.status(404).json({ ok: false, error: "notfound" });
+        await logAct("Compte staff modifié", `${r.username} : ${active ? "actif" : "désactivé"}, ${cleanPerms(b.perms).length} autorisation(s)`);
+        return res.status(200).json({ ok: true });
+      }
+      const username = String(b.username || "").trim().toLowerCase();
+      const pw = String(b.password || "");
+      if (!/^[a-z0-9._-]{3,30}$/.test(username) || username === "admin") return res.status(400).json({ ok: false, error: "username" });
+      if (pw.length < 6 || pw.length > 100) return res.status(400).json({ ok: false, error: "weak" });
+      try {
+        await q`insert into staff (username, name, pass_hash, perms, active) values (${username}, ${name}, ${hashPw(pw)}, ${perms}, ${active})`;
+      } catch (e) {
+        if (e && e.code === "23505") return res.status(409).json({ ok: false, error: "exists" });
+        throw e;
+      }
+      await logAct("Compte staff créé", `${username} (${name})`);
+      return res.status(200).json({ ok: true });
+    }
+    if (b.action === "staff_password") {
+      const pw = String(b.password || "");
+      if (pw.length < 6 || pw.length > 100) return res.status(400).json({ ok: false, error: "weak" });
+      const r = (await q`update staff set pass_hash = ${hashPw(pw)}, fails = 0, locked_until = null where id = ${Number(b.id)} returning username`)[0];
+      if (!r) return res.status(404).json({ ok: false, error: "notfound" });
+      await logAct("Mot de passe staff réinitialisé", r.username);
+      return res.status(200).json({ ok: true });
+    }
+    if (b.action === "staff_delete") {
+      const r = (await q`delete from staff where id = ${Number(b.id)} returning username`)[0];
+      if (!r) return res.status(404).json({ ok: false, error: "notfound" });
+      await logAct("Compte staff supprimé", r.username);
+      return res.status(200).json({ ok: true });
+    }
+    if (b.action === "staff_log") {
+      const rows = await q`select * from staff_log order by id desc limit 120`;
+      return res.status(200).json({ ok: true, rows });
     }
     return res.status(400).json({ ok: false, error: "action" });
   } catch (e) {

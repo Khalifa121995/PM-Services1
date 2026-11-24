@@ -164,13 +164,24 @@ dialog{border-radius:22px;max-height:94vh;box-shadow:0 24px 60px rgb(6 24 63/35%
 .stkb{background:#e8f7ee;border:1px solid #9bd5b0;color:#0d5a2b;border-radius:10px;padding:8px 12px;font-size:.9rem;margin-top:8px;font-weight:600;animation:skIn .35s ease both}
 .stk{grid-column:1/-1;background:#e8f7ee;border-radius:10px;padding:8px 10px;color:#0d5a2b;font-weight:600}
 @media(prefers-reduced-motion:reduce){.sk,.qty,.fl,.mv,.stkb{animation:none!important}}
+/* ===== v4 : comptes staff ===== */
+#who{font-size:.8rem;font-weight:700;color:#fff;background:rgb(255 255 255/16%);padding:5px 12px;border-radius:999px}
+.nocost .row{grid-template-columns:1fr 2fr}
+.tperms{display:grid;gap:6px;margin-top:8px}.tperms .ck{font-weight:600;color:var(--ink);background:var(--mist);border-radius:10px;padding:9px 10px}
+.tpre{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.tpre .mini{min-height:36px;font-size:.82rem}
+.tpw{display:flex;gap:8px}.tpw .btn{white-space:nowrap}
+.logr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-top:6px;font-size:.9rem}.logr small{color:var(--muted)}.logr b{color:var(--navy)}
+.off{opacity:.62}
+.cred{font-family:ui-monospace,Consolas,monospace;font-size:1.05rem;color:var(--navy);user-select:all}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol><symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol><symbol id="i-stock" viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11h14V8M10 12h4"/></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8zM7.5 7.5h.01"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM3 7V6a2 2 0 0 1 2-2h12M16 14h2"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9M10 20v-5h4v5"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 16h6"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-device" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol><symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol><symbol id="i-stock" viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11h14V8M10 12h4"/></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8zM7.5 7.5h.01"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM3 7V6a2 2 0 0 1 2-2h12M16 14h2"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9M10 20v-5h4v5"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 16h6"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-device" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8"/></symbol><symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></symbol></svg>
 <main id="login">
  <form class="box" id="lf">
   <img class="lgl" src="/logo.jpg" alt="PM Services"><h1>Espace atelier</h1>
+  <label>Identifiant<input id="un" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Votre identifiant"></label>
+  <small style="display:block;color:var(--muted);margin:4px 0 10px">Le propriétaire peut laisser vide ou écrire « admin ».</small>
   <label>Mot de passe<input type="password" id="pw" autocomplete="current-password" required></label>
   <p class="err" id="le" role="alert"></p>
   <button class="btn" type="submit" style="width:100%;margin-top:6px">Se connecter</button>
@@ -180,13 +191,15 @@ dialog{border-radius:22px;max-height:94vh;box-shadow:0 24px 60px rgb(6 24 63/35%
 <div id="app" hidden>
  <header><div class="w">
   <h1><img class="lg" src="/logo.jpg" alt="PM Services"><span>Atelier</span></h1>
-  <button class="btn" id="nb" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span class="tx">Nouvelle réparation</span></button>
+  <span id="who"></span>
+  <button class="btn" id="nb" type="button" hidden><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span class="tx">Nouvelle réparation</span></button>
   <button class="btn o" id="rf" type="button"><svg class="i" aria-hidden="true"><use href="#i-refresh"/></svg><span class="tx">Actualiser</span></button>
   <button class="btn o" id="rp" type="button"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><span class="tx">Rapport</span></button>
+  <button class="btn o" id="cpw" type="button" hidden><svg class="i" aria-hidden="true"><use href="#i-key"/></svg><span class="tx">Mot de passe</span></button>
   <button class="btn o" id="lo" type="button"><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg><span class="tx">Quitter</span></button>
  </div></header>
  <div class="w">
-  <div class="tabs main"><button class="tab" id="t1" type="button" aria-pressed="true"><svg class="i" aria-hidden="true"><use href="#i-wrench"/></svg> Atelier<small id="c1"></small></button><button class="tab" id="t4" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg> Archives<small id="c4"></small></button><button class="tab" id="t2" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-tag"/></svg> Prix</button><button class="tab" id="t3" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-wallet"/></svg> Caisse</button><button class="tab" id="t5" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-stock"/></svg> Stock<small id="c5"></small></button></div>
+  <div class="tabs main"><button class="tab" id="t1" type="button" aria-pressed="true"><svg class="i" aria-hidden="true"><use href="#i-wrench"/></svg> Atelier<small id="c1"></small></button><button class="tab" id="t4" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg> Archives<small id="c4"></small></button><button class="tab" id="t2" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-tag"/></svg> Prix</button><button class="tab" id="t3" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-wallet"/></svg> Caisse</button><button class="tab" id="t5" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-stock"/></svg> Stock<small id="c5"></small></button><button class="tab" id="t6" type="button" aria-pressed="false" hidden><svg class="i" aria-hidden="true"><use href="#i-users"/></svg> Équipe</button></div>
   <p class="err" id="ae" role="alert"></p>
   <section id="v1">
    <div class="kpis" id="kpis"></div>
@@ -240,9 +253,33 @@ dialog{border-radius:22px;max-height:94vh;box-shadow:0 24px 60px rgb(6 24 63/35%
    <div id="slist"></div>
    <h3 class="pg">Derniers mouvements</h3><div id="smov"></div>
   </section>
+  <section id="v6" hidden>
+   <p class="note info">Chaque membre du staff a son <b>propre compte</b> (identifiant + mot de passe). Vous, super admin, cochez ce qu’il a le droit de faire. Un compte désactivé ne peut plus se connecter. Les changements d’autorisations s’appliquent tout de suite.</p>
+   <div class="note" id="tnote" hidden></div>
+   <form class="c g" id="tf" style="margin-top:16px"><h3 style="color:var(--navy)">Ajouter un membre du staff</h3>
+    <label>Nom<input id="tn" maxlength="60" required autocomplete="off" placeholder="Ex. Awa Koné"></label>
+    <label>Identifiant de connexion<input id="tu" required autocomplete="off" autocapitalize="none" pattern="[a-zA-Z0-9._-]{3,30}" placeholder="Ex. awa.kone (3 à 30 lettres ou chiffres)"></label>
+    <label>Mot de passe (6 caractères minimum)<span class="tpw"><input id="tp" type="text" required minlength="6" maxlength="100" autocomplete="new-password"><button class="btn o" type="button" id="tg">Générer</button></span></label>
+    <div><p class="sec">Autorisations</p><div class="tpre" id="tpre"></div><div class="tperms" id="tperms"></div></div>
+    <p class="err" id="te" role="alert"></p>
+    <button class="btn" type="submit">Créer le compte</button></form>
+   <h3 class="pg">Comptes du staff</h3><div id="tlist"></div>
+   <h3 class="pg">Journal d’activité</h3><div id="tlog"></div>
+  </section>
   <p style="height:40px"></p>
  </div>
 </div>
+
+<dialog id="pwd">
+ <form class="g" id="pwf">
+  <h2 style="color:var(--navy)">Changer mon mot de passe</h2>
+  <label>Mot de passe actuel<input type="password" id="po1" autocomplete="current-password" required></label>
+  <label>Nouveau mot de passe (6 caractères minimum)<input type="password" id="po2" autocomplete="new-password" minlength="6" required></label>
+  <label>Répétez le nouveau mot de passe<input type="password" id="po3" autocomplete="new-password" minlength="6" required></label>
+  <p class="err" id="poe" role="alert"></p>
+  <div style="display:flex;gap:8px"><button class="btn" type="submit" style="flex:1">Enregistrer</button><button class="btn o" type="button" id="poc">Annuler</button></div>
+ </form>
+</dialog>
 
 <dialog id="pd">
  <form class="g" id="pf">
@@ -304,12 +341,13 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 let rows=[],filter="actives",src="";
 const archived=r=>r.status==="livre"||r.status==="annule";
 const ACT=["recu","diagnostic","piece","cours","pret"];
-const MSG={password:"Mot de passe incorrect.",config:"Le serveur n’est pas configuré (DATABASE_URL ou ADMIN_PASSWORD manquant sur Vercel).",db:"Erreur de base de données."};
+const MSG={password:"Identifiant ou mot de passe incorrect.",locked:"Trop d’essais. Réessayez dans 10 minutes.",disabled:"Ce compte est désactivé. Voyez le propriétaire.",forbidden:"Vous n’avez pas l’autorisation pour cette action.",username:"Identifiant invalide (3 à 30 lettres, chiffres, point, tiret).",exists:"Cet identifiant existe déjà.",weak:"Mot de passe trop court (6 caractères minimum).",config:"Le serveur n’est pas configuré (DATABASE_URL ou ADMIN_PASSWORD manquant sur Vercel).",db:"Erreur de base de données."};
 
 async function api(action,data){
  const r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({action},data))});
  const j=await r.json().catch(()=>({}));
- if(r.status===401&&action!=="login"){show(false);throw new Error("auth")}
+ if(r.status===401&&action!=="login"&&action!=="change_password"){show(false);throw new Error("auth")}
+ if(r.status===403&&action!=="login"){toast("Action non autorisée pour votre compte");throw new Error("forbidden")}
  if(!r.ok)throw new Error(j.error||("http"+r.status));
  return j}
 function show(on){$("login").hidden=on;$("app").hidden=!on;$("fab").hidden=!on;if(!on)$("as").hidden=true}
@@ -347,7 +385,7 @@ function card(r){
  const badge=web?'<span class="src web">'+ic("globe")+'Commandée en ligne</span>':at?'<span class="src at">'+ic("store")+'Enregistrée à l’atelier</span>':"";
  return `<article class="c st-${esc(r.status)} ${web?"web":at?"at":""}" data-id="${r.id}">
  <div class="top"><b>${esc(r.code)}</b>${badge}<small>${esc(fmt(r.created_at))}${web?" · "+(dom?"À domicile":"Dépôt à l’atelier"):""}</small>${archived(r)?`<span class="arch">${ic("box")}${r.status==="livre"?"Livrée":"Annulée"} le ${esc(fmt(r.updated_at))}</span>`:""}
-  <select data-f="status" aria-label="État de la réparation">${Object.keys(ST).map(k=>`<option value="${k}"${k===r.status?" selected":""}>${esc(ST[k])}</option>`).join("")}</select></div>
+  <select data-f="status" aria-label="État de la réparation"${can("update")?"":" disabled"}>${Object.keys(ST).map(k=>`<option value="${k}"${k===r.status?" selected":""}>${esc(ST[k])}</option>`).join("")}</select></div>
  <div>${esc(r.name||"Client")} · <a href="tel:${esc(String(r.phone).replace(/[^\d+]/g,""))}">${esc(r.phone)}</a></div>
  ${r.email?`<div><small>${ic("mail")}${esc(r.email)} (prévenu à chaque changement d’état)</small></div>`:`<div><small>Pas d’e-mail : le client ne sera pas prévenu</small></div>`}
  <div class="dev">${ic("device")}${esc([r.brand,r.model].filter(Boolean).join(" "))}${r.piece?" – "+esc(r.piece):""}</div>
@@ -358,10 +396,10 @@ function card(r){
   ${map?`<p><a href="${esc(map)}" target="_blank" rel="noopener">Ouvrir la carte</a></p>`:""}
   ${itemsHtml(r)}
   <p><small>Mis à jour le ${esc(fmt(r.updated_at))}</small></p></details>
- <div class="row"><label>Prix client (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="price" value="${r.price??""}"></label>
-  <label>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="cost" value="${r.cost??""}">${r.price!=null&&r.cost!=null?`<small style="font-weight:400">Marge : ${F(r.price-r.cost)} F</small>`:""}</label>
-  <label>Note interne<textarea data-f="note">${esc(r.note||"")}</textarea></label></div>
- <div style="margin-top:10px"><button type="button" class="mini d" data-del="1">Supprimer cette réparation</button></div></article>`}
+ <div class="row"><label>Prix client (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="price" value="${r.price??""}"${can("edit_price")?"":" readonly"}></label>
+  <label${can("cost")?"":" hidden"}>Achat (F)<input type="number" min="0" step="500" inputmode="numeric" data-f="cost" value="${r.cost??""}"${can("cost")?"":" readonly"}>${r.price!=null&&r.cost!=null?`<small style="font-weight:400">Marge : ${F(r.price-r.cost)} F</small>`:""}</label>
+  <label>Note interne<textarea data-f="note"${can("update")?"":" readonly"}>${esc(r.note||"")}</textarea></label></div>
+ ${can("delete")?`<div style="margin-top:10px"><button type="button" class="mini d" data-del="1">Supprimer cette réparation</button></div>`:""}</article>`}
 function render(){
  chips();const v=visible();
  $("list").innerHTML=v.length?v.map(card).join(""):'<p style="margin-top:20px;color:var(--muted)">'+ic("check")+' Aucune réparation dans cette vue. Les dossiers livrés sont dans l’onglet Archives.</p>';
@@ -401,17 +439,17 @@ $("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.d
 $("q").oninput=render;$("aqs").oninput=renderArch;$("ap").onchange=renderArch;
 $("kpis").onclick=e=>{const b=e.target.closest(".kpi");if(!b)return;filter=b.dataset.k;render()};
 $("srcs").onclick=e=>{const b=e.target.closest("button[data-s]");if(!b)return;src=b.dataset.s;document.querySelectorAll("#srcs .tab").forEach(x=>x.setAttribute("aria-pressed",x===b));render()};
-$("rf").onclick=()=>tab===5?loadStock():tab===3?loadCash():tab===2?loadPrices():load();
-$("lo").onclick=async()=>{try{await api("logout")}catch(e){}show(false)};
+$("rf").onclick=()=>tab===6?loadTeam():tab===5?loadStock():tab===3?loadCash():tab===2?loadPrices():load();
+$("lo").onclick=async()=>{try{await api("logout")}catch(e){}ME=null;show(false)};
 $("lf").onsubmit=async e=>{e.preventDefault();$("le").textContent="";
- try{await api("login",{password:$("pw").value});$("pw").value="";show(true);load()}
+ try{const j=await api("login",{username:$("un").value.trim(),password:$("pw").value});$("pw").value="";ME=j.me;applyPerms();show(true);load()}
  catch(x){$("le").textContent=MSG[x.message]||"Connexion impossible ("+x.message+")."}};
 $("nb").onclick=()=>{$("nf").reset();$("ne").textContent="";initBrands();$("nd").showModal();autoFill();
  if(!prices.length)api("price_list").then(j=>{prices=j.rows;autoFill()}).catch(()=>{});
  api("stock_list").then(j=>{stock=j.rows;autoFill()}).catch(()=>{})};
 $("rp").onclick=async()=>{try{const j=await api("report_now");toast("Rapport envoyé ("+j.count+" réparation(s))")}catch(x){if(x.message!=="auth")toast("Rapport non envoyé ("+x.message+")")}};
 function itemsHtml(r){let a=[];try{a=JSON.parse(r.items||"[]")}catch{}
- return a.length?`<p><b>Réparations :</b> ${a.map(i=>esc(i.piece)+" – "+F(i.sale)+" F (achat "+F(i.cost)+" F)").join(" · ")}</p>`:""}
+ return a.length?`<p><b>Réparations :</b> ${a.map(i=>esc(i.piece)+" – "+F(i.sale)+" F"+(can("cost")?" (achat "+F(i.cost)+" F)":"")).join(" · ")}</p>`:""}
 function sug(piece){const m=$("nm").value.trim().toLowerCase();if(!m)return null;let best=null,sc=0;
  for(const r of prices.filter(x=>x.piece===piece)){
   const segs=r.label.toLowerCase().split("/").concat((r.models||"").toLowerCase().split(",")).map(s=>s.trim()).filter(Boolean);
@@ -423,7 +461,7 @@ function autoFill(){let s=0,c=0;
   if(h){const r=el.dataset.p==="Autre"?null:sug(el.dataset.p);h.textContent=r?"Prix en base : "+F(r.price)+" F ("+r.label+")":"";
    if(r&&(sale.value===""||sale.dataset.auto)){sale.value=r.price;sale.dataset.auto="1"}}
   s+=+sale.value||0;c+=+el.querySelector("[data-k=cost]").value||0});
- $("ntot").innerHTML=`Total client : <b>${F(s)} F</b> · Achat : ${F(c)} F · Marge : <b>${F(s-c)} F</b>`;hint();stockUi()}
+ $("ntot").innerHTML=`Total client : <b>${F(s)} F</b> ${can("cost")?`· Achat : ${F(c)} F · Marge : <b>${F(s-c)} F</b>`:""}`;hint();stockUi()}
 const STRIP=/^(?:(?:galaxy|samsung|tecno|infinix|itel|xiaomi|huawei|oppo|vivo|realme|honor|apple|google)\s+)+/;
 const nk=s=>String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim().replace(STRIP,"").replace(/ /g,"");
 function modelKeys(r){const seg=String(r.label).split("/").map(x=>x.trim()).filter(Boolean),pre=((seg[0]||"").match(/^\D*/)||[""])[0];
@@ -489,8 +527,8 @@ $("nsg").onclick=e=>{const b=e.target.closest("button[data-m]");if(!b)return;$("
 $("nm").addEventListener("input",showModels);
 /* onglets */
 let prices=[],tab=1;
-function setTab(n){tab=n;[1,2,3,4,5].forEach(i=>{$("v"+i).hidden=n!==i;$("t"+i).setAttribute("aria-pressed",n===i)});if(n===2)loadPrices();if(n===3)loadCash();if(n===5)loadStock()}
-$("t1").onclick=()=>setTab(1);$("t2").onclick=()=>setTab(2);$("t3").onclick=()=>setTab(3);$("t4").onclick=()=>setTab(4);$("t5").onclick=()=>setTab(5);
+function setTab(n){tab=n;[1,2,3,4,5,6].forEach(i=>{$("v"+i).hidden=n!==i;$("t"+i).setAttribute("aria-pressed",n===i)});if(n===2)loadPrices();if(n===3)loadCash();if(n===5)loadStock();if(n===6)loadTeam()}
+$("t1").onclick=()=>setTab(1);$("t2").onclick=()=>setTab(2);$("t3").onclick=()=>setTab(3);$("t4").onclick=()=>setTab(4);$("t5").onclick=()=>setTab(5);$("t6").onclick=()=>setTab(6);
 /* stock atelier */
 let stock=[],stockMoves=[];
 const SP=["Écran","Vitre arrière","Coque complète"];
@@ -667,8 +705,71 @@ $("af").onsubmit=e=>{e.preventDefault();const v=$("ai").value.trim();if(!v)retur
 function openAsst(on){$("as").hidden=!on;$("fab").setAttribute("aria-expanded",on);if(on){if(!$("am").children.length)say("b","Bonjour. Je suis l’assistant de l’atelier. Je peux vous expliquer comment utiliser chaque partie du site, ou <b>analyser vos dossiers</b> pour vous dire quoi faire en priorité.");$("ai").focus()}}
 $("fab").onclick=()=>openAsst($("as").hidden);$("ax").onclick=()=>openAsst(false);
 setInterval(()=>{const a=document.activeElement;if(!$("app").hidden&&!$("nd").open&&!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))load()},60000);
+/* ===== droits du compte connecté ===== */
+let ME=null;
+const can=p=>!!ME&&(ME.role==="super"||ME.perms.includes(p));
+function applyPerms(){
+ const sup=ME.role==="super";
+ $("who").textContent=ME.name+(sup?" · super admin":"");
+ $("t6").hidden=!sup;$("t4").hidden=!can("archives");$("t2").hidden=!can("prices");$("t3").hidden=!can("cash");$("t5").hidden=!can("stock");
+ $("nb").hidden=!can("create");$("rp").hidden=!can("reports");$("rm").hidden=!can("reports");$("cpw").hidden=sup;
+ document.querySelectorAll("#nd [data-k=cost]").forEach(i=>{const l=i.closest("label");if(l)l.hidden=!can("cost")});
+ const n=[...document.querySelectorAll(".tabs.main .tab")].filter(t=>!t.hidden).length;
+ document.querySelector(".tabs.main").style.gridTemplateColumns="repeat("+n+",1fr)";
+ if(tab!==1&&$("t"+tab).hidden)setTab(1);
+ if(rows.length)render()}
+/* mon mot de passe (staff) */
+$("cpw").onclick=()=>{$("pwf").reset();$("poe").textContent="";$("pwd").showModal()};
+$("poc").onclick=()=>$("pwd").close();
+$("pwf").onsubmit=async e=>{e.preventDefault();$("poe").textContent="";
+ if($("po2").value!==$("po3").value){$("poe").textContent="Les deux nouveaux mots de passe sont différents.";return}
+ try{await api("change_password",{old_password:$("po1").value,new_password:$("po2").value});$("pwd").close();toast("Mot de passe changé")}
+ catch(x){$("poe").textContent=MSG[x.message]||"Échec ("+x.message+")"}};
+
+/* ===== équipe (super admin) ===== */
+let team=[],plabels={};
+const PRE=[["Technicien",["create","update","stock","archives"]],["Réceptionniste",["create","update","edit_price","archives"]],["Caissier",["cash","archives"]],["Gérant",["*"]],["Aucune",[]]];
+function PERMS_ALL(){return ME&&ME.labels?ME.labels:plabels}
+function pbox(sel,idp){return Object.entries(PERMS_ALL()).map(([k,l])=>`<label class="ck"><input type="checkbox" value="${k}"${sel.includes(k)?" checked":""}> ${esc(l)}</label>`).join("")}
+function genPw(){const a="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",v=new Uint32Array(9);crypto.getRandomValues(v);return[...v].map(x=>a[x%a.length]).join("")}
+function presets(){return PRE.map(([n,p])=>`<button type="button" class="mini" data-pre="${p.join(",")}">${esc(n)}</button>`).join("")}
+function showNote(html){const n=$("tnote");n.innerHTML=html;n.hidden=false;n.scrollIntoView({behavior:"smooth",block:"center"})}
+function renderTeam(){
+ $("tpre").innerHTML=presets();$("tperms").innerHTML=pbox([]);
+ $("tlist").innerHTML=team.length?team.map(u=>`<article class="c${u.active?"":" off"}" data-id="${u.id}">
+  <div class="top"><b style="font-family:inherit;background:none;padding:0">${esc(u.name)}</b><small>Identifiant : <b style="font-family:ui-monospace,Consolas,monospace">${esc(u.username)}</b> · ${u.last_login?"dernière connexion le "+esc(fmt(u.last_login)):"jamais connecté"}</small></div>
+  <label>Nom<input data-t="name" value="${esc(u.name)}" maxlength="60"></label>
+  <label class="ck" style="margin-top:8px"><input type="checkbox" data-t="active"${u.active?" checked":""}> Compte actif (peut se connecter)</label>
+  <p class="sec" style="margin-top:10px">Autorisations</p><div class="tpre">${presets()}</div>
+  <div class="tperms" data-t="perms">${pbox(u.perms)}</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button type="button" class="btn" data-a="save">Enregistrer</button><button type="button" class="mini" data-a="pw">${ic("key")} Nouveau mot de passe</button><button type="button" class="mini d" data-a="del">Supprimer le compte</button></div></article>`).join(""):'<p style="margin-top:14px;color:var(--muted)">Aucun compte staff pour le moment. Créez le premier avec le formulaire ci-dessus.</p>'}
+async function loadTeam(){
+ try{const j=await api("staff_list");team=j.rows;plabels=j.labels;$("ae").textContent="";renderTeam();
+  const g=await api("staff_log");$("tlog").innerHTML=g.rows.length?g.rows.map(r=>`<div class="logr"><span><b>${esc(r.actor_name)}</b> · ${esc(r.action)}</span><small>${esc(fmt(r.created_at))}</small>${r.detail?`<small style="grid-column:1/-1">${esc(r.detail)}</small>`:""}</div>`).join(""):'<p style="margin-top:10px;color:var(--muted)">Aucune activité enregistrée.</p>'}
+ catch(e){if(e.message!=="auth"&&e.message!=="forbidden")$("ae").textContent=MSG[e.message]||"Chargement impossible ("+e.message+")."}}
+document.addEventListener("click",e=>{const b=e.target.closest("button[data-pre]");if(!b)return;
+ const box=b.closest("form,article"),on=b.dataset.pre.split(",");
+ box.querySelectorAll(".tperms input[type=checkbox]").forEach(i=>i.checked=on.includes("*")||on.includes(i.value))});
+$("tg").onclick=()=>{$("tp").value=genPw()};
+$("tf").onsubmit=async e=>{e.preventDefault();$("te").textContent="";
+ const perms=[...$("tperms").querySelectorAll("input:checked")].map(i=>i.value),username=$("tu").value.trim().toLowerCase(),password=$("tp").value;
+ try{await api("staff_save",{name:$("tn").value,username,password,perms,active:true});
+  showNote(`<b>Compte créé.</b> Donnez ces informations à la personne (le mot de passe ne pourra plus être affiché ensuite) :<br>Identifiant : <span class="cred">${esc(username)}</span> · Mot de passe : <span class="cred">${esc(password)}</span><br><small>Elle pourra ensuite le changer avec le bouton « Mot de passe ».</small>`);
+  $("tf").reset();$("tperms").innerHTML=pbox([]);loadTeam()}
+ catch(x){$("te").textContent=MSG[x.message]||"Création impossible ("+x.message+")."}};
+$("tlist").onclick=async e=>{const b=e.target.closest("button[data-a]");if(!b)return;
+ const art=b.closest("article"),id=Number(art.dataset.id),u=team.find(x=>x.id===id);if(!u)return;
+ try{
+  if(b.dataset.a==="save"){await api("staff_save",{id,name:art.querySelector("[data-t=name]").value,active:art.querySelector("[data-t=active]").checked,perms:[...art.querySelectorAll(".tperms input:checked")].map(i=>i.value)});toast("Compte enregistré");loadTeam()}
+  else if(b.dataset.a==="pw"){if(!confirm("Créer un nouveau mot de passe pour "+u.name+" ?\nL’ancien ne fonctionnera plus."))return;
+   const password=genPw();await api("staff_password",{id,password});
+   showNote(`<b>Nouveau mot de passe pour ${esc(u.name)}</b> :<br>Identifiant : <span class="cred">${esc(u.username)}</span> · Mot de passe : <span class="cred">${esc(password)}</span>`);toast("Mot de passe réinitialisé")}
+  else if(b.dataset.a==="del"){if(!confirm("Supprimer définitivement le compte de "+u.name+" ?\n(Pour une absence temporaire, préférez décocher « Compte actif ».)"))return;
+   await api("staff_delete",{id});toast("Compte supprimé");loadTeam()}
+ }catch(x){if(x.message!=="auth"&&x.message!=="forbidden")toast("Échec ("+x.message+")")}};
+
 /* session déjà ouverte ? */
-api("list").then(j=>{rows=j.rows;show(true);render()}).catch(()=>{});
+api("me").then(j=>{ME=j.me;applyPerms();show(true);return load()}).catch(()=>{});
 </script>
 </body>
 </html>
