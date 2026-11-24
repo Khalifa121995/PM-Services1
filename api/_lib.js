@@ -101,6 +101,11 @@ async function db() {
         starts date, ends date,
         updated_at timestamptz not null default now()
       )`;
+      await q`create table if not exists settings (
+        key text primary key,
+        value text not null,
+        updated_at timestamptz not null default now()
+      )`;
       if (!had) {
         // première installation : on charge la liste de prix de départ
         await q.transaction(
@@ -147,6 +152,7 @@ const PERMS = {
   cash: "Accéder à la caisse (solde, sorties d’argent)",
   reports: "Envoyer les rapports par e-mail",
   banners: "Gérer les bannières publicitaires du site",
+  settings: "Régler le site : promotion, annonce, horaires, WhatsApp, frais de déplacement",
 };
 const PERM_KEYS = Object.keys(PERMS);
 const cleanPerms = (a) => PERM_KEYS.filter((k) => Array.isArray(a) && a.includes(k));
@@ -204,6 +210,60 @@ async function getSession(req, q) {
 }
 const isAdmin = (req) => !!readCookie(req);
 
+/* ---- réglages du site (modifiables dans /admin > Réglages, sans toucher au code) ---- */
+const SET_DEFAULTS = {
+  promo: { active: true, pct: 20, step: 500, pieces: ["Écran"], starts: "", ends: "", text: "" },
+  announce: { active: false, text: "", link: "" },
+  hours_open: "9h00",
+  hours_close: "19h30",
+  whatsapp: "2250501903535",
+  delivery_fee: 1000,
+  screen_offer: "Montage gratuit. Anti-choc et écouteurs offerts pour tout remplacement d’écran.",
+  facebook: "https://www.facebook.com/profile.php?id=61594506811905",
+};
+const line = (v, n) => String(v ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, n);
+const intIn = (v, min, max, dflt) => { const x = Math.round(Number(v)); return Number.isFinite(x) && x >= min && x <= max ? x : dflt; };
+const dateOk = (v) => (/^\d{4}-\d{2}-\d{2}$/.test(String(v || "")) ? String(v) : "");
+/* nettoie n'importe quelle entrée : le résultat est toujours complet et valide */
+function cleanSettings(x) {
+  x = x && typeof x === "object" ? x : {};
+  const D = SET_DEFAULTS, p = x.promo && typeof x.promo === "object" ? x.promo : {}, a = x.announce && typeof x.announce === "object" ? x.announce : {};
+  const pieces = Array.isArray(p.pieces) ? [...new Set(p.pieces.map((v) => line(v, 40)).filter(Boolean))].slice(0, 12) : D.promo.pieces;
+  const link = line(a.link, 300);
+  const wa = String(x.whatsapp ?? D.whatsapp).replace(/\D/g, "");
+  const fb = line(x.facebook ?? D.facebook, 300);
+  return {
+    promo: {
+      active: p.active === undefined ? D.promo.active : !!p.active,
+      pct: intIn(p.pct, 1, 90, D.promo.pct),
+      step: [100, 500, 1000].includes(Number(p.step)) ? Number(p.step) : D.promo.step,
+      pieces, starts: dateOk(p.starts), ends: dateOk(p.ends), text: line(p.text, 200),
+    },
+    announce: {
+      active: !!a.active, text: line(a.text, 200),
+      link: /^#[a-z0-9-]{1,30}$/.test(link) || /^https:\/\/[^\s]{4,300}$/.test(link) ? link : "",
+    },
+    hours_open: line(x.hours_open ?? D.hours_open, 12) || D.hours_open,
+    hours_close: line(x.hours_close ?? D.hours_close, 12) || D.hours_close,
+    whatsapp: wa.length >= 8 && wa.length <= 15 ? wa : D.whatsapp,
+    delivery_fee: intIn(x.delivery_fee, 0, 100000, D.delivery_fee),
+    screen_offer: line(x.screen_offer ?? D.screen_offer, 200),
+    facebook: /^https:\/\/[^\s]{4,300}$/.test(fb) ? fb : (x.facebook === "" ? "" : D.facebook),
+  };
+}
+async function getSettings(q) {
+  let s = {};
+  try {
+    const r = (await q`select value from settings where key = 'site'`)[0];
+    if (r) s = JSON.parse(r.value);
+  } catch {}
+  return cleanSettings(s);
+}
+const todayAbj = () => new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Abidjan" });
+/* la promo est « en cours » si elle est active ET que la date du jour est dans la période choisie */
+const promoLive = (p, today = todayAbj()) =>
+  !!p && p.active && p.pct > 0 && p.pieces.length > 0 && (!p.starts || p.starts <= today) && (!p.ends || p.ends >= today);
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /* envoi d'e-mail via Resend */
@@ -231,4 +291,4 @@ async function sendMail({ to, subject, html, text }) {
   }
 }
 
-module.exports = { STATUSES, EMAIL_RE, PERMS, PERM_KEYS, cleanPerms, parsePerms, hashPw, checkPw, DUMMY_HASH, getSession, db, createRepair, sendMail, same, token, isAdmin };
+module.exports = { SET_DEFAULTS, cleanSettings, getSettings, promoLive, todayAbj, STATUSES, EMAIL_RE, PERMS, PERM_KEYS, cleanPerms, parsePerms, hashPw, checkPw, DUMMY_HASH, getSession, db, createRepair, sendMail, same, token, isAdmin };

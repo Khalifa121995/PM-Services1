@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { STATUSES, EMAIL_RE, PERMS, PERM_KEYS, cleanPerms, parsePerms, hashPw, checkPw, DUMMY_HASH, getSession, db, createRepair, sendMail, same, token } = require("./_lib");
+const { STATUSES, EMAIL_RE, PERMS, PERM_KEYS, cleanPerms, parsePerms, hashPw, checkPw, DUMMY_HASH, getSession, db, createRepair, sendMail, same, token, cleanSettings, getSettings } = require("./_lib");
 const { sendReport, sendMonthReport, periodData } = require("./_rapport");
 
 const one = (s, n = 200) => String(s ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, n);
@@ -9,22 +9,24 @@ const MSG = {
   diagnostic: "Notre technicien est en train de diagnostiquer la panne.",
   piece: "Nous attendons une pièce. Nous vous tenons informé.",
   cours: "Votre téléphone est en cours de réparation.",
-  pret: "Votre téléphone est prêt : vous pouvez venir le récupérer de 9h00 à 19h30.",
+  pret: "Votre téléphone est prêt : vous pouvez venir le récupérer pendant nos horaires d’ouverture.",
   livre: "Votre téléphone vous a été remis. Merci de votre confiance !",
   annule: "Votre demande a été annulée. Contactez-nous si vous avez une question.",
 };
+const msgOf = (st, hours) =>
+  st === "pret" && hours ? `Votre téléphone est prêt : vous pouvez venir le récupérer de ${hours.hours_open} à ${hours.hours_close}.` : MSG[st] || "";
 /* e-mail envoyé au client quand l'état change */
-function statusMail(r, host) {
+function statusMail(r, host, hours) {
   const label = STATUSES[r.status] || r.status;
   const device = [r.brand, r.model].filter(Boolean).join(" ") || "votre téléphone";
   const link = host ? `https://${host}/#suivi` : "";
   const price = r.price ? `Prix convenu : ${new Intl.NumberFormat("fr-FR").format(r.price)} F` : "";
-  const text = `Bonjour ${r.name || ""},\n\nÉtat de votre réparation ${r.code} (${device}) : ${label}.\n${MSG[r.status] || ""}\n${price}\n\n${link ? "Suivre ma réparation : " + link + "\n" : ""}PM Services`;
+  const text = `Bonjour ${r.name || ""},\n\nÉtat de votre réparation ${r.code} (${device}) : ${label}.\n${msgOf(r.status, hours)}\n${price}\n\n${link ? "Suivre ma réparation : " + link + "\n" : ""}PM Services`;
   const html = `<div style="font-family:Arial,sans-serif;color:#0a1b3d;max-width:520px">
     <h2 style="color:#0a2a6b;margin:0 0 10px">Votre réparation ${esc(r.code)}</h2>
     <p>Bonjour ${esc(r.name || "")},</p>
     <p>${esc(device)} – état actuel : <b style="color:#1d4fbf">${esc(label)}</b></p>
-    <p>${esc(MSG[r.status] || "")}</p>${price ? `<p><b>${esc(price)}</b></p>` : ""}
+    <p>${esc(msgOf(r.status, hours))}</p>${price ? `<p><b>${esc(price)}</b></p>` : ""}
     ${link ? `<p><a href="${esc(link)}" style="background:#0a2a6b;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none">Suivre ma réparation</a></p>` : ""}
     <p style="color:#4a6288">PM Services</p></div>`;
   return { to: r.email, subject: `PM Services – Réparation ${r.code} : ${label}`, text, html };
@@ -223,6 +225,7 @@ module.exports = async (req, res) => {
       price_list: ["prices", "create"], price_save: ["prices"], price_delete: ["prices"],
       stock_list: ["stock", "create"], stock_move: ["stock"], stock_delete: ["stock"],
       update: ["update", "edit_price", "cost"],
+      settings_get: ["settings"], settings_save: ["settings"],
       banner_list: ["banners"], banner_save: ["banners"], banner_delete: ["banners"], banner_order: ["banners"],
     };
     const SUPER_ONLY = ["staff_list", "staff_save", "staff_password", "staff_delete", "staff_log"];
@@ -273,7 +276,7 @@ module.exports = async (req, res) => {
       let mail = "none";
       if (row.email && row.status !== cur.status) {
         const host = req.headers["x-forwarded-host"] || req.headers.host;
-        mail = (await sendMail(statusMail(row, host))).ok ? "sent" : "failed";
+        mail = (await sendMail(statusMail(row, host, await getSettings(q)))).ok ? "sent" : "failed";
       }
       const changes = [];
       if (row.status !== cur.status) changes.push(`État : ${STATUSES[cur.status] || cur.status} → ${STATUSES[row.status] || row.status}`);
@@ -416,6 +419,25 @@ module.exports = async (req, res) => {
       await q`delete from stock where id = ${Number(b.id)}`;
       await logAct("Pièce supprimée du stock", `id ${Number(b.id)}`);
       return res.status(200).json({ ok: true });
+    }
+    /* ---------- réglages du site : promo, annonce, horaires… ---------- */
+    if (b.action === "settings_get") {
+      return res.status(200).json({ ok: true, s: await getSettings(q) });
+    }
+    if (b.action === "settings_save") {
+      const old = await getSettings(q);
+      const s = cleanSettings(b.s);
+      await q`insert into settings (key, value, updated_at) values ('site', ${JSON.stringify(s)}, now())
+        on conflict (key) do update set value = excluded.value, updated_at = now()`;
+      const ch = [];
+      if (JSON.stringify(old.promo) !== JSON.stringify(s.promo)) ch.push(s.promo.active ? `promo -${s.promo.pct} %` : "promo arrêtée");
+      if (JSON.stringify(old.announce) !== JSON.stringify(s.announce)) ch.push(s.announce.active ? "annonce affichée" : "annonce masquée");
+      if (old.hours_open !== s.hours_open || old.hours_close !== s.hours_close) ch.push("horaires");
+      if (old.whatsapp !== s.whatsapp) ch.push("WhatsApp");
+      if (old.delivery_fee !== s.delivery_fee) ch.push("frais de déplacement");
+      if (old.screen_offer !== s.screen_offer || old.facebook !== s.facebook) ch.push("textes");
+      await logAct("Réglages du site modifiés", ch.join(", ") || "aucun changement");
+      return res.status(200).json({ ok: true, s });
     }
     /* ---------- bannières publicitaires ---------- */
     const okLink = (v) => { v = String(v || "").trim(); return /^#[a-z0-9-]{1,30}$/.test(v) || /^https:\/\/[^\s]{4,300}$/.test(v) ? v : ""; };

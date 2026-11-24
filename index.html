@@ -144,6 +144,7 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
  .find{margin-inline:16px;flex-direction:column}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.ann{background:var(--navy);color:#fff;text-align:center;padding:9px 14px;font-weight:700;font-size:.95rem}.ann a{color:#fff;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -164,6 +165,7 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
 </svg>
 
 
+<div class="ann" id="ann" role="status" hidden></div>
 <header>
  <div class="w bar">
   <a class="logo" href="#accueil" aria-label="PM Services, accueil"><img src="/logo.jpg" alt="PM Services – Réparation, vente, accessoires"></a>
@@ -201,7 +203,7 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
    <a class="card" href="#garantie"><svg class="i"><use href="#shield"/></svg><h3>Vérification de la garantie</h3><p>Demandez-la avec votre code</p></a>
    <a class="card" href="#suivi"><svg class="i"><use href="#find"/></svg><h3>Suivre l’état de la réparation</h3><p>Avec le code PM-000000</p></a>
    <a class="card" href="#faq"><svg class="i"><use href="#help"/></svg><h3>FAQ</h3><p>Questions fréquentes</p></a>
-   <a class="card" href="#domicile"><svg class="i"><use href="#pin"/></svg><h3>Réparation à domicile</h3><p>Aller-retour : 1 000 F</p></a>
+   <a class="card" href="#domicile"><svg class="i"><use href="#pin"/></svg><h3>Réparation à domicile</h3><p>Aller-retour : <span data-set="fee">1 000 F</span></p></a>
    <a class="card" href="#contact"><svg class="i"><use href="#chat"/></svg><h3>Contactez-nous</h3><p>Par le formulaire en ligne</p></a>
    <a class="card" href="#politique"><svg class="i"><use href="#doc"/></svg><h3>Politique de service</h3><p>Comment nous travaillons</p></a>
   </div>
@@ -236,7 +238,7 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
  </div></section>
 
  <section class="sec view" id="domicile" data-t="Réparation à domicile" style="background:#fff"><div class="w">
-  <h2>Demander une réparation à domicile</h2><p class="sub">Nous récupérons votre téléphone chez vous, nous le réparons, puis nous vous le rapportons. Aller-retour : 1 000 F. Disponible de 9h00 à 19h30.</p>
+  <h2>Demander une réparation à domicile</h2><p class="sub">Nous récupérons votre téléphone chez vous, nous le réparons, puis nous vous le rapportons. Aller-retour : <span data-set="fee">1 000 F</span>. Disponible de <span data-set="open">9h00</span> à <span data-set="close">19h30</span>.</p>
   <form class="panel" id="df" novalidate style="background:var(--mist)"><input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="f">
    <label>Nom<input id="dn" autocomplete="name"></label>
    <label>Téléphone<input id="dt" inputmode="tel" autocomplete="tel"></label>
@@ -274,10 +276,10 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
 
  <section class="sec view" id="faq" data-t="Questions fréquentes"><div class="w">
   <h2>Questions fréquentes</h2><p class="sub" style="margin-bottom:24px">Les réponses les plus demandées.</p>
-  <details><summary>Quels sont vos horaires ?</summary><p>Nous sommes ouverts de 9h00 à 19h30.</p></details>
+  <details><summary>Quels sont vos horaires ?</summary><p>Nous sommes ouverts de <span data-set="open">9h00</span> à <span data-set="close">19h30</span>.</p></details>
   <details><summary>Où intervenez-vous ?</summary><p>Partout en Côte d’Ivoire : à l’atelier ou à domicile, selon votre choix dans le formulaire.</p></details>
   <details><summary>Comment demander une réparation à domicile ?</summary><p>Remplissez le formulaire « Demander une réparation à domicile » : indiquez votre quartier et un point de repère. Nous vous appelons pour confirmer l’heure de passage.</p></details>
-  <details><summary>Combien coûte la récupération à domicile ?</summary><p>L’aller-retour coûte 1 000 F.</p></details>
+  <details><summary>Combien coûte la récupération à domicile ?</summary><p>L’aller-retour coûte <span data-set="fee">1 000 F</span>.</p></details>
   <details><summary>Comment connaître le prix de ma réparation ?</summary><p>Le prix des écrans Apple et Samsung s’affiche dans la section « Prix des pièces ». Pour les autres pièces ou modèles, faites une demande de réparation : nous vous rappelons avec le prix.</p></details>
   <details><summary>Comment suivre ma réparation ?</summary><p>Chaque dossier reçoit un code PM-123456. Entrez-le avec votre numéro dans la section « Suivre l’état de la réparation » pour voir où en est votre téléphone.</p></details>
  </div></section>
@@ -295,7 +297,7 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
   <h2>Contactez-nous</h2><p class="sub">Une question, un devis, un suivi : utilisez les formulaires. En cas d’urgence, touchez « Parler à un technicien ».</p>
   <div class="ct">
    <a class="card" href="#reserver"><svg class="i"><use href="#chat"/></svg><div><h3>Demande en ligne</h3><p>Nous vous rappelons</p></div></a>
-   <div class="card"><svg class="i"><use href="#clock"/></svg><div><h3>Horaires</h3><p>9h00 – 19h30</p></div></div>
+   <div class="card"><svg class="i"><use href="#clock"/></svg><div><h3>Horaires</h3><p><span data-set="open">9h00</span> – <span data-set="close">19h30</span></p></div></div>
    <div class="card"><svg class="i"><use href="#pin"/></svg><div><h3>Zone</h3><p>Partout en Côte d’Ivoire</p></div></div>
   </div>
  </div></section>
@@ -305,7 +307,7 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
  <div class="fg">
   <div><img src="/logo.jpg" alt="PM Services"><p style="margin-top:12px;color:var(--mist)">Réparation, vente et accessoires de téléphones.</p></div>
   <div><h3>Service</h3><a href="#reserver">Réparer un téléphone</a><a href="#domicile">Réparation à domicile</a><a href="#prix">Prix des pièces</a><a href="#suivi">Suivi de réparation</a><a href="#garantie">Garantie</a></div>
-  <div><h3>Contact</h3><a href="https://www.facebook.com/profile.php?id=61594506811905" target="_blank" rel="noopener">Facebook</a><span style="color:var(--mist)">9h00 – 19h30</span><a href="/admin">Espace atelier</a></div>
+  <div><h3>Contact</h3><a data-set="facebook" href="https://www.facebook.com/profile.php?id=61594506811905" target="_blank" rel="noopener">Facebook</a><span style="color:var(--mist)"><span data-set="open">9h00</span> – <span data-set="close">19h30</span></span><a href="/admin">Espace atelier</a></div>
  </div>
  <small>© 2026 PM Services. Tous droits réservés.</small>
 </div></footer>
@@ -313,7 +315,7 @@ nav.m a[aria-current=page]{box-shadow:inset 0 -3px var(--blue)}
 <div class="fab"><a class="btn wa" id="fb" href="#" style="border-color:var(--wa)"><svg class="i"><use href="#chat"/></svg><span>Parler à un technicien<small>Urgence – réponse rapide</small></span></a></div>
 
 <script>
-const WA="2250501903535";
+let WA="2250501903535",OFFER="Montage gratuit. Anti-choc et écouteurs offerts pour tout remplacement d’écran.";
 const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
 const $=id=>document.getElementById(id);
 const F=n=>new Intl.NumberFormat("fr-FR").format(n)+" F";
@@ -343,7 +345,7 @@ const nm=r=>r.brand==="Autres Android"?"Android – "+r.label:r.label.toLowerCas
 function quoteHtml(q,label,href,pc){
  const btn=t=>href?'<p style="margin-top:10px"><a class="btn" href="'+href+'"><svg class="i"><use href="#cal"/></svg>'+t+'</a></p>':"";
  if(!q.length)return '<div class="res"><p><b>Prix sur demande.</b> '+label+'</p>'+btn("Faire une demande de réparation")+'</div>';
- return '<div class="res"><ul>'+q.map(r=>"<li><span>"+esc(nm(r))+(r.quality?" – "+esc(r.quality):"")+'</span><span class="pv">'+(r.old?'<s class="old">'+F(r.old)+"</s> ":"")+'<b class="p">'+F(r.price)+"</b>"+(r.promo?' <em class="pr">-'+r.promo+" %</em>":"")+"</span></li>").join("")+'</ul>'+(pc==="Écran"?'<p style="margin-top:8px;color:var(--muted);font-size:.92rem">Montage gratuit. Anti-choc et écouteurs offerts pour tout remplacement d’écran.</p>':"")+btn("Réserver cette réparation")+'</div>';
+ return '<div class="res"><ul>'+q.map(r=>"<li><span>"+esc(nm(r))+(r.quality?" – "+esc(r.quality):"")+'</span><span class="pv">'+(r.old?'<s class="old">'+F(r.old)+"</s> ":"")+'<b class="p">'+F(r.price)+"</b>"+(r.promo?' <em class="pr">-'+r.promo+" %</em>":"")+"</span></li>").join("")+'</ul>'+(pc==="Écran"&&OFFER?'<p style="margin-top:8px;color:var(--muted);font-size:.92rem">'+esc(OFFER)+'</p>':"")+btn("Réserver cette réparation")+'</div>';
 }
 function notify(type,data,form){
  return fetch("/api/demande",{method:"POST",headers:{"Content-Type":"application/json"},
@@ -429,9 +431,16 @@ $("sf").onsubmit=async e=>{e.preventDefault();
 codeForm("gf","garantie","gc","gt","ge","gok","✓ Demande envoyée. Nous vérifions votre garantie et nous vous appelons.");
 /* bouton « Parler à un technicien » : seul lien WhatsApp du site */
 $("fb").href=wa("Bonjour PM Services, c’est urgent : je voudrais parler à un technicien.");
+/* réglages du site (horaires, WhatsApp, annonce…) : modifiables dans /admin > Réglages */
+fetch("/api/reglages").then(r=>r.json()).then(j=>{if(!j.ok)return;const c=j.s,set=(k,v)=>document.querySelectorAll('[data-set="'+k+'"]').forEach(e=>e.textContent=v);
+ set("open",c.hours_open);set("close",c.hours_close);set("fee",F(c.delivery_fee));
+ WA=c.whatsapp;OFFER=c.screen_offer;$("fb").href=wa("Bonjour PM Services, c’est urgent : je voudrais parler à un technicien.");
+ document.querySelectorAll('[data-set="facebook"]').forEach(e=>{if(c.facebook)e.href=c.facebook;else e.hidden=true});
+ const a=$("ann");if(c.announce){a.textContent="";const t=c.announce.link?document.createElement("a"):document.createElement("span");t.textContent=c.announce.text;if(c.announce.link)t.href=c.announce.link;a.appendChild(t);a.hidden=false}else a.hidden=true;
+ if(typeof pShow==="function"&&PR.length)pShow()}).catch(()=>{});
 /* prix depuis la base de données */
 opts($("pp"),PC);opts($("pb"),BR);pModels();
-fetch("/api/prix").then(r=>r.json()).then(j=>{if(!j.ok)throw 0;PR=j.rows;const pm=PR.find(r=>r.promo);if(pm){$("pbn").textContent="GIGA PROMO : -"+pm.promo+" % sur tous les écrans. Les prix ci-dessous sont déjà réduits.";$("pbn").hidden=false}fill()}).catch(()=>{PRERR=true;pShow()});
+fetch("/api/prix").then(r=>r.json()).then(j=>{if(!j.ok)throw 0;PR=j.rows;const pm=j.promo||(PR.find(r=>r.promo)&&{text:"GIGA PROMO : -"+PR.find(r=>r.promo).promo+" % sur tous les écrans. Les prix ci-dessous sont déjà réduits."});if(pm){$("pbn").textContent=pm.text;$("pbn").hidden=false}fill()}).catch(()=>{PRERR=true;pShow()});
 /* pages : une seule à l’écran, choisie par le lien cliqué */
 const VIEWS=[...document.querySelectorAll(".view")];
 VIEWS.forEach(v=>{if(v.id!=="accueil"){const b=document.createElement("a");b.className="back";b.href="#accueil";b.textContent="← Accueil";const w=v.querySelector(".w");w.insertBefore(b,w.firstChild)}});
